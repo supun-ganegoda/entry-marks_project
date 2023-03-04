@@ -66,7 +66,16 @@
   color: #fff;
   border: none;
 }
-
+.blue {
+  background-color: #276afb;
+  color: #fff;
+  border: none;
+}
+.light-blue {
+  background-color: #638be0;
+  color: #fff;
+  border: none;
+}
 .primary:hover {
   background-color: #fff;
   color: #242424;
