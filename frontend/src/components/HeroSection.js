@@ -11,10 +11,15 @@ const HeroSection = () => {
           <div className="row home__hero-row">
             <div className="col">
               <div className="home__hero-text-wrapper">
-                <h1 className="heading">SITE HIGHLIGHTS</h1>
+                <h1 className="heading">HEADLINES</h1>
                 <p className="home__hero-subtitle">
                   This is the entry marks calculation website for the grade 1
                   students in government schools
+                  <br />
+                  You can check your eligibility to select for the schools by
+                  submitting your data
+                  <br />
+                  We offer document verification as well
                 </p>
                 <div className="home__hero-button-wrapper">
                   <Link to="/calculate-marks">
@@ -32,7 +37,7 @@ const HeroSection = () => {
             </div>
             <div className="col">
               <div className="home__hero-img-wrapper">
-                <img src="images/img-1.jpg" alt="school" />
+                <img src="images/img-2.jpg" alt="school" />
               </div>
             </div>
           </div>
