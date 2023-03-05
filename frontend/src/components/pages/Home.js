@@ -1,4 +1,5 @@
 import Features from "../Features";
+import Footer from "../Footer";
 import HeroSection from "../HeroSection";
 
 const Home = () => {
@@ -6,6 +7,7 @@ const Home = () => {
     <>
       <HeroSection />
       <Features />
+      <Footer />
     </>
   );
 };

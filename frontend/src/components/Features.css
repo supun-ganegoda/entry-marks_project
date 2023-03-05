@@ -5,6 +5,7 @@
 .wrapper--header {
   display: block;
   text-align: center;
+  background-color: #252d4b;
   margin-top: 10px;
   margin-bottom: 10px;
   letter-spacing: 24px;
@@ -42,6 +43,7 @@
     margin-top: 20px;
     margin-bottom: 20px;
     letter-spacing: 12px;
+    transition: margin 0.3s ease-in-out;
   }
   .wrapper-container {
     flex-direction: column;
