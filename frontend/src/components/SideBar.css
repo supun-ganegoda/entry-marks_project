@@ -1,17 +1,21 @@
 .menu-heading {
-  padding: 8px;
+  display: flex;
+  align-items: center;
   background-color: #060b26;
-  height: 60px;
+  height: 80px;
   text-align: center;
   font-size: 1.5rem;
   justify-content: center;
   letter-spacing: 2px;
 }
-
+.menu-heading svg {
+  margin-right: 2rem;
+  margin-left: 1rem;
+}
 .side-menu {
   background-color: #060b26;
   width: 300px;
-  margin-top: 140px;
+  margin-top: 160px;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -28,7 +32,7 @@
 
 .sidebar-text {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   padding: 8px 0px 8px 16px;
   list-style: none;
@@ -60,7 +64,7 @@
   width: 100%;
   height: 80px;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 

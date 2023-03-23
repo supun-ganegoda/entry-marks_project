@@ -1,23 +1,45 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SideBarData } from "./data/SideBarData";
+import { FaBars } from "react-icons/fa";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import "./SideBar.css";
 
 const SideBar = () => {
-  const [sidebar, setSidebar] = useState(false);
+  const [pane, setShowPane] = useState(true);
+  const [closeButton, setCloseButton] = useState(false);
+
+  useEffect(() => {
+    showPane();
+  }, []);
+  const showPane = () => {
+    if (window.innerWidth <= 960) {
+      setShowPane(false);
+    } else {
+      setShowPane(true);
+    }
+  };
+  window.addEventListener("resize", showPane);
 
   const showSidebar = () => {
-    setSidebar(!sidebar);
+    setShowPane(true);
+    setCloseButton(true);
+  };
+
+  const closeSidebar = () => {
+    setShowPane(false);
+    setCloseButton(false);
   };
 
   return (
     <>
-      <div className="sidebar">
-        <div className="menu-heading">
-          Application for Grade 1 Students in Govt. Schools for Year 2023
-        </div>
+      <div className="menu-heading">
+        {!pane ? <FaBars onClick={showSidebar} /> : null}
+        {closeButton ? <AiOutlineCloseCircle onClick={closeSidebar} /> : null}
+        Application for Grade 1 Students in Govt. Schools for Year 2023
       </div>
-      <nav className="side-menu active">
+
+      <nav className={pane ? "side-menu active" : "side-menu"}>
         <ul className="side-menu-items">
           {SideBarData.map((item, index) => {
             return (
