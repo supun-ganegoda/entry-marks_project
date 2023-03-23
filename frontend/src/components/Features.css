@@ -18,6 +18,9 @@
   padding-right: 10px;
   justify-content: space-evenly;
 }
+.wrapper-container--card:hover {
+  scale: 1.03;
+}
 .wrapper-container--card {
   position: relative;
   display: inline-block;

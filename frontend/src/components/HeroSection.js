@@ -22,7 +22,7 @@ const HeroSection = () => {
                   We offer document verification as well
                 </p>
                 <div className="home__hero-button-wrapper">
-                  <Link to="/calculate-marks">
+                  <Link to="/applications">
                     <Button buttonStyle="btn--wide" buttonColor="blue">
                       Get Started
                     </Button>

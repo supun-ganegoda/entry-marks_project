@@ -21,7 +21,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="footer-address">
-          <h4>Ministry of Education,</h4>
+          <p>Ministry of Education,</p>
           <p>Isurupaya,</p>
           <p>Baththaramulla,</p>
           <p>10120</p>
