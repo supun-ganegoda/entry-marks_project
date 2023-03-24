@@ -1,6 +1,6 @@
-* {
+/* * {
   color: #fff;
-}
+} */
 .footer-container {
   display: flex;
   flex-direction: row;
@@ -33,6 +33,10 @@
   flex-direction: column;
   max-width: 40%;
   padding: 8px;
+  color: #fff;
+}
+.footer-contact-mail a {
+  color: #fff;
 }
 .footer-contact {
   display: flex;

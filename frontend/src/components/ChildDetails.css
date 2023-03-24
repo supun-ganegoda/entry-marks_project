@@ -1,0 +1,105 @@
+.form-container {
+  max-width: 80vw;
+  margin-right: 0.4rem;
+  margin-left: 308px;
+}
+
+fieldset {
+  /* border: none; */
+  width: 100%;
+  padding: 8px;
+}
+
+legend {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.form-fullname,
+.form-initilas,
+.form-sex,
+.form-religion,
+.form-medium,
+.form-dob {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.form-sex-label {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.form-sex-checkbox {
+  margin-right: 8px;
+}
+
+.form-label {
+  flex-basis: 200px;
+  margin-right: 1rem;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="checkbox"],
+input[type="radio"],
+select {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="checkbox"] + label,
+input[type="radio"] + label {
+  margin-left: 0.5rem;
+}
+
+.form-medium-selector {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.form-medium-selector label {
+  margin-right: 2vw;
+}
+
+.form-medium-selector div {
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 0.5rem;
+}
+
+.form-medium-selector input[type="radio"] {
+  margin-right: 0.5rem;
+}
+
+.form-datePicker {
+  display: inline-block;
+}
+
+.react-datepicker-wrapper {
+  width: 65%;
+}
+
+@media screen and (max-width: 768px) {
+  .form-container {
+    width: 99%;
+    max-width: none;
+    margin: 4px;
+  }
+
+  .form-label {
+    flex-basis: 100%;
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-medium-selector div {
+    flex-basis: 50%;
+  }
+}

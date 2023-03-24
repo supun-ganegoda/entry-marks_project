@@ -5,9 +5,8 @@
 .wrapper--header {
   display: block;
   text-align: center;
-  background-color: #252d4b;
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   letter-spacing: 24px;
 }
 .wrapper-container {

@@ -1,13 +1,26 @@
+.sidebar-wrapper{
+  position: relative;
+}
+
 .menu-heading {
+  position: fixed;
   display: flex;
   align-items: center;
   background-color: #060b26;
+  color: #ffff;
   height: 80px;
+  width: 100%;
+  z-index: 1;
   text-align: center;
   font-size: 1.5rem;
   justify-content: center;
-  letter-spacing: 2px;
+  letter-spacing: 0.1rem;
 }
+
+/* .sidebar-container{
+  margin-top: 160px;
+} */
+
 .menu-heading svg {
   margin-right: 2rem;
   margin-left: 1rem;
@@ -70,4 +83,17 @@
 
 span {
   margin-left: 16px;
+}
+
+@media screen and (max-width: 768px) {
+  .menu-heading {
+    flex-direction: row;
+    height: 80px;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  .menu-heading svg {
+    margin-left: 1rem;
+  }
 }

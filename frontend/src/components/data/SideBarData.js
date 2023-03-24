@@ -3,13 +3,13 @@ import { IoIosPaper } from "react-icons/io";
 export const SideBarData = [
   {
     title: "Details of Child",
-    path: "/child-details",
+    onclick: "displayChild",
     icon: <IoIosPaper />,
     cName: "sidebar-text",
   },
   {
     title: "Details of Applicant",
-    path: "/applicant-details",
+    path: "displayApplicant",
     icon: <IoIosPaper />,
     cName: "sidebar-text",
   },
