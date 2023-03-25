@@ -14,7 +14,7 @@ const HeroSection = () => {
                 <h1 className="heading">HEADLINES</h1>
                 <p className="home__hero-subtitle">
                   This is the entry marks calculation website for the grade 1
-                  students in government schools
+                  students in government schools in SriLanka
                   <br />
                   You can check your eligibility to select for the schools by
                   submitting your data
