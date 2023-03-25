@@ -90,7 +90,8 @@ input[type="radio"] + label {
   .form-container {
     width: 99%;
     max-width: none;
-    margin: 4px;
+    margin-top: 88px;
+      margin-left: 0.6rem;
   }
 
   .form-label {

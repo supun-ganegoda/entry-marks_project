@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import './ApplicationDetails.css'
-import Map from "./Maps";
+import Map from "../Maps";
 
 const ApplicantDetails = () => {
   const [fullname1, setFullName1] = useState("")
@@ -224,7 +224,7 @@ const ApplicantDetails = () => {
       </div>
 
 
-      <div className="form-container2">
+      <div className="form-container">
         <form>
           <fieldset>
           <legend>Details of Spouse</legend>

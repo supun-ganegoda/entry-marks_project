@@ -4,14 +4,16 @@ import { SideBarData } from "./data/SideBarData";
 import { FaBars } from "react-icons/fa";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import "./SideBar.css";
-import ChildDetails from "./ChildDetails";
-import ApplicantDetails from "./ApplicantDetails";
+import ChildDetails from "./forms/ChildDetails";
+import ApplicantDetails from "./forms/ApplicantDetails";
+import SchoolDetails from "./forms/SchoolDetails";
 
 const SideBar = () => {
   const [pane, setShowPane] = useState(true);
   const [closeButton, setCloseButton] = useState(false);
   const [childForm, setChildForm] = useState(false);
   const [applicationForm, setApplicationForm] = useState(false);
+  const [schoolDetails, setSchoolDetails] = useState(false)
   const sidebarRef = useRef(null);
   const [childButtonClicked, setChildButtonClicked] = useState(false);
   const [applButtonClicked, setapplButtonClicked] = useState(false);
@@ -57,6 +59,7 @@ const SideBar = () => {
 
   const setChildernFormVisible = () => {
     setChildForm(true);
+    setSchoolDetails(false)
     setApplicationForm(false);
     setChildButtonClicked(true)
     setapplButtonClicked(false)
@@ -76,6 +79,9 @@ const SideBar = () => {
   };
 
   const setSchoolFormVisible = ()=>{
+    setSchoolDetails(true);
+    setApplicationForm(false)
+    setChildForm(false)
     setChildButtonClicked(false)
     setapplButtonClicked(false)
     setschooldButtonClicked(true)
@@ -148,6 +154,7 @@ const SideBar = () => {
       
       {applicationForm && <ApplicantDetails />}
       {childForm && <ChildDetails />}
+      {schoolDetails && <SchoolDetails />}
     </>
   );
 };

@@ -15,7 +15,7 @@ export const SideBarData = [
   },
   {
     title: "Details of School",
-    path: "/school-details",
+    path: "SchoolDetails",
     icon: <IoIosPaper />,
     cName: "sidebar-text",
   },
