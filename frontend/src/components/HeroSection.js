@@ -7,14 +7,14 @@ const HeroSection = () => {
     <>
       <div className="home__hero--section dark">
         <div className="container">
-          <div className="top-line">GRADE ON ADMISSION MARK PORTAL</div>
+          <div className="top-line">GRADE ONE ADMISSION MARK PORTAL</div>
           <div className="row home__hero-row">
             <div className="col">
               <div className="home__hero-text-wrapper">
                 <h1 className="heading">HEADLINES</h1>
                 <p className="home__hero-subtitle">
                   This is the entry marks calculation website for the grade 1
-                  students in government schools
+                  students in government schools in Sri Lanka
                   <br />
                   You can check your eligibility to select for the schools by
                   submitting your data
