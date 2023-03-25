@@ -7,7 +7,7 @@ const HeroSection = () => {
     <>
       <div className="home__hero--section dark">
         <div className="container">
-          <div className="top-line">GRADE ON ADMISSION MARK PORTAL</div>
+          <div className="top-line">GRADE ONE ADMISSION MARK PORTAL</div>
           <div className="row home__hero-row">
             <div className="col">
               <div className="home__hero-text-wrapper">
