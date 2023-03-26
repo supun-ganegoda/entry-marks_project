@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import './ApplicationDetails.css'
-import Map from "../Maps";
+import GMap from "../GMap";
 
 const ApplicantDetails = () => {
   const [fullname1, setFullName1] = useState("")
@@ -156,7 +156,8 @@ const ApplicantDetails = () => {
                 required
               />
               <button className="form-map-button" onClick={handleMapDisplay}>Find</button>
-              {mapDisplay&&<Map handleMapClose={handleMapClose} setLatLong={setLatlong}/>}
+              {/* {mapDisplay&&<Map handleMapClose={handleMapClose} setLatLong={setLatlong}/>} */}
+              
             </div>
 
             <div className="label-wrapper">
@@ -368,6 +369,8 @@ const ApplicantDetails = () => {
           </fieldset>
         </form>
       </div>
+
+      {mapDisplay && <GMap handleMapClose={handleMapClose} setLatLong={setLatlong}/>}
     </>
   );
 };
