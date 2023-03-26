@@ -1,0 +1,64 @@
+.otherSchool-wrapper {
+  max-width: 80vw;
+  margin-right: 0.4rem;
+  margin-left: 308px;
+  margin-top: 88px;
+}
+
+.otherSchool-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.otherSchool-button {
+  margin-top: 10px;
+}
+
+.otherSchool-button:hover {
+  cursor: pointer;
+  background-color: #eee;
+}
+
+legend {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.otherSchool-row input[type="text"] {
+  margin-right: 4px;
+  margin-left: 4px;
+  max-width: 80%;
+  padding: 0.2rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.otherSchool-button{
+    width: 100%;
+    border-radius: 4px;
+    padding: 2px;
+    justify-content: center;
+    background-color: #1a83ff;
+    color: #fff;
+}
+.otherSchool-button:hover{
+    cursor: pointer;
+    background-color: #4694ee;
+}
+
+@media screen and (max-width: 768px) {
+    .otherSchool-wrapper {
+      width: 99%;
+      max-width: none;
+      margin-top: 88px;
+        margin-left: 0.6rem;
+    }
+}

@@ -7,6 +7,7 @@ import "./SideBar.css";
 import ChildDetails from "./forms/ChildDetails";
 import ApplicantDetails from "./forms/ApplicantDetails";
 import SchoolDetails from "./forms/SchoolDetails";
+import OtherSchoolDetails from "./forms/OtherSchoolDetails";
 
 const SideBar = () => {
   const [pane, setShowPane] = useState(true);
@@ -14,6 +15,7 @@ const SideBar = () => {
   const [childForm, setChildForm] = useState(false);
   const [applicationForm, setApplicationForm] = useState(false);
   const [schoolDetails, setSchoolDetails] = useState(false)
+  const [otherSchoolDetails, setOtherSchoolDetails] = useState(false)
   const sidebarRef = useRef(null);
   const [childButtonClicked, setChildButtonClicked] = useState(false);
   const [applButtonClicked, setapplButtonClicked] = useState(false);
@@ -59,6 +61,7 @@ const SideBar = () => {
 
   const setChildernFormVisible = () => {
     setChildForm(true);
+    setOtherSchoolDetails(false)
     setSchoolDetails(false)
     setApplicationForm(false);
     setChildButtonClicked(true)
@@ -70,6 +73,7 @@ const SideBar = () => {
 
   const setApplicationFormVisible = () => {
     setApplicationForm(true);
+    setOtherSchoolDetails(false)
     setChildForm(false);
     setChildButtonClicked(false)
     setapplButtonClicked(true)
@@ -82,6 +86,7 @@ const SideBar = () => {
     setSchoolDetails(true);
     setApplicationForm(false)
     setChildForm(false)
+    setOtherSchoolDetails(false)
     setChildButtonClicked(false)
     setapplButtonClicked(false)
     setschooldButtonClicked(true)
@@ -90,6 +95,10 @@ const SideBar = () => {
   }
 
   const setOhterScoolFormVisible = ()=>{
+    setOtherSchoolDetails(true)
+    setSchoolDetails(false)
+    setApplicationForm(false)
+    setChildForm(false)
     setChildButtonClicked(false)
     setapplButtonClicked(false)
     setschooldButtonClicked(false)
@@ -155,6 +164,7 @@ const SideBar = () => {
       {applicationForm && <ApplicantDetails />}
       {childForm && <ChildDetails />}
       {schoolDetails && <SchoolDetails />}
+      {otherSchoolDetails && <OtherSchoolDetails/>}
     </>
   );
 };
