@@ -8,6 +8,7 @@ import ChildDetails from "./forms/ChildDetails";
 import ApplicantDetails from "./forms/ApplicantDetails";
 import SchoolDetails from "./forms/SchoolDetails";
 import OtherSchoolDetails from "./forms/OtherSchoolDetails";
+import ElectorialForm from "./forms/ElectorialForm";
 
 const SideBar = () => {
   const [pane, setShowPane] = useState(true);
@@ -16,6 +17,7 @@ const SideBar = () => {
   const [applicationForm, setApplicationForm] = useState(false);
   const [schoolDetails, setSchoolDetails] = useState(false)
   const [otherSchoolDetails, setOtherSchoolDetails] = useState(false)
+  const [elecForm, setElecForm] = useState(false)
   const sidebarRef = useRef(null);
   const [childButtonClicked, setChildButtonClicked] = useState(false);
   const [applButtonClicked, setapplButtonClicked] = useState(false);
@@ -64,6 +66,7 @@ const SideBar = () => {
     setOtherSchoolDetails(false)
     setSchoolDetails(false)
     setApplicationForm(false);
+    setElecForm(false)
     setChildButtonClicked(true)
     setapplButtonClicked(false)
     setschooldButtonClicked(false)
@@ -75,6 +78,7 @@ const SideBar = () => {
     setApplicationForm(true);
     setOtherSchoolDetails(false)
     setChildForm(false);
+    setElecForm(false)
     setChildButtonClicked(false)
     setapplButtonClicked(true)
     setschooldButtonClicked(false)
@@ -86,6 +90,7 @@ const SideBar = () => {
     setSchoolDetails(true);
     setApplicationForm(false)
     setChildForm(false)
+    setElecForm(false)
     setOtherSchoolDetails(false)
     setChildButtonClicked(false)
     setapplButtonClicked(false)
@@ -99,6 +104,7 @@ const SideBar = () => {
     setSchoolDetails(false)
     setApplicationForm(false)
     setChildForm(false)
+    setElecForm(false)
     setChildButtonClicked(false)
     setapplButtonClicked(false)
     setschooldButtonClicked(false)
@@ -107,6 +113,11 @@ const SideBar = () => {
   }
 
   const setElectFormVisible = ()=>{
+    setElecForm(true)
+    setOtherSchoolDetails(false)
+    setSchoolDetails(false)
+    setApplicationForm(false)
+    setChildForm(false)
     setChildButtonClicked(false)
     setapplButtonClicked(false)
     setschooldButtonClicked(false)
@@ -165,6 +176,7 @@ const SideBar = () => {
       {childForm && <ChildDetails />}
       {schoolDetails && <SchoolDetails />}
       {otherSchoolDetails && <OtherSchoolDetails/>}
+      {elecForm && <ElectorialForm />}
     </>
   );
 };

@@ -39,7 +39,6 @@ legend {
 .form-label {
   flex-basis: 200px;
   margin-right: 1rem;
-  font-weight: bold;
 }
 
 input[type="text"],
