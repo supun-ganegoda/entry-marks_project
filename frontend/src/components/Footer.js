@@ -33,16 +33,22 @@ const Footer = () => {
             +94 112 785141
           </div>
           <div className="footer-contact-mail">
-            <Link to="/info@moe.gov.lk">
+            <Link to="https://info@moe.gov.lk" target="_blank">
               <FaMailBulk />
               info@moe.gov.lk
             </Link>
           </div>
         </div>
         <div className="footer-social">
+          <Link to ='https://www.facebook.com' target="_blank">
           <FaFacebook />
+          </Link>
+          <Link to = 'https://www.linkdin.com' target="_blank">
           <FaLinkedin />
+          </Link>
+          <Link to = 'https://www.twitter.com' target="_blank">
           <FaTwitter />
+          </Link>
         </div>
       </div>
       <div className="footer-copyright">SDDK Solutions &copy; 2023</div>
