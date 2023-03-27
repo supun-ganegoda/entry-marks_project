@@ -63,6 +63,19 @@ const Navbar = () => {
                   </Link>
                 )}
               </li>
+              <li className="nav-button" onClick={closeMobileMenu}>
+                {button ? (
+                  <Link to="/login" className="btn-link">
+                    <Button buttonStyle="btn--outline">LOGIN</Button>
+                  </Link>
+                ) : (
+                  <Link to="/login" className="btn-link">
+                    <Button buttonStyle="btn--outline" buttonSize="btn--mobile">
+                      LOGIN
+                    </Button>
+                  </Link>
+                )}
+              </li>
             </ul>
           </div>
         </div>
