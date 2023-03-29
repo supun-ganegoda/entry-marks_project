@@ -1,15 +1,17 @@
-import './AboutUs.css'
+import "./AboutUs.css";
 
 const AboutUs = () => {
   return (
     <>
-      <section class="team">
-        <div class="teamBox">
+      <div className="team">
+        <div className="team-header">
           <h2>MEET OUR PROFESSIONAL TEAM</h2>
-          <p></p>
-          <div class="service">
-            <div class="border">
-              <div class="pic">
+        </div>
+        <p></p>
+        
+          <div className="service">
+            <div className="border">
+              <div className="pic">
                 <img src="../images/manager.jpg" alt="manager" />
               </div>
               <h3>Mr. Dineth Jayakody</h3>
@@ -26,8 +28,8 @@ const AboutUs = () => {
                 project.
               </p>
             </div>
-            <div class="border">
-              <div class="pic">
+            <div className="border">
+              <div className="pic">
                 <img src="../images/ui.jpg" alt="ui/ux developer" />
               </div>
               <h3>Mr. Koshila Isuranda</h3>
@@ -42,8 +44,8 @@ const AboutUs = () => {
                 visual communication.
               </p>
             </div>
-            <div class="border">
-              <div class="pic">
+            <div className="border">
+              <div className="pic">
                 <img src="../images/frontend.jpg" alt="frontend-developer" />
               </div>
               <h3>Mr. Ganegoda G.S.S</h3>
@@ -64,8 +66,8 @@ const AboutUs = () => {
                 engaging user experiences
               </p>
             </div>
-            <div class="border">
-              <div class="pic">
+            <div className="border">
+              <div className="pic">
                 <img src="../images/backend.jpg" alt="backend-developer" />
               </div>
               <h3>Ms. Niromali R.M.D</h3>
@@ -81,8 +83,7 @@ const AboutUs = () => {
               </p>
             </div>
           </div>
-        </div>
-      </section>
+      </div>
     </>
   );
 };

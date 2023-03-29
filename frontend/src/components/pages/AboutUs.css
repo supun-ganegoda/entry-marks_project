@@ -1,119 +1,198 @@
-.team {
-    height: 100vh;
+/* .team {
+  height: 100vh;
+  width: 100%;
+}
+.team-header{
     width: 100%;
-  }
-  .teamBox {
-    margin-left: 0.5%;
-    margin-right: 1%;
-  }
-  .teamBox h2 {
+    margin-top: 40px;
     text-align: center;
-    font-weight: 700;
-    color: #333;
-    padding-top: 2.5%;
-    padding-left: 5%;
-    font-size: 40px;
-  }
-  .teamBox p {
-      text-align: center;
-      font-weight: 400;
-      color: #888;
-      font-size: 12px;
-      padding-top: 1%;
-      padding-bottom: 1%;
-    }
-  
-  
-  
-  .service {
+}
+.teamBox {
     display: flex;
+    padding: 4px;
+  margin-left: 0.5%;
+  margin-right: 0.5%;
+}
+.teamBox h2 {
+  text-align: center;
+  font-weight: 700;
+  color: #333;
+  padding-top: 2.5%;
+  padding-left: 5%;
+  font-size: 40px;
+}
+.teamBox p {
+  text-align: center;
+  font-weight: 400;
+  color: #888;
+  font-size: 12px;
+  padding-top: 1%;
+  padding-bottom: 1%;
+}
+
+.service {
+  display: flex;
+  margin: 0;
+}
+
+.service .border {
+  margin: 12px;
+}
+
+.pic {
+  text-align: center;
+  border: 1px solid rgb(11, 129, 240);
+  border-radius: 50%;
+  height: 328px;
+  width: 328px;
+  margin: 0 auto;
+  border-width: 10px;
+}
+
+.pic img {
+  height: 254px;
+  width: 254px;
+  border-radius: 50%;
+  object-position: 50% 94.17%;
+  margin: 0 auto;
+  background-size: cover;
+}
+
+.service p {
+  padding-right: 3%;
+  text-align: center;
+  font-weight: 400;
+  color: #888;
+  font-size: 12px;
+  margin: 23px 0 0;
+}
+
+.service h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 40px 0 0;
+  text-align: center;
+}
+
+.service h5 {
+  text-align: center;
+  color: rgb(11, 129, 240);
+  font-weight: 700;
+  margin: 12px 0 0;
+}
+
+.service div {
+  padding: 28px 12px;
+  background: rgb(215, 223, 239);
+  box-sizing: border-box;
+  transition: 0.5s;
+}
+
+.service div:hover {
+  background: linear-gradient(
+    60deg,
+    rgba(84, 58, 183, 1) 0%,
+    rgba(0, 172, 193, 1) 100%
+  );
+  color: #fff;
+}
+.service h5:hover,
+.service p:hover {
+  color: #fff;
+}
+
+@media screen and (max-width: 991px) {
+  .teamBox {
+    margin-left: 0%;
+    margin-right: 0%;
   }
-  
-  .service .border {
-    margin: 12px;
+  .service {
+    display: block;
   }
-  
   .pic {
     text-align: center;
     border: 1px solid rgb(11, 129, 240);
     border-radius: 50%;
-    height: 328px;
-    width: 328px;
+    height: 300px;
+    width: 300px;
     margin: 0 auto;
     border-width: 10px;
   }
-  
-  .pic img {
-    height: 254px;
-    width: 254px;
-    border-radius: 50%;
-    object-position: 50% 94.17%;
-    margin: 0 auto;
-    background-size: cover;
-  }
-  
-  .service p {
-    padding-right: 3%;
-    text-align: center;
-    font-weight: 400;
-    color: #888;
-    font-size: 12px;
-    margin: 23px 0 0;
-  }
-  
-  .service h3 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin: 40px 0 0;
-      text-align: center;
-    }
-  
-  .service h5 {
-    text-align: center;
-    color: rgb(11, 129, 240);
-    font-weight: 700;
-    margin: 12px 0 0;
-  }
-  
   .service div {
-    padding: 28px 12px;
+    padding: 15px 12px;
     background: rgb(215, 223, 239);
     box-sizing: border-box;
     transition: 0.5s;
   }
-  
-  .service div:hover {
-    background: linear-gradient(60deg,rgba(84, 58, 183, 1) 0%,
-    rgba(0, 172, 193, 1) 100%);
-    color: #fff;
-  }
-  .service h5:hover,
-  .service p:hover{
-    color: #fff;
-  }
-  
-  @media(max-width:768px){
-    .teamBox {
-      margin-left: 0%;
-      margin-right: 0%;
-    }
-    .service {
-      display: block;
-    }
-    .pic {
-      text-align: center;
-      border: 1px solid rgb(11, 129, 240);
-      border-radius: 50%;
-      height: 300px;
-      width: 300px;
-      margin: 0 auto;
-      border-width: 10px;
-    }
-    .service div {
-      padding: 15px 12px;
-      background: rgb(215, 223, 239);
-      box-sizing: border-box;
-      transition: 0.5s;
-    }
-  }
-  
+}  */
+
+.team {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.team-header {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.teamBox {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.service {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.border {
+  border: 1px solid #e2e2e2;
+  padding: 20px;
+  text-align: center;
+  margin: 2rem;
+}
+
+.service div:hover {
+  background: linear-gradient(
+    60deg,
+    rgba(84, 58, 183, 1) 0%,
+    rgba(0, 172, 193, 1) 100%
+  );
+  color: #fff;
+}
+.service h5:hover,
+.service p:hover {
+  color: #fff;
+}
+
+.pic {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  overflow: hidden;
+}
+
+.pic img {
+  max-width: 100%;
+  height: auto;
+}
+
+h3 {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+h5 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #999;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #666;
+}
