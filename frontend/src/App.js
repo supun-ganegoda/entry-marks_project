@@ -6,9 +6,11 @@ import ChildDetails from "./components/forms/ChildDetails";
 import Home from "./components/pages/Home";
 import RegistrationForm from "./components/forms/RegistrationForm";
 import AboutUs from "./components/pages/AboutUs";
+import LocationProvider from "./components/context/LocationContext";
 
 function App() {
   return (
+    <LocationProvider value={{lat:"",lng:""}}>
     <Router>
       <Navbar />
       <Routes>
@@ -19,6 +21,7 @@ function App() {
         <Route path="/about-us" element={<AboutUs/>} />
       </Routes>
     </Router>
+    </LocationProvider>
   );
 }
 

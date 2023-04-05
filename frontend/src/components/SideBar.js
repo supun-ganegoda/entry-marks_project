@@ -76,6 +76,7 @@ const SideBar = () => {
 
   const setApplicationFormVisible = () => {
     setApplicationForm(true);
+    setSchoolDetails(false)
     setOtherSchoolDetails(false)
     setChildForm(false);
     setElecForm(false)

@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import './ApplicationDetails.css'
 import GMap from "../GMap";
+import { useLatLng } from "../context/LocationContext";
 
 const ApplicantDetails = () => {
+  
+  const latLng = useLatLng();
+
   const [fullname1, setFullName1] = useState("")
   const [initials1, setInitials1] = useState("")
   const [nic1, setNic1] = useState("")
@@ -11,7 +15,7 @@ const ApplicantDetails = () => {
   const [noChecked1, setNoChecked1] = useState(false);
   const [religion1, setReligion1] = useState("")
   const [address1, setAddress1] = useState("")
-  const [latlong, setLatlong] = useState("")
+  const [newlatlong, setNewLatlong] = useState(latLng.lat+", "+latLng.lng)
   const [tel1, setTel1] = useState("")
   const [district1, setDistrict1] = useState("")
   const [divisional1, setDivisional1] = useState("")
@@ -30,6 +34,10 @@ const ApplicantDetails = () => {
   const [district2, setDistrict2] = useState("")
   const [divisional2, setDivisional2] = useState("")
   const [grama2, setGrama2] = useState("")
+
+  useEffect(()=>{
+      setNewLatlong(latLng.lat+", "+latLng.lng)
+  },[latLng])
 
   const handleMapDisplay = ()=>{
     setMapDisplay(true)
@@ -151,8 +159,9 @@ const ApplicantDetails = () => {
               <input
                 type="text"
                 id="latlong"
-                value={latlong}
-                onChange={(e) => setLatlong(e.target.value)}
+                value={newlatlong}
+                readOnly={true}
+                //onChange={(e) => setNewLatlong(e.target.value)}
                 required
               />
               <button className="form-map-button" onClick={handleMapDisplay}>Find</button>
@@ -370,7 +379,7 @@ const ApplicantDetails = () => {
         </form>
       </div>
 
-      {mapDisplay && <GMap handleMapClose={handleMapClose} setLatLong={setLatlong}/>}
+      {mapDisplay && <GMap handleMapClose={handleMapClose}/>}
     </>
   );
 };

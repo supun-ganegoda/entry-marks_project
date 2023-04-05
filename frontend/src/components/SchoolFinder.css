@@ -1,0 +1,45 @@
+.map-wrapper {
+  max-width: 80%;
+  margin-left: 308px;
+  margin-top: 88px;
+  height: 500px;
+  margin-right: 8px;
+  /* top: 60%;
+  left: 70%;
+  transform: translate(-50%, -50%);
+  z-index: 9999; */
+}
+
+.school-details-table {
+  border-collapse: collapse;
+  margin-top: 10px;
+  margin-left: 308px;
+  margin-right: 4px;
+  padding: 4px;
+}
+
+td {
+    text-align: center;
+}
+
+.delete-button{
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    .map-wrapper {
+        max-width: 100%;
+        margin-left: 8px;
+        margin-top: 88px;
+        height: 500px;
+        margin-right: 8px;
+    }
+
+    .school-details-table {
+        border-collapse: collapse;
+        margin-top: 10px;
+        margin-left: 8px;
+        margin-right: 4px;
+        padding: 4px;
+      }
+}
