@@ -19,27 +19,65 @@
 }
 
 td {
-    text-align: center;
+  text-align: center;
 }
 
-.delete-button{
-    cursor: pointer;
+.delete-button {
+  cursor: pointer;
+}
+
+.selected-count {
+  margin-top: 10px;
+  margin-left: 308px;
+  margin-right: 4px;
+  padding: 4px;
+}
+
+.warning-class {
+  margin-top: 10px;
+  margin-left: 308px;
+  margin-right: 4px;
+  padding: 4px;
+  border: 1px solid;
+  border-color: red;
+  border-radius: 4px;
+  color: red;
+  text-align: center;
 }
 
 @media screen and (max-width: 768px) {
-    .map-wrapper {
-        max-width: 100%;
-        margin-left: 8px;
-        margin-top: 88px;
-        height: 500px;
-        margin-right: 8px;
-    }
+  .map-wrapper {
+    max-width: 100%;
+    margin-left: 8px;
+    margin-top: 88px;
+    height: 500px;
+    margin-right: 8px;
+  }
 
-    .school-details-table {
-        border-collapse: collapse;
-        margin-top: 10px;
-        margin-left: 8px;
-        margin-right: 4px;
-        padding: 4px;
-      }
+  .school-details-table {
+    border-collapse: collapse;
+    margin-top: 10px;
+    margin-left: 8px;
+    margin-right: 4px;
+    padding: 4px;
+  }
+
+  .selected-count {
+    margin-top: 10px;
+    margin-left: 8px;
+    margin-right: 4px;
+    padding: 4px;
+  }
+
+  .warning-class {
+    margin-top: 10px;
+    margin-left: 8px;
+    margin-right: 4px;
+    padding: 4px;
+    border: 1px solid;
+    border-color: red;
+    border-radius: 4px;
+    color: red;
+    text-align: center;
+  }
 }

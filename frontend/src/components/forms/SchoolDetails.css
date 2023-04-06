@@ -1,4 +1,4 @@
-/* .school-details-wrapper {
+.school-details-wrapper {
   max-width: 80vw;
   margin-top: 84px;
   margin-right: 0.4rem;
@@ -35,7 +35,7 @@ select {
 input[type="text"]{
     width: 120px;
     margin-right: 20px;
-} */
+}
 
 @media screen and (max-width: 768px) {
   .school-details-wrapper {
