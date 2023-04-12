@@ -27,6 +27,15 @@ legend {
   margin-bottom: 1rem;
 }
 
+.post-holder {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.post-holder input {
+  width: 16rem;
+}
+
 .form-sex-label {
   margin-left: 4px;
   margin-right: 4px;
