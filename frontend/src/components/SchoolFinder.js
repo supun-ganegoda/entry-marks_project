@@ -5,33 +5,32 @@ import {
   Circle,
   Marker,
   useLoadScript,
-  InfoWindow
+  InfoWindow,
 } from "@react-google-maps/api";
 import "./SchoolFinder.css";
 import { useLatLng } from "./context/LocationContext";
 
-
-let center
+let center;
 const radius = 5000;
-const apiKey = "AIzaSyAf9lx0qQs0BZiIhGLz8LsIX1ypDYyJ6go"
-const libraries = ['places'];
+const apiKey = "AIzaSyBGNDiPaU1jWUUFF9xiTwCNqNpa2Zd1ngI";
+const libraries = ["places"];
 
 const SchoolFinder = () => {
-    const latLng = useLatLng();
-    if(!latLng.lat && !latLng.lng){
-      center = { lat: 6.927079, lng: 79.861244 };
-    }
+  const latLng = useLatLng();
+  if (!latLng.lat && !latLng.lng) {
+    center = { lat: 6.927079, lng: 79.861244 };
+  }
 
   const [map, setMap] = useState(null);
   const [circle, setCircle] = useState(null);
   const [schools, setSchools] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState(null);
-  const [schoolCount, setSchoolCount] = useState(0)
+  const [schoolCount, setSchoolCount] = useState(0);
 
   const { isLoaded } = useLoadScript({
     id: "google-map-script",
     googleMapsApiKey: apiKey,
-    libraries
+    libraries,
   });
 
   const onLoad = (map) => {
@@ -47,7 +46,7 @@ const SchoolFinder = () => {
   };
 
   useEffect(() => {
-    center = {lat:Number(latLng.lat), lng:Number(latLng.lng)}
+    center = { lat: Number(latLng.lat), lng: Number(latLng.lng) };
 
     if (map && circle) {
       const placesService = new window.google.maps.places.PlacesService(map);
@@ -62,18 +61,20 @@ const SchoolFinder = () => {
 
       placesService.textSearch(request, (results, status) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-          const schoolsWithDistances = results.map((result) => {
-            const schoolLocation = result.geometry.location;
-            const distanceFromCenter =
-              window.google.maps.geometry.spherical.computeDistanceBetween(
-                center,
-                schoolLocation
-              );
-            return {
-              ...result,
-              distanceFromCenter,
-            };
-          }).filter((result) => result.distanceFromCenter <= radius);
+          const schoolsWithDistances = results
+            .map((result) => {
+              const schoolLocation = result.geometry.location;
+              const distanceFromCenter =
+                window.google.maps.geometry.spherical.computeDistanceBetween(
+                  center,
+                  schoolLocation
+                );
+              return {
+                ...result,
+                distanceFromCenter,
+              };
+            })
+            .filter((result) => result.distanceFromCenter <= radius);
           schoolsWithDistances.sort((a, b) => {
             return a.distanceFromCenter - b.distanceFromCenter;
           });
@@ -86,7 +87,7 @@ const SchoolFinder = () => {
 
   const handleDelete = (id) => {
     setSchools(schools.filter((s) => s.place_id !== id));
-    setSchoolCount(schoolCount-1)
+    setSchoolCount(schoolCount - 1);
   };
 
   const tableRows = schools.map((school) => {
@@ -155,17 +156,18 @@ const SchoolFinder = () => {
             fillOpacity: 0.35,
           }}
         />
-        <Marker position={{lat:center.lat, lng:center.lng}} icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"} />
+        <Marker
+          position={{ lat: center.lat, lng: center.lng }}
+          icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
+        />
         {markers}
       </GoogleMap>
-      <div className="selected-count">
-        {schoolCount} schools selected
-      </div>
-      {(center.lat=== 6.927079 && center.lng=== 79.861244) ? (
-      <div className ="warning-class">
-          You have not set the home location. Demostration is running 
-      </div>
-      ):null}
+      <div className="selected-count">{schoolCount} schools selected</div>
+      {center.lat === 6.927079 && center.lng === 79.861244 ? (
+        <div className="warning-class">
+          You have not set the home location. Demostration is running
+        </div>
+      ) : null}
       <div className="school-details-table">
         <table>
           <thead>

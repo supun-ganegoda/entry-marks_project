@@ -8,8 +8,7 @@ const center = {
   lat: 6.927079,
   lng: 79.861244,
 };
-const apiKey = "AIzaSyAf9lx0qQs0BZiIhGLz8LsIX1ypDYyJ6go";
-
+const apiKey = "AIzaSyBGNDiPaU1jWUUFF9xiTwCNqNpa2Zd1ngI";
 const GMap = ({ handleMapClose }) => {
   const updateLatLng = useUpdateLatLng();
   const { isLoaded } = useJsApiLoader({
@@ -49,12 +48,10 @@ const GMap = ({ handleMapClose }) => {
   };
 
   const onMapClick = (event) => {
-   
-
     if (marker) {
       marker.setPosition(event.latLng);
     } else {
-    setMarker(
+      setMarker(
         new window.google.maps.Marker({
           position: event.latLng,
           map: map,
@@ -68,7 +65,6 @@ const GMap = ({ handleMapClose }) => {
       //setNewLatLong(`${lat.toFixed(4)}, ${lng.toFixed(4)}`);
       //setLatLong()
     }
-    
   };
 
   return isLoaded ? (
