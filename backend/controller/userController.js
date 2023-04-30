@@ -8,7 +8,7 @@ const registerUser = async (req, res) => {
   try {
     //const newPassword = await bcrypt.hash(req.body.password, 10)
     const user = await userDetailsModel.create({
-      name: req.body.name,
+      username: req.body.username,
       email: req.body.email,
       password: req.body.password,
     });

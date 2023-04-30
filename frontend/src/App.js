@@ -11,6 +11,7 @@ import CategorySelector from "./components/CategorySelector";
 import SideBar from "./components/SideBar";
 import CategoryHolder from "./components/category-forms/CategoryHolder";
 import FormsProvider from "./components/context/FormContext";
+import LoginForm from "./components/forms/LoginForm";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/categorySelector" element={<CategorySelector />} />
             <Route path="/sidebar" element={<SideBar />} />
             <Route path="/categoryHolder" element={<CategoryHolder />} />
+            <Route path="/login-form" exact element={<LoginForm />} />
           </Routes>
         </Router>
       </FormsProvider>

@@ -30,6 +30,10 @@
   color: gray;
 }
 
+.register-container p {
+  padding: 8px 0px;
+}
+
 .error {
   font-size: 12px;
   padding: 3px;
