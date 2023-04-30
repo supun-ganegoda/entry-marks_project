@@ -1,8 +1,10 @@
 import { useState } from "react";
 import "./CategorySelector.css";
 import { Link } from "react-router-dom";
+import { useUpdateSelectedForms } from "./context/FormContext";
 
 const CategorySelector = () => {
+  const selectedForms = useUpdateSelectedForms();
   const [proximity, setProximity] = useState(false);
   const [pastPupil, setPastPupil] = useState(false);
   const [cousins, setCousins] = useState(false);
@@ -38,7 +40,8 @@ const CategorySelector = () => {
       officers,
       forigion,
     };
-    console.log(selectedCategories);
+    //console.log(selectedCategories);
+    selectedForms(selectedCategories);
   };
 
   return (
@@ -103,7 +106,9 @@ const CategorySelector = () => {
           <Link to="/sidebar">
             <button>Back</button>
           </Link>
-          <button onClick={handleProceed}>Next</button>
+          <Link to="/categoryHolder">
+            <button onClick={handleProceed}>Next</button>
+          </Link>
         </div>
       </div>
     </>
