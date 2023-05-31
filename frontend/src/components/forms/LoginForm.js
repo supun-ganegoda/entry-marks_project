@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { loginData } from "../data/LoginFormData";
 import { useState } from "react";
+import { useUpdateUsername } from "../context/UsernameContext";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({});
+  const updateUserName = useUpdateUsername();
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
     event.preventDefault();
 
     const response = await fetch("http://localhost:4000/api/login", {
@@ -23,14 +24,19 @@ const LoginForm = () => {
 
     const data = await response.json();
 
+    console.log(data);
     if (data.user) {
-      localStorage.setItem("token", data.user);
-      alert("Login successful");
-      navigate("/");
+      if (!data.user) {
+        localStorage.setItem("token", data.user);
+        updateUserName({ userName: data.username });
+        alert("Login successful");
+        navigate("/");
+      } else {
+        alert("Something went wrong !");
+      }
     } else {
       alert("Please check your username and password");
     }
-    console.log(formValues);
   };
 
   const handleChange = (event) => {

@@ -1,16 +1,17 @@
 const userDetailsModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 //register the users
 const registerUser = async (req, res) => {
   console.log(req.body);
   try {
-    //const newPassword = await bcrypt.hash(req.body.password, 10)
+    const newPassword = await bcrypt.hash(req.body.password, 10);
     const user = await userDetailsModel.create({
       username: req.body.username,
       email: req.body.email,
-      password: req.body.password,
+      password: newPassword,
     });
     res.status(200).json(user);
   } catch (err) {
@@ -27,25 +28,34 @@ const loginUser = async (req, res) => {
   if (!user) {
     return res.json({ status: "error", error: "Invalid login" });
   }
+  console.log("reqBodypass: ", req.body.password);
+  const isPasswordValid = await bcrypt.compare(
+    req.body.password,
+    user.password
+  );
 
-  // const isPasswordValid = await bcrypt.compare(
-  // 	req.body.password,
-  // 	user.password
-  // )
-
-  if (req.body.password === user.password) {
+  if (isPasswordValid) {
     const token = jwt.sign(
       {
-        name: user.name,
+        username: user.username,
         email: user.email,
       },
       "entryMarks123"
     );
 
-    return res.json({ status: "ok", user: token });
+    return res.status(200).json({ username: user.username, user: token });
   } else {
-    return res.json({ status: "error", user: false });
+    return res.status(404).json({ user: false });
   }
+};
+
+//user logout
+const logoutUser = (req, res) => {
+  // localStorage.removeItem("token");
+  // const { token } = req.body;
+  // tokenBlacklist.add(token); // Assuming `tokenBlacklist` is a set or data structure to store revoked tokens
+
+  return res.status(200).json({ success: true });
 };
 
 //get all user details
@@ -103,6 +113,7 @@ const updateUser = async (req, res) => {
 module.exports = {
   registerUser,
   loginUser,
+  logoutUser,
   getAllUserDetails,
   getUserDetails,
   deleteUser,

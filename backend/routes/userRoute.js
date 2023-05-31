@@ -4,6 +4,7 @@ const express = require("express");
 const {
   registerUser,
   loginUser,
+  logoutUser,
   getAllUserDetails,
   getUserDetails,
   deleteUser,
@@ -18,6 +19,9 @@ router.post("/register", registerUser);
 
 //login the users
 router.post("/login", loginUser);
+
+//logout user
+router.post("/logout", logoutUser);
 
 router.get("/", getAllUserDetails);
 

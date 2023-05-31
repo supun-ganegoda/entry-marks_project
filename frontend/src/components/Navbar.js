@@ -1,16 +1,48 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { AiOutlineLogout } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { IconContext } from "react-icons/lib";
 import Button from "./Button";
 import "./Navbar.css";
+import { useUsername } from "./context/UsernameContext";
 
 const Navbar = () => {
+  const user = useUsername();
+  const navigate = useNavigate();
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
+
   useEffect(() => {
     showButton();
   }, []);
+
+  const logOutUser = () => {
+    fetch("http://localhost:4000/api/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: localStorage.getItem("token"), // Include the token in the request body
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          localStorage.removeItem("token");
+          user.userName = "REGISTER";
+          alert("Log out Success! ");
+          navigate("/");
+          // Redirect or perform any other actions after successful logout
+        } else {
+          console.log("Something went wrong!");
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
 
   const handleClick = () => {
     setClick(!click);
@@ -52,9 +84,36 @@ const Navbar = () => {
               </li>
               <li className="nav-button" onClick={closeMobileMenu}>
                 {button ? (
-                  <Link to="/register" className="btn-link">
-                    <Button buttonStyle="btn--outline">REGISTER</Button>
-                  </Link>
+                  user.userName !== "REGISTER" ? (
+                    <div className="userName-holder">
+                      <label buttonStyle="btn--outline">
+                        Hello ! {user.userName}
+                      </label>
+                      <div
+                        className="logOut"
+                        data-tooltip="Click here to Log out"
+                      >
+                        <AiOutlineLogout onClick={(e) => logOutUser()} />
+                      </div>
+                    </div>
+                  ) : (
+                    <Link to="/register" className="btn-link">
+                      <Button buttonStyle="btn--outline">REGISTER</Button>
+                    </Link>
+                  )
+                ) : user.userName !== "REGISTER" ? (
+                  <div className="userName-holder-mobile">
+                    <label buttonStyle="btn--outline">
+                      Hello ! {user.userName}
+                    </label>
+                    <Button
+                      buttonStyle="btn--outline"
+                      buttonSize="btn--mobile"
+                      onClick={(e) => logOutUser()}
+                    >
+                      LOGOUT
+                    </Button>
+                  </div>
                 ) : (
                   <Link to="/register" className="btn-link">
                     <Button buttonStyle="btn--outline" buttonSize="btn--mobile">
