@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelectedForms } from "../context/FormContext";
+import "./CategoryHolder.css";
 import FormCat from "./FormCat";
 
 const CategoryHolder = () => {
@@ -15,7 +16,6 @@ const CategoryHolder = () => {
     }, {})
   );
 
-  console.log(formStates);
   const handleFormClick = (category) => {
     // Set state of clicked category to true and all others to false
     setFormStates(
@@ -25,18 +25,25 @@ const CategoryHolder = () => {
     );
   };
 
+  useEffect(() => {
+    handleFormClick(formCategories[0]);
+  }, []);
+
   return (
     <>
-      <div className="holder-nav">
-        <ul>
-          {formCategories
-            .filter((category) => selectedForms[category])
-            .map((category) => (
-              <li key={category} onClick={() => handleFormClick(category)}>
-                {`Form ${category}`}
-              </li>
-            ))}
-        </ul>
+      <div className="holder-wrapper">
+        <div className="holder-nav">
+          <ul>
+            {formCategories
+              .filter((category) => selectedForms[category])
+              .map((category) => (
+                <li key={category} onClick={() => handleFormClick(category)}>
+                  {`Form for ${category}`}
+                </li>
+              ))}
+          </ul>
+        </div>
+
         <div className="forms-display">
           {formCategories.map((category) =>
             formStates[category] ? (

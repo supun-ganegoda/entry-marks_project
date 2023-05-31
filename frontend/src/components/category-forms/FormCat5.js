@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "./FormCat5.css";
+import "./FormCat.css";
 
 export default function FormCat5() {
   const [reportingDate, setreportingDate] = useState(null);
@@ -22,7 +22,7 @@ export default function FormCat5() {
 
   return (
     <>
-      <div className="form-container">
+      <div className="cat-form-container">
         <form>
           <fieldset>
             <legend>
@@ -128,7 +128,7 @@ export default function FormCat5() {
               </div>
             </div>
 
-            <div className="form-distance">
+            <div className="form-religion">
               <label className="form-label">
                 Distance between the previous place of work and present place of
                 work that reported duty on transfer:{" "}
@@ -144,7 +144,7 @@ export default function FormCat5() {
               />
             </div>
 
-            <div className="form-distace">
+            <div className="form-religion">
               <label className="form-label">
                 Number of other schools where the child could be admitted and
                 located closer to the place of residence other than the school

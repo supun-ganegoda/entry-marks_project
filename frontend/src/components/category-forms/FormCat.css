@@ -1,7 +1,5 @@
-.form-container {
-  max-width: 80vw;
-  margin-right: 0.4rem;
-  margin-left: 308px;
+.cat-form-container {
+  max-width: 100%;
 }
 
 fieldset {
@@ -47,7 +45,7 @@ legend {
 }
 
 .form-label {
-  flex-basis: 200px;
+  flex-basis: 400px;
   margin-right: 1rem;
 }
 
@@ -118,5 +116,12 @@ input[type="radio"] + label {
 
   .form-medium-selector div {
     flex-basis: 50%;
+  }
+
+  .post-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
   }
 }

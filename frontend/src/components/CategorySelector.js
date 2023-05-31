@@ -107,7 +107,14 @@ const CategorySelector = () => {
             <button>Back</button>
           </Link>
           <Link to="/categoryHolder">
-            <button onClick={handleProceed}>Next</button>
+            {proximity ||
+            pastPupil ||
+            cousins ||
+            staff ||
+            officers ||
+            forigion ? (
+              <button onClick={handleProceed}>Next</button>
+            ) : null}
           </Link>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "./FormCat6.css";
+import "./FormCat.css";
 
 export default function FormCat6() {
   const [returnedDate, setreturnedDate] = useState("");
@@ -12,14 +12,14 @@ export default function FormCat6() {
 
   return (
     <>
-      <div className="form-container">
+      <div className="cat-form-container">
         <form>
           <fieldset>
             <legend>
               Children of persons arriving after living abroad with the child
             </legend>
 
-            <div className="form-dob">
+            <div className="form-religion">
               <label className="form-label">
                 Date returned to the country:{" "}
               </label>
@@ -36,7 +36,7 @@ export default function FormCat6() {
               </div>
             </div>
 
-            <div className="form-dob">
+            <div className="form-religion">
               <label className="form-label">
                 Period of continuously stayed abroad with the child:{" "}
               </label>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./FormCat.css";
 
 export default function FormCat3() {
   const [mainDoc, setMainDoc] = useState(false);
@@ -63,7 +64,7 @@ export default function FormCat3() {
 
   return (
     <>
-      <div className="form-container">
+      <div className="cat-form-container">
         <form>
           <fieldset>
             <legend>

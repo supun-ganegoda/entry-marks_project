@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./FormCat.css";
 
 export default function FormCat2() {
   const [classNumber, setclassNumber] = useState("");
@@ -21,7 +22,7 @@ export default function FormCat2() {
 
   return (
     <>
-      <div className="form-container">
+      <div className="cat-form-container">
         <form>
           <fieldset>
             <legend>Children of Past Pupils</legend>

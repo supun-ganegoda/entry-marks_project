@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./FormCat4.css";
+import "./FormCat.css";
 
 export default function FormCat4() {
   const [post, setpost] = useState("");
@@ -29,7 +29,7 @@ export default function FormCat4() {
 
   return (
     <>
-      <div className="form-container">
+      <div className="cat-form-container">
         <form>
           <fieldset>
             <legend>
