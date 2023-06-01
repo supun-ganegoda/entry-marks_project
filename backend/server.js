@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const userRoute = require("./routes/userRoute");
+const schoolRoute = require("./routes/schoolRoute");
 const mongoose = require("mongoose");
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 
 //use created routes (routes are triggered when visited to URL api/posts)
 app.use("/api", userRoute);
+app.use("/api/schools", schoolRoute);
 
 mongoose
   .connect(process.env.MONGO_CONNECT)
