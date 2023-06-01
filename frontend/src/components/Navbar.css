@@ -74,6 +74,57 @@
   display: none;
 }
 
+.userName-holder-mobile {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName-holder-mobile label {
+  color: #fff;
+  padding: 20px;
+}
+
+.userName-holder {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.userName-holder label {
+  color: #fff;
+  border-style: solid;
+  border-radius: 4px;
+  margin-left: 8px;
+  margin-right: 8px;
+  border-color: #fff;
+}
+.logOut:hover {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  scale: 1.3;
+}
+.logOut::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.3s ease-in-out;
+}
+
+.logOut:hover::before {
+  visibility: visible;
+  opacity: 1;
+}
+
 @media screen and (max-width: 960px) {
   .NavbarItems {
     position: relative;

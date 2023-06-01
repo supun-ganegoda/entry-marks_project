@@ -1,43 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import './ApplicationDetails.css'
+import "./ApplicationDetails.css";
 import GMap from "../GMap";
+import { useLatLng } from "../context/LocationContext";
 
 const ApplicantDetails = () => {
-  const [fullname1, setFullName1] = useState("")
-  const [initials1, setInitials1] = useState("")
-  const [nic1, setNic1] = useState("")
+  const latLng = useLatLng();
+
+  const [fullname1, setFullName1] = useState("");
+  const [initials1, setInitials1] = useState("");
+  const [nic1, setNic1] = useState("");
   const [yesChecked1, setYesChecked1] = useState(false);
   const [noChecked1, setNoChecked1] = useState(false);
-  const [religion1, setReligion1] = useState("")
-  const [address1, setAddress1] = useState("")
-  const [latlong, setLatlong] = useState("")
-  const [tel1, setTel1] = useState("")
-  const [district1, setDistrict1] = useState("")
-  const [divisional1, setDivisional1] = useState("")
-  const [grama1, setGrama1] = useState("")
+  const [religion1, setReligion1] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [newlatlong, setNewLatlong] = useState(latLng.lat + ", " + latLng.lng);
+  const [tel1, setTel1] = useState("");
+  const [district1, setDistrict1] = useState("");
+  const [divisional1, setDivisional1] = useState("");
+  const [grama1, setGrama1] = useState("");
   const [showIframe, setShowIframe] = useState(false);
-  const [mapDisplay,setMapDisplay]=useState(false)
+  const [mapDisplay, setMapDisplay] = useState(false);
 
-  const [fullname2, setFullName2] = useState("")
-  const [initials2, setInitials2] = useState("")
-  const [nic2, setNic2] = useState("")
+  const [fullname2, setFullName2] = useState("");
+  const [initials2, setInitials2] = useState("");
+  const [nic2, setNic2] = useState("");
   const [yesChecked2, setYesChecked2] = useState(false);
   const [noChecked2, setNoChecked2] = useState(false);
-  const [religion2, setReligion2] = useState("")
-  const [address2, setAddress2] = useState("")
-  const [tel2, setTel2] = useState("")
-  const [district2, setDistrict2] = useState("")
-  const [divisional2, setDivisional2] = useState("")
-  const [grama2, setGrama2] = useState("")
+  const [religion2, setReligion2] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [tel2, setTel2] = useState("");
+  const [district2, setDistrict2] = useState("");
+  const [divisional2, setDivisional2] = useState("");
+  const [grama2, setGrama2] = useState("");
 
-  const handleMapDisplay = ()=>{
-    setMapDisplay(true)
-  }
+  useEffect(() => {
+    setNewLatlong(latLng.lat + ", " + latLng.lng);
+  }, [latLng]);
 
-  const handleMapClose =() =>{
-    setMapDisplay(false)
-  }
+  const handleMapDisplay = () => {
+    setMapDisplay(true);
+  };
+
+  const handleMapClose = () => {
+    setMapDisplay(false);
+  };
 
   const handleHelpClick = () => {
     setShowIframe(true);
@@ -68,7 +75,7 @@ const ApplicantDetails = () => {
       <div className="form-container">
         <form>
           <fieldset>
-          <legend>Applicant Details</legend>
+            <legend>Applicant Details</legend>
             <div className="label-wrapper">
               <label className="form-label">Name in full: </label>
               <input
@@ -151,13 +158,19 @@ const ApplicantDetails = () => {
               <input
                 type="text"
                 id="latlong"
-                value={latlong}
-                onChange={(e) => setLatlong(e.target.value)}
+                value={newlatlong}
+                readOnly={true}
+                //onChange={(e) => setNewLatlong(e.target.value)}
                 required
               />
-              <button className="form-map-button" onClick={handleMapDisplay}>Find</button>
+              <button
+                className="form-map-button"
+                onClick={handleMapDisplay}
+                title="Double click your location to set coordinates"
+              >
+                Find
+              </button>
               {/* {mapDisplay&&<Map handleMapClose={handleMapClose} setLatLong={setLatlong}/>} */}
-              
             </div>
 
             <div className="label-wrapper">
@@ -192,14 +205,16 @@ const ApplicantDetails = () => {
                 required
               />
               <div className="form-help">
-                <Link to ='http://www.dmc.gov.lk/images/pdfs/DIVISIONAL-SECRETARIAT-contact-No.pdf'>
+                <Link to="http://www.dmc.gov.lk/images/pdfs/DIVISIONAL-SECRETARIAT-contact-No.pdf">
                   Click here to find the divisional secretariat
                 </Link>
               </div>
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Grama-Niladari division & number: </label>
+              <label className="form-label">
+                Grama-Niladari division & number:{" "}
+              </label>
               <input
                 type="text"
                 id="grama1"
@@ -211,24 +226,24 @@ const ApplicantDetails = () => {
                 <u>Click here to find the Grama-Niladari details</u>
               </div>
               {showIframe && (
-              <div className="iframe-container">
-              <iframe title="Find Grama-Niladarai Details"
-              src="https://gic.gov.lk/gic/index.php/component/findnearest/" 
-              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-              />
-              <button onClick={() => setShowIframe(false)}>Close</button>
-              </div>
+                <div className="iframe-container">
+                  <iframe
+                    title="Find Grama-Niladarai Details"
+                    src="https://gic.gov.lk/gic/index.php/component/findnearest/"
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                  />
+                  <button onClick={() => setShowIframe(false)}>Close</button>
+                </div>
               )}
             </div>
           </fieldset>
         </form>
       </div>
 
-
       <div className="form-container">
         <form>
           <fieldset>
-          <legend>Details of Spouse</legend>
+            <legend>Details of Spouse</legend>
             <div className="label-wrapper">
               <label className="form-label">Name in full: </label>
               <input
@@ -338,14 +353,16 @@ const ApplicantDetails = () => {
                 required
               />
               <div className="form-help">
-                <Link to ='http://www.dmc.gov.lk/images/pdfs/DIVISIONAL-SECRETARIAT-contact-No.pdf'>
+                <Link to="http://www.dmc.gov.lk/images/pdfs/DIVISIONAL-SECRETARIAT-contact-No.pdf">
                   Click here to find the divisional secretariat
                 </Link>
               </div>
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Grama-Niladari division & number: </label>
+              <label className="form-label">
+                Grama-Niladari division & number:{" "}
+              </label>
               <input
                 type="text"
                 id="grama2"
@@ -357,20 +374,21 @@ const ApplicantDetails = () => {
                 <u>Click here to find the Grama-Niladari details</u>
               </div>
               {showIframe && (
-              <div className="iframe-container">
-              <iframe title="Find Grama-Niladarai Details"
-              src="https://gic.gov.lk/gic/index.php/component/findnearest/" 
-              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-              />
-              <button onClick={() => setShowIframe(false)}>Close</button>
-              </div>
+                <div className="iframe-container">
+                  <iframe
+                    title="Find Grama-Niladarai Details"
+                    src="https://gic.gov.lk/gic/index.php/component/findnearest/"
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                  />
+                  <button onClick={() => setShowIframe(false)}>Close</button>
+                </div>
               )}
             </div>
           </fieldset>
         </form>
       </div>
 
-      {mapDisplay && <GMap handleMapClose={handleMapClose} setLatLong={setLatlong}/>}
+      {mapDisplay && <GMap handleMapClose={handleMapClose} />}
     </>
   );
 };

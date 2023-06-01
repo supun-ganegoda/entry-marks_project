@@ -1,7 +1,6 @@
 import { useState } from "react";
 import './SchoolDetails.css'
 
-
 const SchoolDetails = () => {
   const [type1, setType1] = useState("");
   const [school1, setSchool1] = useState("");
@@ -40,6 +39,7 @@ const SchoolDetails = () => {
   const handleDistance4Change = (event) => {
     setDistance4(event.target.value);
   }
+
 
   return (
     <>

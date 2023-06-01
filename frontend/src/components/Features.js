@@ -10,7 +10,7 @@ const Features = () => {
         </div>
         <div className="wrapper-container">
           <div className="wrapper-container--card">
-            <Link to="/circulars">
+            <Link to="https://moe.gov.lk/ministry/circulars/" target="_blank">
               <img src="./images/circulars.png" alt="circulars"></img>
               <div className="card--header">
                 <h3>Circulars</h3>
@@ -18,7 +18,10 @@ const Features = () => {
             </Link>
           </div>
           <div className="wrapper-container--card">
-            <Link to="/reports-stats">
+            <Link
+              to="https://moe.gov.lk/ministry/statistics-reports/"
+              target="_blank"
+            >
               <img src="./images/stats.png" alt="reports & stats"></img>
               <div className="card--header">
                 <h3>Reports & Statistics</h3>
@@ -26,7 +29,10 @@ const Features = () => {
             </Link>
           </div>
           <div className="wrapper-container--card">
-            <Link to="/publications">
+            <Link
+              to="https://moe.gov.lk/ministry/policy-and-publications/"
+              target="_blank"
+            >
               <img src="./images/publications.png" alt="publications"></img>
               <div className="card--header">
                 <h3>Publications</h3>

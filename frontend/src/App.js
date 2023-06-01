@@ -6,19 +6,36 @@ import ChildDetails from "./components/forms/ChildDetails";
 import Home from "./components/pages/Home";
 import RegistrationForm from "./components/forms/RegistrationForm";
 import AboutUs from "./components/pages/AboutUs";
+import LocationProvider from "./components/context/LocationContext";
+import CategorySelector from "./components/CategorySelector";
+import SideBar from "./components/SideBar";
+import CategoryHolder from "./components/category-forms/CategoryHolder";
+import FormsProvider from "./components/context/FormContext";
+import LoginForm from "./components/forms/LoginForm";
+import UsernameProvider from "./components/context/UsernameContext";
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/applications" element={<Application />} />
-        <Route path="/child-details" element={<ChildDetails />} />
-        <Route path="/register" element={<RegistrationForm />} />
-        <Route path="/about-us" element={<AboutUs/>} />
-      </Routes>
-    </Router>
+    <LocationProvider value={{ lat: "", lng: "" }}>
+      <FormsProvider value={{ selectedForms: "null" }}>
+        <UsernameProvider value={{ userName: "REGISTER" }}>
+          <Router>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/applications" element={<Application />} />
+              <Route path="/child-details" element={<ChildDetails />} />
+              <Route path="/register" element={<RegistrationForm />} />
+              <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/categorySelector" element={<CategorySelector />} />
+              <Route path="/sidebar" element={<SideBar />} />
+              <Route path="/categoryHolder" element={<CategoryHolder />} />
+              <Route path="/login-form" exact element={<LoginForm />} />
+            </Routes>
+          </Router>
+        </UsernameProvider>
+      </FormsProvider>
+    </LocationProvider>
   );
 }
 

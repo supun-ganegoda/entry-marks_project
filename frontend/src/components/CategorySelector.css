@@ -1,0 +1,66 @@
+.selector-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  padding: 8px;
+}
+
+.selector-header {
+  padding: 8px 0px;
+}
+
+.selector-categories {
+  display: grid;
+  grid-template-columns: auto 20px;
+  column-gap: 8px;
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;
+}
+.categories label {
+  width: 100%;
+  background-color: rgb(153, 174, 243);
+  border-radius: 4px;
+  padding: 8px;
+  margin: 10px 0px;
+}
+
+.selectors {
+  display: flex;
+  flex-direction: column;
+}
+.selectors input {
+  margin: 10px 0px;
+}
+
+.selector-proceed {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 8px;
+}
+.selector-proceed button {
+  padding: 8px 20px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background-color: #276afb;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.selector-proceed button:hover {
+  scale: 1.05;
+}
+
+@media screen and (max-width: 968px) {
+  .selectors input {
+    margin: 8px 0px;
+  }
+}

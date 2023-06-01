@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./ElectorialForm.css";
 
 const ElectorialForm = () => {
@@ -48,7 +49,7 @@ const ElectorialForm = () => {
               {rowData.map((cellData, colIndex) => (
                 <td key={colIndex}>
                   <input
-                  className="elec-form-table-input"
+                    className="elec-form-table-input"
                     type="text"
                     value={cellData}
                     onChange={(e) => handleCellChange(rowIndex, colIndex, e)}
@@ -125,6 +126,11 @@ const ElectorialForm = () => {
             <div className="elec-form-table">{renderTable()}</div>
           </div>
         </fieldset>
+        <div className="form-proceed">
+          <Link to="/categorySelector">
+            <button>Proceed</button>
+          </Link>
+        </div>
       </div>
     </>
   );

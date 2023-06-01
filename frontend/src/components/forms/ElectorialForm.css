@@ -5,15 +5,15 @@
   margin-top: 88px;
 }
 
-.elec-form-container{
-    display: flex;
-    flex-direction: column;
-    padding: 0.2rem;
+.elec-form-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0.2rem;
 }
 
-select{
-    margin-left: 20px;
-    max-width: 10rem;
+select {
+  margin-left: 20px;
+  max-width: 10rem;
 }
 
 table {
@@ -46,30 +46,54 @@ th {
   background-color: #f5f5f5;
 }
 
-label{
-    width: 200px;
+label {
+  width: 200px;
 }
 
-.elec-form-row input[type="text"]{
-    margin-left: 20px;
+.elec-form-row input[type="text"] {
+  margin-left: 20px;
 }
 
-.elec-form-row{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 1rem;
+.elec-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-.elec-form-grama{
-    margin: 0;
+.elec-form-grama {
+  margin: 0;
+}
+
+.form-proceed {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px;
+}
+.form-proceed button {
+  padding: 8px 20px;
+  margin-left: auto;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background-color: #276afb;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.form-proceed button:hover {
+  background-color: #0f58f6;
+  color: #fff;
+  scale: 1.05;
 }
 
 @media screen and (max-width: 768px) {
-    .elec-form-wrapper {
-      width: 99%;
-      max-width: none;
-      margin-top: 88px;
-        margin-left: 0.6rem;
-    }
+  .elec-form-wrapper {
+    width: 99%;
+    max-width: none;
+    margin-top: 88px;
+    margin-left: 0.6rem;
+  }
 }
