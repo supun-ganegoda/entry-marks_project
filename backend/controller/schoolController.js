@@ -16,4 +16,10 @@ const getSuggestions = async (req, res) => {
   }
 };
 
-module.exports = { getSuggestions };
+//get all school details
+const getAllSchoolDetails = async (req, res) => {
+  const schools = await schoolDetailsModel.find({}).select("Name Lat Lng");
+  res.status(200).json(schools);
+};
+
+module.exports = { getSuggestions, getAllSchoolDetails };

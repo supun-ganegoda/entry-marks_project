@@ -13,26 +13,32 @@ import CategoryHolder from "./components/category-forms/CategoryHolder";
 import FormsProvider from "./components/context/FormContext";
 import LoginForm from "./components/forms/LoginForm";
 import UsernameProvider from "./components/context/UsernameContext";
+import SchoolProvider from "./components/context/SelectedSchoolsContext";
 
 function App() {
   return (
     <LocationProvider value={{ lat: "", lng: "" }}>
       <FormsProvider value={{ selectedForms: "null" }}>
         <UsernameProvider value={{ userName: "REGISTER" }}>
-          <Router>
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/applications" element={<Application />} />
-              <Route path="/child-details" element={<ChildDetails />} />
-              <Route path="/register" element={<RegistrationForm />} />
-              <Route path="/about-us" element={<AboutUs />} />
-              <Route path="/categorySelector" element={<CategorySelector />} />
-              <Route path="/sidebar" element={<SideBar />} />
-              <Route path="/categoryHolder" element={<CategoryHolder />} />
-              <Route path="/login-form" exact element={<LoginForm />} />
-            </Routes>
-          </Router>
+          <SchoolProvider value={[]}>
+            <Router>
+              <Navbar />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/applications" element={<Application />} />
+                <Route path="/child-details" element={<ChildDetails />} />
+                <Route path="/register" element={<RegistrationForm />} />
+                <Route path="/about-us" element={<AboutUs />} />
+                <Route
+                  path="/categorySelector"
+                  element={<CategorySelector />}
+                />
+                <Route path="/sidebar" element={<SideBar />} />
+                <Route path="/categoryHolder" element={<CategoryHolder />} />
+                <Route path="/login-form" exact element={<LoginForm />} />
+              </Routes>
+            </Router>
+          </SchoolProvider>
         </UsernameProvider>
       </FormsProvider>
     </LocationProvider>

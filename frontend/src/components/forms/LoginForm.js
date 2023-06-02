@@ -26,14 +26,10 @@ const LoginForm = () => {
 
     console.log(data);
     if (data.user) {
-      if (!data.user) {
-        localStorage.setItem("token", data.user);
-        updateUserName({ userName: data.username });
-        alert("Login successful");
-        navigate("/");
-      } else {
-        alert("Something went wrong !");
-      }
+      localStorage.setItem("token", data.user);
+      updateUserName({ userName: data.username });
+      alert("Login successful");
+      navigate("/");
     } else {
       alert("Please check your username and password");
     }

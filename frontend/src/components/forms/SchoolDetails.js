@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import "./SchoolDetails.css";
+import { useUpdateSelectedSchools } from "../context/SelectedSchoolsContext";
 
 const SchoolDetails = () => {
   //suggestions model
+  const selectedSchools = useUpdateSelectedSchools();
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
@@ -23,6 +25,19 @@ const SchoolDetails = () => {
     }
   };
 
+  useEffect(() => {
+    selectedSchools([]);
+  }, []);
+
+  const handleClick = (school) => {
+    if (school !== "" && school.length > 1) {
+      selectedSchools((prevSelectedSchools) => [
+        ...prevSelectedSchools,
+        school,
+      ]);
+    }
+  };
+
   return (
     <>
       <div className="school-details-wrapper">
@@ -38,6 +53,7 @@ const SchoolDetails = () => {
               <Autocomplete
                 options={suggestions}
                 style={{ width: "100%" }}
+                onChange={(event, value) => handleClick(value)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -55,6 +71,7 @@ const SchoolDetails = () => {
               <Autocomplete
                 options={suggestions}
                 style={{ width: "100%" }}
+                onChange={(event, value) => handleClick(value)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -72,6 +89,7 @@ const SchoolDetails = () => {
               <Autocomplete
                 options={suggestions}
                 style={{ width: "100%" }}
+                onChange={(event, value) => handleClick(value)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -89,6 +107,7 @@ const SchoolDetails = () => {
               <Autocomplete
                 options={suggestions}
                 style={{ width: "100%" }}
+                onChange={(event, value) => handleClick(value)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
