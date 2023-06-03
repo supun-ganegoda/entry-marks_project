@@ -7,7 +7,7 @@ const getSuggestions = async (req, res) => {
     const suggestions = await schoolDetailsModel
       .find({ Name: { $regex: userInput, $options: "i" } }, { Name: 1, _id: 0 })
       .limit(10);
-
+    //console.log(suggestions);
     const suggestionNames = suggestions.map((suggestion) => suggestion.Name);
     res.json({ suggestions: suggestionNames });
   } catch (error) {
@@ -18,7 +18,7 @@ const getSuggestions = async (req, res) => {
 
 //get all school details
 const getAllSchoolDetails = async (req, res) => {
-  const schools = await schoolDetailsModel.find({}).select("Name Lat Lng");
+  const schools = await schoolDetailsModel.find({}).select("Name Lat Lng Type");
   res.status(200).json(schools);
 };
 
