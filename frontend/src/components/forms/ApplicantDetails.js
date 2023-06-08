@@ -4,6 +4,7 @@ import "./ApplicationDetails.css";
 import GMap from "../GMap";
 import { useLatLng } from "../context/LocationContext";
 
+//calculations are added
 const ApplicantDetails = () => {
   const latLng = useLatLng();
 
