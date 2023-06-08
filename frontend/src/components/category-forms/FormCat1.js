@@ -68,14 +68,98 @@ export default function FormCat1() {
 
   const calculateMarks = () => {
     let totalMarks = 0;
+   
 
-    if (withSecondDoc) {
-      totalMarks += 5;
+    
+    if (withMainDoc) {
+      if(selectedOption === "option1"){
+        if(years === "5") {
+          totalMarks += 20;
+        }else if (years === "4") {
+          totalMarks += 16;
+        }else if (years === "3") {
+          totalMarks += 12;
+        }else if (years === "2") {
+          totalMarks += 8;
+        }else if (years === "1") {
+          totalMarks += 2;
+        }else  {
+          totalMarks += 1;
+        }
+      }else if(selectedOption === "option2"){
+        if(years === "5") {
+          totalMarks += 15;
+        }else if (years === "4") {
+          totalMarks += 12;
+        }else if (years === "3") {
+          totalMarks += 9;
+        }else if (years === "2") {
+          totalMarks += 6;
+        }else if (years === "1") {
+          totalMarks += 3;
+        }else  {
+          totalMarks += 1.5;
+
+      }
+    }else if (selectedOption === "option3" || selectedOption === "option4"){
+      if(years === "5") {
+        totalMarks += 10;
+      }else if (years === "4") {
+        totalMarks += 8;
+      }else if (years === "3") {
+        totalMarks +=6;
+      }else if (years === "2") {
+        totalMarks += 4;
+      }else if (years === "1") {
+        totalMarks += 2;
+      }else  {
+        totalMarks += 1;
+    }
+    }else 
+    {
+      if(years === "5") {
+        totalMarks += 5;
+      }else if (years === "4") {
+        totalMarks += 4;
+      }else if (years === "3") {
+        totalMarks += 3;
+      }else if (years === "2") {
+        totalMarks += 2;
+      }else if (years === "1") {
+        totalMarks += 1;
+      }else  {
+        totalMarks += 0.5;
+
+    }
+  }
+  }else if(withoutMainDoc && withSecondDoc){
+    totalMarks += 4;
+  }else if ( withoutSecondDoc && withThirdDoc) {
+    totalMarks += 15;
+  }
+
+  if (withAdditionalDoc){
+    totalMarks += 5;
+  }
+  if(applicantNumber >= "5"|| guardianNumber >= "5"){
+    if( spouseNumber >= "5" || guardianNumber >= "5" ){
+      totalMarks += 25;
+    }else if ( spouseNumber >= "4") {
+      totalMarks += 22.5;
+    }else if( spouseNumber >= "3"){
+      totalMarks += 20;
+    }else if( spouseNumber >= "2"){
+      totalMarks += 17.5;
+    }else if( spouseNumber >= "1"){
+      totalMarks += 15;
+    }else{
+      totalMarks += 12.5;
+
     }
 
-    //if (years == "5") {
-     // totalMarks += 5;
-    //}
+  }
+  
+
 
 
     setMarks(totalMarks);
