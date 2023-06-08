@@ -18,6 +18,12 @@
   padding: 4px;
 }
 
+.show-btn {
+  padding: 4px;
+  background-color: #276afb;
+  color: #fff;
+}
+
 td {
   text-align: center;
 }
