@@ -5,6 +5,7 @@ import GMap from "../GMap";
 import { useLatLng } from "../context/LocationContext";
 
 //calculations are added
+// calculcations are pending 
 const ApplicantDetails = () => {
   const latLng = useLatLng();
 
