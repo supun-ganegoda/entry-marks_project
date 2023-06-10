@@ -2,6 +2,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./FormCat.css";
+import { differenceInMonths } from "date-fns";
 
 export default function FormCat5() {
   const [reportingDate, setreportingDate] = useState(null);
@@ -9,8 +10,6 @@ export default function FormCat5() {
   const [newAddress, setnewAddress] = useState("");
   const [preName, setpreName] = useState("");
   const [preAddress, setpreAddress] = useState("");
-  const [fromDate, setfromDate] = useState("");
-  const [toDate, settoDate] = useState("");
   const [transferDistance, settransferDistance] = useState("");
   const [otherSchools, setotherSchools] = useState("");
   const [employeePeriod, setemployeePeriod] = useState("");
@@ -19,6 +18,118 @@ export default function FormCat5() {
   const [leave2018, setLeave2018] = useState("");
   const [leave2017, setLeave2017] = useState("");
   const [leave2016, setLeave2016] = useState("");
+  const [fromServiceDate, setFromServiceDate] = useState(null);
+  const [toServiceDate, setToServiceDate] = useState(null);
+  const [duration, setDuration] = useState({ years: 0, months: 0 });
+  const [marks5, setMarks5] = useState(0);
+  const [time, setTime] = useState("");
+
+  const handleFromServiceDateChange = (date) => {
+    setFromServiceDate(date);
+    calculateDuration(date, toServiceDate);
+  };
+
+  const handleToServiceDateChange = (date) => {
+    setToServiceDate(date);
+    calculateDuration(fromServiceDate, date);
+  };
+
+  const handleTimeChange = (event) => {
+    setTime(event.target.value);
+  };
+
+  const calculateDuration = (fromDate, toDate) => {
+    if (fromDate && toDate) {
+      const months = differenceInMonths(toDate, fromDate);
+      const years = Math.floor(months / 12);
+      const remainingMonths = months % 12;
+
+      setDuration({ years, months: remainingMonths });
+    } else {
+      setDuration({ years: 0, months: 0 });
+    }
+  };
+
+  const calculateMarks = () => {
+    let totalMarks = 0;
+    let leaves = 0;
+
+    if (duration.years >= 3) {
+      totalMarks += 10;
+    } else if (duration.years >= 2) {
+      totalMarks += 8;
+    } else if (duration.years >= 1) {
+      totalMarks += 5;
+    } else if ((duration.months >= 6) && (duration.years < 1)) {
+      totalMarks += 3;
+    } else if ((duration.months >= 3) && (duration.years < 1)) {
+      totalMarks += 1;
+    }
+
+    if (transferDistance >= 150) {
+      totalMarks += 35;
+    } else if (transferDistance >= 100) {
+      totalMarks += 28;
+    } else if (transferDistance >= 50) {
+      totalMarks += 21;
+    } else if (transferDistance >= 25) {
+      totalMarks += 14;
+    }
+
+    if ((otherSchools >= 0) && (otherSchools <= 10)) {
+      totalMarks += 30;
+      totalMarks -= otherSchools * 3;
+    }
+
+    if (employeePeriod <= 10) {
+      totalMarks += employeePeriod*1;
+    } else if (employeePeriod > 10) {
+      totalMarks += 10;
+    }
+
+    if (time === "y1") {
+      totalMarks += 5;
+    } else if (time === "y2") {
+      totalMarks += 4;
+    } else if (time === "y3") {
+      totalMarks += 3;
+    } else if (time === "y4") {
+      totalMarks += 2;
+    } else if (time === "y5") {
+      totalMarks += 1;
+    }
+
+    if (leave2016 >= 20) {
+      leaves += leave2016*1;
+    }
+    if (leave2017 >= 20) {
+      leaves += leave2017*1;
+    }
+    if (leave2018 >= 20) {
+      leaves += leave2018*1;
+    }
+    if (leave2019 >= 20) {
+      leaves += leave2019*1;
+    }
+    if (leave2020 >= 20) {
+      leaves += leave2020*1;
+    }
+
+    
+    if (leaves >= 100) {
+      totalMarks += 10;
+    } else if (leaves >= 80) {
+      totalMarks += 8;
+    } else if (leaves >= 60) {
+      totalMarks += 6;
+    } else if (leaves >= 40) {
+      totalMarks += 4;
+    } else if (leaves >= 20) {
+      totalMarks += 2;
+    }
+
+    setMarks5(totalMarks);
+  };
 
   return (
     <>
@@ -105,8 +216,8 @@ export default function FormCat5() {
               <div className="form-datePicker">
                 <div className="post-holder">
                   <DatePicker
-                    selected={fromDate}
-                    onChange={(date) => setfromDate(date)}
+                    selected={fromServiceDate}
+                    onChange={handleFromServiceDateChange}
                     dateFormat="dd/MM/yyyy"
                     placeholderText="From"
                     showYearDropdown
@@ -115,8 +226,8 @@ export default function FormCat5() {
                     showMonthDropdown
                   />
                   <DatePicker
-                    selected={toDate}
-                    onChange={(date) => settoDate(date)}
+                    selected={toServiceDate}
+                    onChange={handleToServiceDateChange}
                     dateFormat="dd/MM/yyyy"
                     placeholderText="To"
                     showYearDropdown
@@ -168,10 +279,24 @@ export default function FormCat5() {
               <input
                 type="text"
                 id="employeePeriod"
+                placeholder="Years"
                 value={employeePeriod}
                 onChange={(e) => setemployeePeriod(e.target.value)}
                 required
               />
+            </div>
+
+            <div className="elec-form-row">
+              <label>Time lapsed after receiving the transfer.</label>
+              <p>To the closing date of application</p>
+              <select value={time} onChange={handleTimeChange}>
+                <option value="">Select the duration</option>
+                <option value="y1">Within one year</option>
+                <option value="y2">Within 1 - 2 years</option>
+                <option value="y3">Within 2 - 3 years</option>
+                <option value="y4">Within 3 - 4 years</option>
+                <option value="y5">Within 4 - 5 years</option>
+              </select>
             </div>
 
             <div className="form-religion">
@@ -222,6 +347,14 @@ export default function FormCat5() {
           </fieldset>
         </form>
       </div>
+
+      <button onClick={calculateMarks}>Calculate</button>
+
+      <div>
+        <p>Marks: {marks5}</p>
+        <p>Duration: {duration.years} years {duration.months} months</p>
+      </div>
+
     </>
   );
 }
