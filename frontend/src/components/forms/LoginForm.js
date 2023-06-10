@@ -1,12 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { loginData } from "../data/LoginFormData";
 import { useState } from "react";
-import { useUpdateUsername } from "../context/UsernameContext";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({});
-  const updateUserName = useUpdateUsername();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,9 +25,10 @@ const LoginForm = () => {
     console.log(data);
     if (data.user) {
       localStorage.setItem("token", data.user);
-      updateUserName({ userName: data.username });
+      localStorage.setItem("userName", data.username);
       alert("Login successful");
       navigate("/");
+      window.location.reload();
     } else {
       alert("Please check your username and password");
     }

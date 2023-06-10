@@ -5,17 +5,22 @@ import { useEffect, useState } from "react";
 import { IconContext } from "react-icons/lib";
 import Button from "./Button";
 import "./Navbar.css";
-import { useUsername } from "./context/UsernameContext";
 
 const Navbar = () => {
-  const user = useUsername();
   const navigate = useNavigate();
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
+  const [userName, setUserName] = useState(null);
 
   useEffect(() => {
     showButton();
-  }, []);
+    if (localStorage.getItem("userName")) {
+      setUserName(localStorage.getItem("userName"));
+      console.log(userName);
+    } else {
+      setUserName("REGISTER");
+    }
+  }, [userName]);
 
   const logOutUser = () => {
     fetch("http://localhost:4000/api/logout", {
@@ -31,7 +36,8 @@ const Navbar = () => {
       .then((data) => {
         if (data.success) {
           localStorage.removeItem("token");
-          user.userName = "REGISTER";
+          localStorage.removeItem("userName");
+          setUserName("REGISTER");
           alert("Log out Success! ");
           navigate("/");
           // Redirect or perform any other actions after successful logout
@@ -84,10 +90,14 @@ const Navbar = () => {
               </li>
               <li className="nav-button" onClick={closeMobileMenu}>
                 {button ? (
-                  user.userName !== "REGISTER" ? (
+                  userName === "REGISTER" ? (
+                    <Link to="/register" className="btn-link">
+                      <Button buttonStyle={"btn--outline"}>{userName}</Button>
+                    </Link>
+                  ) : (
                     <div className="userName-holder">
-                      <label buttonStyle="btn--outline">
-                        Hello ! {user.userName}
+                      <label buttonStyle={"btn--outline"}>
+                        Hello ! {userName}
                       </label>
                       <div
                         className="logOut"
@@ -96,19 +106,15 @@ const Navbar = () => {
                         <AiOutlineLogout onClick={(e) => logOutUser()} />
                       </div>
                     </div>
-                  ) : (
-                    <Link to="/register" className="btn-link">
-                      <Button buttonStyle="btn--outline">REGISTER</Button>
-                    </Link>
                   )
-                ) : user.userName !== "REGISTER" ? (
+                ) : userName !== "REGISTER" ? (
                   <div className="userName-holder-mobile">
-                    <label buttonStyle="btn--outline">
-                      Hello ! {user.userName}
+                    <label buttonStyle={"btn--outline"}>
+                      Hello ! {userName}
                     </label>
                     <Button
-                      buttonStyle="btn--outline"
-                      buttonSize="btn--mobile"
+                      buttonStyle={"btn--outline"}
+                      buttonSize={"btn--mobile"}
                       onClick={(e) => logOutUser()}
                     >
                       LOGOUT
@@ -116,8 +122,11 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <Link to="/register" className="btn-link">
-                    <Button buttonStyle="btn--outline" buttonSize="btn--mobile">
-                      REGISTER
+                    <Button
+                      buttonStyle={"btn--outline"}
+                      buttonSize={"btn--mobile"}
+                    >
+                      {userName}
                     </Button>
                   </Link>
                 )}
