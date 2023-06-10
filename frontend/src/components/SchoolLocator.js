@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./SchoolFinder.css";
 import { GoogleMap, Marker, LoadScript, Circle } from "@react-google-maps/api";
 import { useLatLng } from "./context/LocationContext";
 import { useSelectedSchools } from "./context/SelectedSchoolsContext";
+import { useUpdateSchoolCount } from "./context/SchoolCountContext";
 
 const SchoolLocator = () => {
+  const schoolCount = useUpdateSchoolCount();
+  let tempSchoolCount = [];
   const circleColors = ["#ff0000", "#32a852", "#f5ef3d", "#3dd6f5"];
   const selectedSchools = useSelectedSchools();
   let selectedSchoolDetails;
@@ -33,17 +36,25 @@ const SchoolLocator = () => {
                 Show
               </button>
             </td>
-            <td>
-              {
-                allDistances.filter((distance) => distances[key] > distance)
-                  .length
-              }
-            </td>
+            <td>{setSchoolCount(key)}</td>
           </tr>
         );
       });
     }
   };
+
+  const setSchoolCount = (key) => {
+    let count = 0;
+    count = allDistances.filter((distance) => distances[key] > distance).length;
+    //schoolCount((sc) => [...sc, count]);
+    tempSchoolCount.push(count);
+    console.log(count);
+    return count;
+  };
+
+  useEffect(() => {
+    return schoolCount(tempSchoolCount);
+  }, []);
 
   const handleDrawAndCalc = (key) => {
     //console.log(allDistances);

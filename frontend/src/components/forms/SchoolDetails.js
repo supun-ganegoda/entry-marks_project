@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
 import "./SchoolDetails.css";
 import { useUpdateSelectedSchools } from "../context/SelectedSchoolsContext";
 
@@ -85,15 +85,10 @@ const SchoolDetails = () => {
 
               <Autocomplete
                 options={suggestions}
-                style={{ width: "100%" }}
                 onChange={handleSelectionChange1}
+                sx={{ width: "100%" }}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    variant="outlined"
-                  />
+                  <TextField {...params} onChange={handleInputChange} />
                 )}
               />
             </div>
@@ -103,15 +98,10 @@ const SchoolDetails = () => {
 
               <Autocomplete
                 options={suggestions}
-                style={{ width: "100%" }}
                 onChange={handleSelectionChange2}
+                sx={{ width: "100%" }}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    variant="outlined"
-                  />
+                  <TextField {...params} onChange={handleInputChange} />
                 )}
               />
             </div>
@@ -121,15 +111,10 @@ const SchoolDetails = () => {
 
               <Autocomplete
                 options={suggestions}
-                style={{ width: "100%" }}
                 onChange={handleSelectionChange3}
+                sx={{ width: "100%" }}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    variant="outlined"
-                  />
+                  <TextField {...params} onChange={handleInputChange} />
                 )}
               />
             </div>
@@ -139,15 +124,10 @@ const SchoolDetails = () => {
 
               <Autocomplete
                 options={suggestions}
-                style={{ width: "100%" }}
                 onChange={handleSelectionChange4}
+                sx={{ width: "100%" }}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    variant="outlined"
-                  />
+                  <TextField {...params} onChange={handleInputChange} />
                 )}
               />
             </div>
