@@ -5,12 +5,13 @@ import { useEffect, useState } from "react";
 import { IconContext } from "react-icons/lib";
 import Button from "./Button";
 import "./Navbar.css";
+import BLAvatars from "./Avatar";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
-  const [userName, setUserName] = useState(null);
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
     showButton();
@@ -96,14 +97,20 @@ const Navbar = () => {
                     </Link>
                   ) : (
                     <div className="userName-holder">
-                      <label buttonStyle={"btn--outline"}>
-                        Hello ! {userName}
-                      </label>
+                      <BLAvatars userName={userName} />
+
                       <div
                         className="logOut"
                         data-tooltip="Click here to Log out"
                       >
-                        <AiOutlineLogout onClick={(e) => logOutUser()} />
+                        <AiOutlineLogout
+                          style={{
+                            marginLeft: "12px",
+                            marginTop: "5px",
+                            scale: "1.5",
+                          }}
+                          onClick={(e) => logOutUser()}
+                        />
                       </div>
                     </div>
                   )
