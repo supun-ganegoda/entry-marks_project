@@ -83,9 +83,12 @@ export default function FormCat1() {
           totalMarks += 8;
         }else if (years === "1") {
           totalMarks += 2;
-        }else  {
+        }else if (years === "6")  {
+          totalMarks += 4;
+        }else   {
           totalMarks += 1;
         }
+
       }else if(selectedOption === "option2"){
         if(years === "5") {
           totalMarks += 15;
@@ -96,10 +99,12 @@ export default function FormCat1() {
         }else if (years === "2") {
           totalMarks += 6;
         }else if (years === "1") {
-          totalMarks += 3;
-        }else  {
           totalMarks += 1.5;
-
+        }else if (years === "6") {
+          totalMarks += 3;
+        }
+        else  {
+          totalMarks += 0.75;
       }
     }else if (selectedOption === "option3" || selectedOption === "option4"){
       if(years === "5") {
@@ -107,13 +112,16 @@ export default function FormCat1() {
       }else if (years === "4") {
         totalMarks += 8;
       }else if (years === "3") {
-        totalMarks +=6;
+        totalMarks += 6;
       }else if (years === "2") {
         totalMarks += 4;
       }else if (years === "1") {
-        totalMarks += 2;
-      }else  {
         totalMarks += 1;
+      }else if (years === "6") {
+        totalMarks += 2;
+      }
+      else  {
+        totalMarks += 0.5;
     }
     }else 
     {
@@ -126,9 +134,12 @@ export default function FormCat1() {
       }else if (years === "2") {
         totalMarks += 2;
       }else if (years === "1") {
-        totalMarks += 1;
-      }else  {
         totalMarks += 0.5;
+      }else if (years === "6") {
+        totalMarks += 1;
+      }
+      else  {
+        totalMarks += 0.25;
 
     }
   }
@@ -158,10 +169,7 @@ export default function FormCat1() {
     }
 
   }
-  
-
-
-
+  totalMarks += (50 - schoolNumber*5);
     setMarks(totalMarks);
   };
 
@@ -205,7 +213,7 @@ export default function FormCat1() {
                       <option value="4">4 - 5 years</option>
                       <option value="3">3 - 4 years</option>
                       <option value="2">2 - 3 years</option>
-                      <option value="2">1 - 2 years</option>
+                      <option value="6">1 - 2 years</option>
                       <option value="1">1 year - 6 months</option>
                       <option value="0">Less than 6 months</option>
                     </select>
