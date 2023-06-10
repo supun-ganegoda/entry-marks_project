@@ -105,7 +105,6 @@ export default function FormCat1() {
         }
         else  {
           totalMarks += 0.75;
-
       }
     }else if (selectedOption === "option3" || selectedOption === "option4"){
       if(years === "5") {
@@ -170,7 +169,6 @@ export default function FormCat1() {
     }
 
   }
-  
   totalMarks += (50 - schoolNumber*5);
     setMarks(totalMarks);
   };
