@@ -1,11 +1,15 @@
 import { useState } from "react";
+import Alert from "@mui/material/Alert";
 import "./FormCat.css";
+import Modal from "../Modal";
+import { useSchoolCount } from "../context/SchoolCountContext";
 
 export default function FormCat1() {
+  const schoolCount = useSchoolCount(); //school count from the home to selected school
+  //console.log(schoolCount);
   const [applicantNumber, setapplicantNumber] = useState("");
   const [spouseNumber, setspouseNumber] = useState("");
   const [guardianNumber, setguardianNumber] = useState("");
-  const [schoolNumber, setschoolNumber] = useState("");
   const [withMainDoc, setwithMainDoc] = useState(false);
   const [withoutMainDoc, setwithoutMainDoc] = useState(false);
   const [withAdditionalDoc, setwithAdditionalDoc] = useState(false);
@@ -68,20 +72,18 @@ export default function FormCat1() {
 
   const calculateMarks = () => {
     let totalMarks = 0;
-   
 
-    
     if (withMainDoc) {
-      if(selectedOption === "option1"){
-        if(years === "5") {
+      if (selectedOption === "option1") {
+        if (years === "5") {
           totalMarks += 20;
-        }else if (years === "4") {
+        } else if (years === "4") {
           totalMarks += 16;
-        }else if (years === "3") {
+        } else if (years === "3") {
           totalMarks += 12;
-        }else if (years === "2") {
+        } else if (years === "2") {
           totalMarks += 8;
-        }else if (years === "1") {
+        } else if (years === "1") {
           totalMarks += 2;
         }else if (years === "6")  {
           totalMarks += 4;
@@ -90,13 +92,12 @@ export default function FormCat1() {
         }
 
       }else if(selectedOption === "option2"){
-        if(years === "5") {
           totalMarks += 15;
-        }else if (years === "4") {
+        } else if (years === "4") {
           totalMarks += 12;
-        }else if (years === "3") {
+        } else if (years === "3") {
           totalMarks += 9;
-        }else if (years === "2") {
+        } else if (years === "2") {
           totalMarks += 6;
         }else if (years === "1") {
           totalMarks += 1.5;
@@ -140,34 +141,24 @@ export default function FormCat1() {
       }
       else  {
         totalMarks += 0.25;
-
+    if (withAdditionalDoc) {
+      totalMarks += 5;
     }
-  }
-  }else if(withoutMainDoc && withSecondDoc){
-    totalMarks += 4;
-  }else if ( withoutSecondDoc && withThirdDoc) {
-    totalMarks += 15;
-  }
-
-  if (withAdditionalDoc){
-    totalMarks += 5;
-  }
-  if(applicantNumber >= "5"|| guardianNumber >= "5"){
-    if( spouseNumber >= "5" || guardianNumber >= "5" ){
-      totalMarks += 25;
-    }else if ( spouseNumber >= "4") {
-      totalMarks += 22.5;
-    }else if( spouseNumber >= "3"){
-      totalMarks += 20;
-    }else if( spouseNumber >= "2"){
-      totalMarks += 17.5;
-    }else if( spouseNumber >= "1"){
-      totalMarks += 15;
-    }else{
-      totalMarks += 12.5;
-
+    if (applicantNumber >= "5" || guardianNumber >= "5") {
+      if (spouseNumber >= "5" || guardianNumber >= "5") {
+        totalMarks += 25;
+      } else if (spouseNumber >= "4") {
+        totalMarks += 22.5;
+      } else if (spouseNumber >= "3") {
+        totalMarks += 20;
+      } else if (spouseNumber >= "2") {
+        totalMarks += 17.5;
+      } else if (spouseNumber >= "1") {
+        totalMarks += 15;
+      } else {
+        totalMarks += 12.5;
+      }
     }
-
   }
   totalMarks += (50 - schoolNumber*5);
     setMarks(totalMarks);
@@ -203,6 +194,8 @@ export default function FormCat1() {
                 />
                 No
               </label>
+            </div>
+            <>
               {withMainDoc && (
                 <div>
                   {<div>
@@ -230,7 +223,10 @@ export default function FormCat1() {
                             checked={selectedOption === "option1"}
                             onChange={handleOptionChange}
                           />
-                          <label htmlFor="option1">Ownwership of the place of residence is in the name of the applicant/ spouse</label>
+                          <label htmlFor="option1">
+                            Ownwership of the place of residence is in the name
+                            of the applicant/ spouse
+                          </label>
                         </div>
                         <div>
                           <input
@@ -241,7 +237,10 @@ export default function FormCat1() {
                             checked={selectedOption === "option2"}
                             onChange={handleOptionChange}
                           />
-                          <label htmlFor="option2">Ownwership is in the name of mother/ father of applicant/ spouse</label>
+                          <label htmlFor="option2">
+                            Ownwership is in the name of mother/ father of
+                            applicant/ spouse
+                          </label>
                         </div>
                         <div>
                           <input
@@ -252,7 +251,10 @@ export default function FormCat1() {
                             checked={selectedOption === "option3"}
                             onChange={handleOptionChange}
                           />
-                          <label htmlFor="option3">Continuously registered leased bond only in the name of applicant/ spouse</label>
+                          <label htmlFor="option3">
+                            Continuously registered leased bond only in the name
+                            of applicant/ spouse
+                          </label>
                         </div>
                         <div>
                           <input
@@ -263,7 +265,10 @@ export default function FormCat1() {
                             checked={selectedOption === "option4"}
                             onChange={handleOptionChange}
                           />
-                          <label htmlFor="option4">Government Quarters List only in name if applicant/ spouse</label>
+                          <label htmlFor="option4">
+                            Government Quarters List only in name if applicant/
+                            spouse
+                          </label>
                         </div>
                         <div>
                           <input
@@ -274,12 +279,15 @@ export default function FormCat1() {
                             checked={selectedOption === "option5"}
                             onChange={handleOptionChange}
                           />
-                          <label htmlFor="option5">The applicant/ spouse resides conteneously 10 years or more in a government property</label>
+                          <label htmlFor="option5">
+                            The applicant/ spouse resides conteneously 10 years
+                            or more in a government property
+                          </label>
                         </div>
                       </div>
-                    </div>}
-
-                </div>
+                    </div>
+                  }
+                </>
               )}
 
               {withoutMainDoc && (
@@ -314,11 +322,16 @@ export default function FormCat1() {
 
               {withoutSecondDoc && (
                 <div>
-                  {<p>If the nearest school is the applied school,</p>}
+                  {
+                    <Alert severity="info">
+                      If the nearest school is the applied school
+                    </Alert>
+                  }
                   {
                     <div className="form-sex">
                       <label className="form-label">
-                        Documents to prove the present place of living after the marriage{" "}
+                        Documents to prove the present place of living after the
+                        marriage{" "}
                       </label>
                       <label className="form-sex-label">
                         <input
@@ -342,7 +355,7 @@ export default function FormCat1() {
                   }
                 </div>
               )}
-            </div>
+            </>
 
             <div className="form-sex">
               <label className="form-label">
@@ -409,12 +422,10 @@ export default function FormCat1() {
               />
             </div>
 
-            <div>
-              <p>
-                (This is applicable for a period of recent 05 years, prior to
-                the year the application is submitted)
-              </p>
-            </div>
+            <Alert severity="info">
+              This is applicable for a period of recent 05 years, prior to the
+              year the application is submitted
+            </Alert>
 
             <div className="form-religion">
               <label className="form-label">
@@ -425,18 +436,21 @@ export default function FormCat1() {
               <input
                 type="text"
                 id="schoolNumber"
-                value={schoolNumber}
-                onChange={(e) => setschoolNumber(e.target.value)}
+                value={schoolCount[0]}
+                readOnly
                 required
               />
             </div>
           </fieldset>
         </form>
       </div>
-      <button onClick={calculateMarks}>Calculate</button>
 
-      <div>
-        <p>Marks: {marks}</p>
+      <div className="form-display-marks" onClick={(e) => calculateMarks()}>
+        <Modal
+          buttonText={"View Marks"}
+          bodyHeader={"Marks for category based on proximity"}
+          bodyText={marks.toString()}
+        />
       </div>
     </>
   );

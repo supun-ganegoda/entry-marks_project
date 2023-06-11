@@ -12,14 +12,14 @@ import SideBar from "./components/SideBar";
 import CategoryHolder from "./components/category-forms/CategoryHolder";
 import FormsProvider from "./components/context/FormContext";
 import LoginForm from "./components/forms/LoginForm";
-import UsernameProvider from "./components/context/UsernameContext";
+import SchoolCountProvider from "./components/context/SchoolCountContext";
 import SchoolProvider from "./components/context/SelectedSchoolsContext";
 
 function App() {
   return (
     <LocationProvider value={{ lat: "", lng: "" }}>
       <FormsProvider value={{ selectedForms: "null" }}>
-        <UsernameProvider value={{ userName: "REGISTER" }}>
+        <SchoolCountProvider value={[]}>
           <SchoolProvider value={[]}>
             <Router>
               <Navbar />
@@ -39,7 +39,7 @@ function App() {
               </Routes>
             </Router>
           </SchoolProvider>
-        </UsernameProvider>
+        </SchoolCountProvider>
       </FormsProvider>
     </LocationProvider>
   );

@@ -28,7 +28,7 @@ const loginUser = async (req, res) => {
   if (!user) {
     return res.json({ status: "error", error: "Invalid login" });
   }
-  console.log("reqBodypass: ", req.body.password);
+  //console.log("reqBodypass: ", req.body.password);
   const isPasswordValid = await bcrypt.compare(
     req.body.password,
     user.password
