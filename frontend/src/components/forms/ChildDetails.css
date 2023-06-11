@@ -36,9 +36,13 @@ legend {
   margin-right: 8px;
 }
 
-.form-label {
+.label-form {
   flex-basis: 200px;
   margin-right: 1rem;
+}
+
+.save-btn {
+  margin-top: 1rem;
 }
 
 input[type="text"],
@@ -58,12 +62,12 @@ input[type="radio"] + label {
   margin-left: 0.5rem;
 }
 
-.form-medium-selector {
+.medium-selector {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
-.form-medium-selector label {
+.medium-selector label {
   margin-right: 2vw;
 }
 

@@ -1,5 +1,7 @@
 import { useState } from "react";
+import axios from "axios";
 import DatePicker from "react-datepicker";
+import Button from "@mui/material/Button";
 import "react-datepicker/dist/react-datepicker.css";
 import "./ChildDetails.css";
 
@@ -9,11 +11,11 @@ const ChildDetails = () => {
   const [religion, setReligion] = useState("");
   const [maleChecked, setMaleChecked] = useState(false);
   const [femaleChecked, setFemaleChecked] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [medium, setmedium] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
 
   const handleOptionChange = (e) => {
-    setSelectedOption(e.target.value);
+    setmedium(e.target.value);
   };
 
   function handleMaleCheckboxChange() {
@@ -25,14 +27,51 @@ const ChildDetails = () => {
     setFemaleChecked(true);
     setMaleChecked(false);
   }
+
+  //backend connections
+
+  const handleChildDetailsSubmit = async (event) => {
+    console.log("Submit clicked");
+    event.preventDefault();
+    let gender = "";
+    maleChecked ? (gender = "male") : (gender = "female");
+    let birth = selectedDate.toLocaleDateString();
+
+    const childDetailsData = {
+      fullName,
+      initials,
+      religion,
+      gender,
+      medium,
+      birth,
+    };
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "http://localhost:4000/api/child-details",
+        childDetailsData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(response.data); // Handle success response
+    } catch (error) {
+      console.error(error); // Handle error
+    }
+  };
+
   return (
     <>
       <div className="form-container">
-        <form>
+        <form onSubmit={handleChildDetailsSubmit}>
           <fieldset>
             <legend>Child Details</legend>
             <div className="form-fullname">
-              <label className="form-label">Name in full: </label>
+              <label className="label-form">Name in full: </label>
               <input
                 type="text"
                 id="fullName"
@@ -43,7 +82,7 @@ const ChildDetails = () => {
             </div>
 
             <div className="form-initilas">
-              <label className="form-label">Name with initials: </label>
+              <label className="label-form">Name with initials: </label>
               <input
                 type="text"
                 id="initials"
@@ -54,8 +93,8 @@ const ChildDetails = () => {
             </div>
 
             <div className="form-sex">
-              <label className="form-label">Sex: </label>
-              <label className="form-sex-label">
+              <label className="label-form">Sex: </label>
+              <div className="form-sex-label">
                 <input
                   className="form-sex-checkbox"
                   type="checkbox"
@@ -63,8 +102,8 @@ const ChildDetails = () => {
                   onChange={handleMaleCheckboxChange}
                 />
                 Male
-              </label>
-              <label className="form-sex-label">
+              </div>
+              <div className="form-sex-label">
                 <input
                   className="form-sex-checkbox"
                   type="checkbox"
@@ -72,11 +111,11 @@ const ChildDetails = () => {
                   onChange={handleFemaleCheckboxChange}
                 />
                 Female
-              </label>
+              </div>
             </div>
 
             <div className="form-religion">
-              <label className="form-label">Religion: </label>
+              <label className="label-form">Religion: </label>
               <input
                 type="text"
                 id="initials"
@@ -87,15 +126,15 @@ const ChildDetails = () => {
             </div>
 
             <div className="form-medium">
-              <label className="form-label">Medium of learning: </label>
-              <div className="form-medium-selector">
+              <label className="label-form">Medium of learning: </label>
+              <div className="medium-selector">
                 <div>
                   <input
                     type="radio"
                     id="sinhala"
                     name="listBox"
                     value="sinhala"
-                    checked={selectedOption === "sinhala"}
+                    checked={medium === "sinhala"}
                     onChange={handleOptionChange}
                   />
                   <label htmlFor="sinhala">Sinhala</label>
@@ -106,7 +145,7 @@ const ChildDetails = () => {
                     id="tamil"
                     name="listBox"
                     value="tamil"
-                    checked={selectedOption === "tamil"}
+                    checked={medium === "tamil"}
                     onChange={handleOptionChange}
                   />
                   <label htmlFor="tamil">Tamil</label>
@@ -117,7 +156,7 @@ const ChildDetails = () => {
                     id="english"
                     name="listBox"
                     value="english"
-                    checked={selectedOption === "english"}
+                    checked={medium === "english"}
                     onChange={handleOptionChange}
                   />
                   <label htmlFor="english">English</label>
@@ -126,7 +165,7 @@ const ChildDetails = () => {
             </div>
 
             <div className="form-dob">
-              <label className="form-label">Date of birth:</label>
+              <label className="label-form">Date of birth:</label>
               <div className="form-datePicker">
                 <DatePicker
                   selected={selectedDate}
@@ -140,6 +179,11 @@ const ChildDetails = () => {
               </div>
             </div>
           </fieldset>
+          <div className="save-btn">
+            <Button type="submit" variant="outlined">
+              SAVE
+            </Button>
+          </div>
         </form>
       </div>
     </>

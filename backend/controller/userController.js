@@ -109,6 +109,38 @@ const updateUser = async (req, res) => {
   res.status(200).json(tempObj);
 };
 
+/*---------------------------------------------------------------------------------------------- 
+------------------------------------------------------------------------------------------------*/
+//child details form
+const submitChildDetails = async (req, res) => {
+  //console.log("request received");
+  try {
+    const { fullName, initials, religion, gender, medium, birth } = req.body;
+    const { email } = req.user;
+
+    // Update child details in the user document
+    await userDetailsModel.findOneAndUpdate(
+      { email: email }, // Find the document by email
+      {
+        $push: {
+          "data.childDetails": {
+            fullName,
+            initials,
+            religion,
+            gender,
+            medium,
+            birth,
+          },
+        },
+      }
+    );
+    res.status(200).json({ message: "Child details updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error updating child details" });
+  }
+};
+
 //export the controller
 module.exports = {
   registerUser,
@@ -118,4 +150,5 @@ module.exports = {
   getUserDetails,
   deleteUser,
   updateUser,
+  submitChildDetails,
 };
