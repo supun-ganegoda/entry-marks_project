@@ -5,10 +5,14 @@ export default function FormCat2() {
   const [classNumber, setclassNumber] = useState("");
   const [fromGrade, setfromGrade] = useState("");
   const [toGrade, settoGrade] = useState("");
-  const [achievement, setachievement] = useState("");
-  const [activity, setactivity] = useState("");
+  const [withachievement, setwithachievement] = useState(false);
+  const [withoutachievement, setwithoutachievement] = useState(false);
+  const [withactivity, setwithactivity] = useState(false);
+  const [withoutactivity, setwithoutactivity] = useState(false);
   const [withMembership, setwithMembership] = useState(false);
   const [withoutMembership, setwithoutMembership] = useState(false);
+  const [marks, setMarks] = useState(0);
+
 
   function handleWithMembership() {
     setwithMembership(true);
@@ -19,6 +23,54 @@ export default function FormCat2() {
     setwithoutMembership(true);
     setwithMembership(false);
   }
+
+  function handleWithAchievement() {
+    setwithachievement(true);
+    setwithoutachievement(false);
+  }
+
+  function handleWithoutAchievement() {
+    setwithoutachievement(true);
+    setwithachievement(false);
+  }
+
+  function handleWithActivity() {
+    setwithactivity(true);
+    setwithoutactivity(false);
+  }
+
+  function handleWithoutActivity() {
+    setwithoutactivity(true);
+    setwithactivity(false);
+  }
+
+
+
+
+
+  const calculateMarks = () => {
+    let totalMarks2 = 0;
+
+    totalMarks2 += (classNumber*2);
+
+    if(withachievement){
+      totalMarks2 += 25;
+    }
+
+    if(withactivity){
+      totalMarks2 += 25;
+    }
+
+    if (withMembership){
+      totalMarks2 += 24;
+    }
+
+
+    setMarks(totalMarks2);
+
+  };
+
+    
 
   return (
     <>
@@ -62,31 +114,55 @@ export default function FormCat2() {
               />
             </div>
 
-            <div className="form-religion">
+            <div className="form-sex">
               <label className="form-label">
                 Educational achievements gained during the period of schooling:{" "}
               </label>
-              <input
-                type="text"
-                id="achievement"
-                value={achievement}
-                onChange={(e) => setachievement(e.target.value)}
-                required
-              />
+              <label className="form-sex-label">
+               <input
+                 className="form-sex-checkbox"
+                 type="checkbox"
+                 checked={withachievement}
+                 onChange={handleWithAchievement}
+               />
+               Yes
+              </label>
+             <label className="form-sex-label">
+               <input
+                 className="form-sex-checkbox"
+                 type="checkbox"
+                 checked={withoutachievement}
+                 onChange={handleWithoutAchievement}
+               />
+               No
+                
+               </label>
             </div>
 
-            <div className="form-religion">
+            <div className="form-sex">
               <label className="form-label">
                 Achievements gained in co-curricular activities during the
                 period of schooling:{" "}
               </label>
-              <input
-                type="text"
-                id="activity"
-                value={activity}
-                onChange={(e) => setactivity(e.target.value)}
-                required
-              />
+              <label className="form-sex-label">
+               <input
+                 className="form-sex-checkbox"
+                 type="checkbox"
+                 checked={withactivity}
+                 onChange={handleWithActivity}
+               />
+               Yes
+              </label>
+             <label className="form-sex-label">
+               <input
+                 className="form-sex-checkbox"
+                 type="checkbox"
+                 checked={withoutactivity}
+                 onChange={handleWithoutActivity}
+               />
+               No
+                
+               </label>
             </div>
 
             <div className="form-sex">
@@ -117,6 +193,11 @@ export default function FormCat2() {
             </div>
           </fieldset>
         </form>
+      </div>
+      <button onClick={calculateMarks}>Calculate</button>
+
+      <div>
+        <p>Marks: {marks}</p>
       </div>
     </>
   );
