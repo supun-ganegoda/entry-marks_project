@@ -4,7 +4,6 @@ import "./ApplicationDetails.css";
 import GMap from "../GMap";
 import { useLatLng } from "../context/LocationContext";
 
-//calculations are added
 const ApplicantDetails = () => {
   const latLng = useLatLng();
 
@@ -78,7 +77,7 @@ const ApplicantDetails = () => {
           <fieldset>
             <legend>Applicant Details</legend>
             <div className="label-wrapper">
-              <label className="form-label">Name in full: </label>
+              <label className="label-form">Name in full: </label>
               <input
                 type="text"
                 id="fullname1"
@@ -89,7 +88,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Name with initials: </label>
+              <label className="label-form">Name with initials: </label>
               <input
                 type="text"
                 id="initials1"
@@ -100,7 +99,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">NIC no: </label>
+              <label className="label-form">NIC no: </label>
               <input
                 type="text"
                 id="nic1"
@@ -111,7 +110,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Are you Sri Lankan: </label>
+              <label className="label-form">Are you Sri Lankan: </label>
               <label className="form-race-label">
                 <input
                   className="form-race-checkbox"
@@ -133,7 +132,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Religion: </label>
+              <label className="label-form">Religion: </label>
               <input
                 type="text"
                 id="religion1"
@@ -144,7 +143,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Permanant Address: </label>
+              <label className="label-form">Permanant Address: </label>
               <input
                 type="text"
                 id="address1"
@@ -155,7 +154,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Latitude and longitude: </label>
+              <label className="label-form">Latitude and longitude: </label>
               <input
                 type="text"
                 id="latlong"
@@ -167,7 +166,7 @@ const ApplicantDetails = () => {
               <button
                 className="form-map-button"
                 onClick={handleMapDisplay}
-                title="Double click your location to set coordinates"
+                title="Click your location to set coordinates"
               >
                 Find
               </button>
@@ -175,7 +174,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Telephone number: </label>
+              <label className="label-form">Telephone number: </label>
               <input
                 type="text"
                 id="tel1"
@@ -186,7 +185,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Residential district: </label>
+              <label className="label-form">Residential district: </label>
               <input
                 type="text"
                 id="district1"
@@ -197,7 +196,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Divisional secratariat: </label>
+              <label className="label-form">Divisional secratariat: </label>
               <input
                 type="text"
                 id="divisional1"
@@ -213,7 +212,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">
+              <label className="label-form">
                 Grama-Niladari division & number:{" "}
               </label>
               <input
@@ -246,7 +245,7 @@ const ApplicantDetails = () => {
           <fieldset>
             <legend>Details of Spouse</legend>
             <div className="label-wrapper">
-              <label className="form-label">Name in full: </label>
+              <label className="label-form">Name in full: </label>
               <input
                 type="text"
                 id="fullname2"
@@ -257,7 +256,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Name with initials: </label>
+              <label className="label-form">Name with initials: </label>
               <input
                 type="text"
                 id="initials2"
@@ -268,7 +267,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">NIC no: </label>
+              <label className="label-form">NIC no: </label>
               <input
                 type="text"
                 id="nic2"
@@ -279,7 +278,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Are you Sri Lankan: </label>
+              <label className="label-form">Are you Sri Lankan: </label>
               <label className="form-race-label">
                 <input
                   className="form-race-checkbox"
@@ -301,7 +300,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Religion: </label>
+              <label className="label-form">Religion: </label>
               <input
                 type="text"
                 id="religion2"
@@ -312,7 +311,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Permanant Address: </label>
+              <label className="label-form">Permanant Address: </label>
               <input
                 type="text"
                 id="address2"
@@ -323,7 +322,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Telephone number: </label>
+              <label className="label-form">Telephone number: </label>
               <input
                 type="text"
                 id="tel2"
@@ -334,7 +333,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Residential district: </label>
+              <label className="label-form">Residential district: </label>
               <input
                 type="text"
                 id="district2"
@@ -345,7 +344,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">Divisional secratariat: </label>
+              <label className="label-form">Divisional secratariat: </label>
               <input
                 type="text"
                 id="divisional2"
@@ -361,7 +360,7 @@ const ApplicantDetails = () => {
             </div>
 
             <div className="label-wrapper">
-              <label className="form-label">
+              <label className="label-form">
                 Grama-Niladari division & number:{" "}
               </label>
               <input
