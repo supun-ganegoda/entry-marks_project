@@ -1,17 +1,20 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
+import Alert from "@mui/material/Alert";
 import "react-datepicker/dist/react-datepicker.css";
 import "./FormCat.css";
+import Modal from "../Modal";
 import { differenceInMonths } from "date-fns";
+import { useSchoolCount } from "../context/SchoolCountContext";
 
 export default function FormCat5() {
+  const schoolCount = useSchoolCount();
   const [reportingDate, setreportingDate] = useState(null);
   const [newName, setnewName] = useState("");
   const [newAddress, setnewAddress] = useState("");
   const [preName, setpreName] = useState("");
   const [preAddress, setpreAddress] = useState("");
   const [transferDistance, settransferDistance] = useState("");
-  const [otherSchools, setotherSchools] = useState("");
   const [employeePeriod, setemployeePeriod] = useState("");
   const [leave2020, setLeave2020] = useState("");
   const [leave2019, setLeave2019] = useState("");
@@ -21,7 +24,7 @@ export default function FormCat5() {
   const [fromServiceDate, setFromServiceDate] = useState(null);
   const [toServiceDate, setToServiceDate] = useState(null);
   const [duration, setDuration] = useState({ years: 0, months: 0 });
-  const [marks5, setMarks5] = useState(0);
+  const [marks, setmarks] = useState(0);
   const [time, setTime] = useState("");
 
   const handleFromServiceDateChange = (date) => {
@@ -76,9 +79,9 @@ export default function FormCat5() {
       totalMarks += 14;
     }
 
-    if (otherSchools >= 0 && otherSchools <= 10) {
+    if (schoolCount[0] >= 0 && schoolCount[0] <= 10) {
       totalMarks += 30;
-      totalMarks -= otherSchools * 3;
+      totalMarks -= schoolCount[0] * 3;
     }
 
     if (employeePeriod <= 10) {
@@ -127,7 +130,7 @@ export default function FormCat5() {
       totalMarks += 2;
     }
 
-    setMarks5(totalMarks);
+    setmarks(totalMarks);
   };
 
   return (
@@ -237,6 +240,11 @@ export default function FormCat5() {
                 </div>
               </div>
             </div>
+            {(duration.years !== 0 || duration.months !== 0) && (
+              <Alert severity="info" style={{ marginBottom: "12px" }}>
+                Duration: {duration.years} years {duration.months} months
+              </Alert>
+            )}
 
             <div className="form-religion">
               <label className="form-label">
@@ -264,8 +272,8 @@ export default function FormCat5() {
                 style={{ maxWidth: "8rem" }}
                 type="text"
                 id="otherSchools"
-                value={otherSchools}
-                onChange={(e) => setotherSchools(e.target.value)}
+                value={schoolCount[0]}
+                readOnly
                 required
               />
             </div>
@@ -285,10 +293,16 @@ export default function FormCat5() {
               />
             </div>
 
-            <div className="elec-form-row">
-              <label>Time lapsed after receiving the transfer.</label>
-              <p>To the closing date of application</p>
-              <select value={time} onChange={handleTimeChange}>
+            <div className="form-religion">
+              <label className="form-label">
+                Time lapsed after receiving the transfer.
+              </label>
+
+              <select
+                value={time}
+                onChange={handleTimeChange}
+                style={{ marginLeft: "0px", width: "auto" }}
+              >
                 <option value="">Select the duration</option>
                 <option value="y1">Within one year</option>
                 <option value="y2">Within 1 - 2 years</option>
@@ -297,8 +311,9 @@ export default function FormCat5() {
                 <option value="y5">Within 4 - 5 years</option>
               </select>
             </div>
+            <Alert severity="info">To the closing date of application</Alert>
 
-            <div className="form-religion">
+            <div className="form-religion" style={{ marginTop: "12px" }}>
               <label className="form-label">Un-utilized Leave: </label>
               <div className="leave_container">
                 <input
@@ -347,13 +362,14 @@ export default function FormCat5() {
         </form>
       </div>
 
-      <button onClick={calculateMarks}>Calculate</button>
-
-      <div>
-        <p>Marks: {marks5}</p>
-        <p>
-          Duration: {duration.years} years {duration.months} months
-        </p>
+      <div className="form-display-marks" onClick={(e) => calculateMarks()}>
+        <Modal
+          buttonText={"View Marks"}
+          bodyHeader={
+            "Marks for category based on Children of officers transferred due to government exigencies or annual transfers"
+          }
+          bodyText={marks.toString()}
+        />
       </div>
     </>
   );
