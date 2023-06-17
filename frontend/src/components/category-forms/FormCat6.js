@@ -36,7 +36,6 @@ export default function FormCat6() {
     }
   };
 
-
   const calculateMarks = () => {
     let totalMarks = 0;
 
@@ -58,15 +57,13 @@ export default function FormCat6() {
       totalMarks += 20;
     }
 
-    if ((otherSchools >= 0) && (otherSchools <= 10)) {
+    if (otherSchools >= 0 && otherSchools <= 10) {
       totalMarks += 35;
       totalMarks -= otherSchools * 3.5;
     }
 
     setMarks6(totalMarks);
   };
-
-
 
   return (
     <>
@@ -147,7 +144,9 @@ export default function FormCat6() {
                     checked={selectedReason === "reason2"}
                     onChange={handleReasonChange}
                   />
-                  <label htmlFor="reason2">Personal Employment Requirement</label>
+                  <label htmlFor="reason2">
+                    Personal Employment Requirement
+                  </label>
                 </div>
                 <div>
                   <input
@@ -158,7 +157,9 @@ export default function FormCat6() {
                     checked={selectedReason === "reason3"}
                     onChange={handleReasonChange}
                   />
-                  <label htmlFor="reason3">For requirement of Government of Sri Lanka</label>
+                  <label htmlFor="reason3">
+                    For requirement of Government of Sri Lanka
+                  </label>
                 </div>
                 <div>
                   <input

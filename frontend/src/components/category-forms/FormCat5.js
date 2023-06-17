@@ -60,9 +60,9 @@ export default function FormCat5() {
       totalMarks += 8;
     } else if (duration.years >= 1) {
       totalMarks += 5;
-    } else if ((duration.months >= 6) && (duration.years < 1)) {
+    } else if (duration.months >= 6 && duration.years < 1) {
       totalMarks += 3;
-    } else if ((duration.months >= 3) && (duration.years < 1)) {
+    } else if (duration.months >= 3 && duration.years < 1) {
       totalMarks += 1;
     }
 
@@ -76,13 +76,13 @@ export default function FormCat5() {
       totalMarks += 14;
     }
 
-    if ((otherSchools >= 0) && (otherSchools <= 10)) {
+    if (otherSchools >= 0 && otherSchools <= 10) {
       totalMarks += 30;
       totalMarks -= otherSchools * 3;
     }
 
     if (employeePeriod <= 10) {
-      totalMarks += employeePeriod*1;
+      totalMarks += employeePeriod * 1;
     } else if (employeePeriod > 10) {
       totalMarks += 10;
     }
@@ -100,22 +100,21 @@ export default function FormCat5() {
     }
 
     if (leave2016 >= 20) {
-      leaves += leave2016*1;
+      leaves += leave2016 * 1;
     }
     if (leave2017 >= 20) {
-      leaves += leave2017*1;
+      leaves += leave2017 * 1;
     }
     if (leave2018 >= 20) {
-      leaves += leave2018*1;
+      leaves += leave2018 * 1;
     }
     if (leave2019 >= 20) {
-      leaves += leave2019*1;
+      leaves += leave2019 * 1;
     }
     if (leave2020 >= 20) {
-      leaves += leave2020*1;
+      leaves += leave2020 * 1;
     }
 
-    
     if (leaves >= 100) {
       totalMarks += 10;
     } else if (leaves >= 80) {
@@ -352,9 +351,10 @@ export default function FormCat5() {
 
       <div>
         <p>Marks: {marks5}</p>
-        <p>Duration: {duration.years} years {duration.months} months</p>
+        <p>
+          Duration: {duration.years} years {duration.months} months
+        </p>
       </div>
-
     </>
   );
 }
