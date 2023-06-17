@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./FormCat.css";
+import Modal from "../Modal";
 
 export default function FormCat2() {
   const [classNumber, setclassNumber] = useState("");
@@ -12,7 +13,6 @@ export default function FormCat2() {
   const [withMembership, setwithMembership] = useState(false);
   const [withoutMembership, setwithoutMembership] = useState(false);
   const [marks, setMarks] = useState(0);
-
 
   function handleWithMembership() {
     setwithMembership(true);
@@ -44,33 +44,25 @@ export default function FormCat2() {
     setwithactivity(false);
   }
 
-
-
-
-
   const calculateMarks = () => {
     let totalMarks2 = 0;
 
-    totalMarks2 += (classNumber*2);
+    totalMarks2 += classNumber * 2;
 
-    if(withachievement){
+    if (withachievement) {
       totalMarks2 += 25;
     }
 
-    if(withactivity){
+    if (withactivity) {
       totalMarks2 += 25;
     }
 
-    if (withMembership){
+    if (withMembership) {
       totalMarks2 += 24;
     }
 
-
     setMarks(totalMarks2);
-
   };
-
-    
 
   return (
     <>
@@ -84,11 +76,17 @@ export default function FormCat2() {
                 No of classes studied in school:{" "}
               </label>
               <input
-                type="text"
+                type="number"
                 id="classNumber"
                 value={classNumber}
                 onChange={(e) => setclassNumber(e.target.value)}
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                }}
               />
             </div>
 
@@ -97,20 +95,33 @@ export default function FormCat2() {
                 Period spent in the school as a pupil:{" "}
               </label>
               <input
-                type="text"
+                type="number"
                 id="fromGrade"
                 placeholder="From Grade"
                 value={fromGrade}
                 onChange={(e) => setfromGrade(e.target.value)}
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                  marginRight: "6px",
+                }}
               />
               <input
-                type="text"
+                type="number"
                 id="toGrade"
                 placeholder="To Grade"
                 value={toGrade}
                 onChange={(e) => settoGrade(e.target.value)}
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                }}
               />
             </div>
 
@@ -119,24 +130,23 @@ export default function FormCat2() {
                 Educational achievements gained during the period of schooling:{" "}
               </label>
               <label className="form-sex-label">
-               <input
-                 className="form-sex-checkbox"
-                 type="checkbox"
-                 checked={withachievement}
-                 onChange={handleWithAchievement}
-               />
-               Yes
+                <input
+                  className="form-sex-checkbox"
+                  type="checkbox"
+                  checked={withachievement}
+                  onChange={handleWithAchievement}
+                />
+                Yes
               </label>
-             <label className="form-sex-label">
-               <input
-                 className="form-sex-checkbox"
-                 type="checkbox"
-                 checked={withoutachievement}
-                 onChange={handleWithoutAchievement}
-               />
-               No
-                
-               </label>
+              <label className="form-sex-label">
+                <input
+                  className="form-sex-checkbox"
+                  type="checkbox"
+                  checked={withoutachievement}
+                  onChange={handleWithoutAchievement}
+                />
+                No
+              </label>
             </div>
 
             <div className="form-sex">
@@ -145,24 +155,23 @@ export default function FormCat2() {
                 period of schooling:{" "}
               </label>
               <label className="form-sex-label">
-               <input
-                 className="form-sex-checkbox"
-                 type="checkbox"
-                 checked={withactivity}
-                 onChange={handleWithActivity}
-               />
-               Yes
+                <input
+                  className="form-sex-checkbox"
+                  type="checkbox"
+                  checked={withactivity}
+                  onChange={handleWithActivity}
+                />
+                Yes
               </label>
-             <label className="form-sex-label">
-               <input
-                 className="form-sex-checkbox"
-                 type="checkbox"
-                 checked={withoutactivity}
-                 onChange={handleWithoutActivity}
-               />
-               No
-                
-               </label>
+              <label className="form-sex-label">
+                <input
+                  className="form-sex-checkbox"
+                  type="checkbox"
+                  checked={withoutactivity}
+                  onChange={handleWithoutActivity}
+                />
+                No
+              </label>
             </div>
 
             <div className="form-sex">
@@ -194,10 +203,13 @@ export default function FormCat2() {
           </fieldset>
         </form>
       </div>
-      <button onClick={calculateMarks}>Calculate</button>
 
-      <div>
-        <p>Marks: {marks}</p>
+      <div className="form-display-marks" onClick={(e) => calculateMarks()}>
+        <Modal
+          buttonText={"View Marks"}
+          bodyHeader={"Marks for category based on past pupils"}
+          bodyText={marks.toString()}
+        />
       </div>
     </>
   );
