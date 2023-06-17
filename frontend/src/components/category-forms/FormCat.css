@@ -49,6 +49,11 @@ legend {
   margin-right: 1rem;
 }
 
+.yearSelector select {
+  margin-left: 400px;
+  margin-bottom: 4px;
+}
+
 input[type="text"],
 input[type="checkbox"],
 input[type="radio"],
@@ -129,6 +134,11 @@ input[type="radio"] + label {
     /* flex-basis: 50%; */
     flex-direction: column;
     margin-left: 0px;
+  }
+
+  .yearSelector select {
+    margin-left: 12px;
+    margin-bottom: 4px;
   }
 
   .post-holder {

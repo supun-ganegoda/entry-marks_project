@@ -5,7 +5,7 @@ import Modal from "../Modal";
 import { useSchoolCount } from "../context/SchoolCountContext";
 
 export default function FormCat1() {
-  const schoolCount = useSchoolCount(); //school count from the home to selected school
+  const schoolNumber = useSchoolCount(); //school count from the home to selected school
   //console.log(schoolCount);
   const [applicantNumber, setapplicantNumber] = useState("");
   const [spouseNumber, setspouseNumber] = useState("");
@@ -85,82 +85,80 @@ export default function FormCat1() {
           totalMarks += 8;
         } else if (years === "1") {
           totalMarks += 2;
-        }else if (years === "6")  {
+        } else if (years === "6") {
           totalMarks += 4;
-        }else   {
+        } else {
           totalMarks += 1;
         }
-
-      }else if(selectedOption === "option2"){
-          totalMarks += 15;
-        } else if (years === "4") {
-          totalMarks += 12;
-        } else if (years === "3") {
-          totalMarks += 9;
-        } else if (years === "2") {
-          totalMarks += 6;
-        }else if (years === "1") {
-          totalMarks += 1.5;
-        }else if (years === "6") {
-          totalMarks += 3;
-        }
-        else  {
-          totalMarks += 0.75;
-      }
-    }else if (selectedOption === "option3" || selectedOption === "option4"){
-      if(years === "5") {
-        totalMarks += 10;
-      }else if (years === "4") {
-        totalMarks += 8;
-      }else if (years === "3") {
-        totalMarks += 6;
-      }else if (years === "2") {
-        totalMarks += 4;
-      }else if (years === "1") {
-        totalMarks += 1;
-      }else if (years === "6") {
-        totalMarks += 2;
-      }
-      else  {
-        totalMarks += 0.5;
-    }
-    }else 
-    {
-      if(years === "5") {
-        totalMarks += 5;
-      }else if (years === "4") {
-        totalMarks += 4;
-      }else if (years === "3") {
-        totalMarks += 3;
-      }else if (years === "2") {
-        totalMarks += 2;
-      }else if (years === "1") {
-        totalMarks += 0.5;
-      }else if (years === "6") {
-        totalMarks += 1;
-      }
-      else  {
-        totalMarks += 0.25;
-    if (withAdditionalDoc) {
-      totalMarks += 5;
-    }
-    if (applicantNumber >= "5" || guardianNumber >= "5") {
-      if (spouseNumber >= "5" || guardianNumber >= "5") {
-        totalMarks += 25;
-      } else if (spouseNumber >= "4") {
-        totalMarks += 22.5;
-      } else if (spouseNumber >= "3") {
-        totalMarks += 20;
-      } else if (spouseNumber >= "2") {
-        totalMarks += 17.5;
-      } else if (spouseNumber >= "1") {
+      } else if (selectedOption === "option2") {
         totalMarks += 15;
+      } else if (years === "4") {
+        totalMarks += 12;
+      } else if (years === "3") {
+        totalMarks += 9;
+      } else if (years === "2") {
+        totalMarks += 6;
+      } else if (years === "1") {
+        totalMarks += 1.5;
+      } else if (years === "6") {
+        totalMarks += 3;
       } else {
-        totalMarks += 12.5;
+        totalMarks += 0.75;
+      }
+    } else if (selectedOption === "option3" || selectedOption === "option4") {
+      if (years === "5") {
+        totalMarks += 10;
+      } else if (years === "4") {
+        totalMarks += 8;
+      } else if (years === "3") {
+        totalMarks += 6;
+      } else if (years === "2") {
+        totalMarks += 4;
+      } else if (years === "1") {
+        totalMarks += 1;
+      } else if (years === "6") {
+        totalMarks += 2;
+      } else {
+        totalMarks += 0.5;
+      }
+    } else {
+      if (years === "5") {
+        totalMarks += 5;
+      } else if (years === "4") {
+        totalMarks += 4;
+      } else if (years === "3") {
+        totalMarks += 3;
+      } else if (years === "2") {
+        totalMarks += 2;
+      } else if (years === "1") {
+        totalMarks += 0.5;
+      } else if (years === "6") {
+        totalMarks += 1;
+      } else {
+        totalMarks += 0.25;
+      }
+      if (withAdditionalDoc) {
+        totalMarks += 5;
+      }
+      if (applicantNumber >= "5" || guardianNumber >= "5") {
+        if (spouseNumber >= "5" || guardianNumber >= "5") {
+          totalMarks += 25;
+        } else if (spouseNumber >= "4") {
+          totalMarks += 22.5;
+        } else if (spouseNumber >= "3") {
+          totalMarks += 20;
+        } else if (spouseNumber >= "2") {
+          totalMarks += 17.5;
+        } else if (spouseNumber >= "1") {
+          totalMarks += 15;
+        } else {
+          totalMarks += 12.5;
+        }
       }
     }
-  }
-  totalMarks += (50 - schoolNumber*5);
+    if (50 - schoolNumber[0] * 5 > 0) {
+      totalMarks += 50 - schoolNumber[0] * 5;
+    }
     setMarks(totalMarks);
   };
 
@@ -198,19 +196,21 @@ export default function FormCat1() {
             <>
               {withMainDoc && (
                 <div>
-                  {<div>
-                    <label>Year: </label>
-                    <select value={years} onChange={handleYearsChange}>
-                      <option value="">select the year</option>
-                      <option value="5">5 years or more</option>
-                      <option value="4">4 - 5 years</option>
-                      <option value="3">3 - 4 years</option>
-                      <option value="2">2 - 3 years</option>
-                      <option value="6">1 - 2 years</option>
-                      <option value="1">1 year - 6 months</option>
-                      <option value="0">Less than 6 months</option>
-                    </select>
-                  </div>}
+                  {
+                    <div className="yearSelector">
+                      <label>Year: </label>
+                      <select value={years} onChange={handleYearsChange}>
+                        <option value="">select the year</option>
+                        <option value="5">5 years or more</option>
+                        <option value="4">4 - 5 years</option>
+                        <option value="3">3 - 4 years</option>
+                        <option value="2">2 - 3 years</option>
+                        <option value="6">1 - 2 years</option>
+                        <option value="1">1 year - 6 months</option>
+                        <option value="0">Less than 6 months</option>
+                      </select>
+                    </div>
+                  }
                   {
                     <div className="form-medium">
                       <div className="form-medium-selector">
@@ -287,7 +287,7 @@ export default function FormCat1() {
                       </div>
                     </div>
                   }
-                </>
+                </div>
               )}
 
               {withoutMainDoc && (
@@ -436,7 +436,7 @@ export default function FormCat1() {
               <input
                 type="text"
                 id="schoolNumber"
-                value={schoolCount[0]}
+                value={schoolNumber[0]}
                 readOnly
                 required
               />
