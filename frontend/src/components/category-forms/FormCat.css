@@ -116,12 +116,62 @@ input[type="radio"] + label {
   justify-content: center;
 }
 
+.service-details {
+  display: flex;
+  flex-direction: column;
+  /* margin-left: 400px; */
+  gap: 4px;
+  width: 100%;
+}
+
+.years-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.label-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.service-details input {
+  width: 100%;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  width: 24px !important;
+}
+
+.checkbox-label input {
+  margin-right: 5px; /* Adjust the spacing as needed */
+}
+
 @media screen and (max-width: 768px) {
   .form-container {
     width: 99%;
     max-width: none;
     margin-top: 88px;
     margin-left: 0.6rem;
+  }
+
+  .label-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .label-container label {
+    width: auto;
+  }
+  .label-container .service-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .label-container .service-details input {
+    margin-bottom: 0.5rem;
   }
 
   .form-label {
