@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import DatePicker from "react-datepicker";
 import Alert from "@mui/material/Alert";
 import "react-datepicker/dist/react-datepicker.css";
@@ -6,8 +6,10 @@ import "./FormCat.css";
 import Modal from "../Modal";
 import { differenceInMonths } from "date-fns";
 import { useSchoolCount } from "../context/SchoolCountContext";
+import { MarksContext } from "../context/MarksContext";
 
 export default function FormCat5() {
+  const { updateMarks } = useContext(MarksContext);
   const schoolCount = useSchoolCount();
   const [reportingDate, setreportingDate] = useState(null);
   const [newName, setnewName] = useState("");
@@ -26,6 +28,10 @@ export default function FormCat5() {
   const [duration, setDuration] = useState({ years: 0, months: 0 });
   const [marks, setmarks] = useState(0);
   const [time, setTime] = useState("");
+
+  const handleMarksChange = (newValue) => {
+    updateMarks("cat5", newValue);
+  };
 
   const handleFromServiceDateChange = (date) => {
     setFromServiceDate(date);
@@ -131,6 +137,7 @@ export default function FormCat5() {
     }
 
     setmarks(totalMarks);
+    handleMarksChange(true);
   };
 
   return (
@@ -138,11 +145,6 @@ export default function FormCat5() {
       <div className="cat-form-container">
         <form>
           <fieldset>
-            <legend>
-              Children of officers transferred due to government exigencies or
-              annual transfers
-            </legend>
-
             <div className="form-dob">
               <label className="form-label">
                 Date of reporting to the place of work as per last transfer

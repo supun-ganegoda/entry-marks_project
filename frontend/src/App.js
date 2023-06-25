@@ -9,11 +9,12 @@ import AboutUs from "./components/pages/AboutUs";
 import LocationProvider from "./components/context/LocationContext";
 import CategorySelector from "./components/CategorySelector";
 import SideBar from "./components/SideBar";
-import CategoryHolder from "./components/category-forms/CategoryHolder";
+import CatHolder from "./components/category-forms/CatHolder";
 import FormsProvider from "./components/context/FormContext";
 import LoginForm from "./components/forms/LoginForm";
 import SchoolCountProvider from "./components/context/SchoolCountContext";
 import SchoolProvider from "./components/context/SelectedSchoolsContext";
+import { MarksProvider } from "./components/context/MarksContext";
 
 function App() {
   return (
@@ -21,23 +22,27 @@ function App() {
       <FormsProvider value={{ selectedForms: "null" }}>
         <SchoolCountProvider value={[]}>
           <SchoolProvider value={[]}>
-            <Router>
-              <Navbar />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/applications" element={<Application />} />
-                <Route path="/child-details" element={<ChildDetails />} />
-                <Route path="/register" element={<RegistrationForm />} />
-                <Route path="/about-us" element={<AboutUs />} />
-                <Route
-                  path="/categorySelector"
-                  element={<CategorySelector />}
-                />
-                <Route path="/sidebar" element={<SideBar />} />
-                <Route path="/categoryHolder" element={<CategoryHolder />} />
-                <Route path="/login-form" exact element={<LoginForm />} />
-              </Routes>
-            </Router>
+            <MarksProvider>
+              <Router>
+                <Navbar />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/applications" element={<Application />} />
+                  <Route path="/child-details" element={<ChildDetails />} />
+                  <Route path="/register" element={<RegistrationForm />} />
+                  <Route path="/about-us" element={<AboutUs />} />
+                  <Route
+                    path="/categorySelector"
+                    element={<CategorySelector />}
+                  />
+                  <Route path="/sidebar" element={<SideBar />} />
+
+                  <Route path="/catHolder" element={<CatHolder />} />
+
+                  <Route path="/login-form" exact element={<LoginForm />} />
+                </Routes>
+              </Router>
+            </MarksProvider>
           </SchoolProvider>
         </SchoolCountProvider>
       </FormsProvider>
