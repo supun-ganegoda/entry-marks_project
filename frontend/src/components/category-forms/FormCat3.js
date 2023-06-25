@@ -6,6 +6,7 @@ import { MarksContext } from "../context/MarksContext";
 
 export default function FormCat3() {
   const { updateMarks } = useContext(MarksContext);
+  const { updateFinalMarks } = useContext(MarksContext);
   const [mainDoc, setMainDoc] = useState(false);
   const [noMainDoc, setNoMainDoc] = useState(false);
   const [noOfBrothers, setNoOfbrothers] = useState("");
@@ -193,6 +194,7 @@ export default function FormCat3() {
     console.log(totalMarks3);
     setMarks(totalMarks3);
     handleMarksChange(true);
+    updateFinalMarks("Based on Brothers/ sistors of student", totalMarks3);
   };
 
   const renderTable = () => {

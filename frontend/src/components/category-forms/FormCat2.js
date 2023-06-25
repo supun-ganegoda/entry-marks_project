@@ -5,6 +5,7 @@ import { MarksContext } from "../context/MarksContext";
 
 export default function FormCat2() {
   const { updateMarks } = useContext(MarksContext);
+  const { updateFinalMarks } = useContext(MarksContext);
   const [classNumber, setclassNumber] = useState("");
   const [fromGrade, setfromGrade] = useState("");
   const [toGrade, settoGrade] = useState("");
@@ -69,6 +70,7 @@ export default function FormCat2() {
 
     setMarks(totalMarks2);
     handleMarksChange(true);
+    updateFinalMarks("Based on Children of past pupils", totalMarks2);
   };
 
   return (

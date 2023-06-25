@@ -5,6 +5,7 @@ import { MarksContext } from "../context/MarksContext";
 
 export default function FormCat4() {
   const { updateMarks } = useContext(MarksContext);
+  const { updateFinalMarks } = useContext(MarksContext);
   const [post, setpost] = useState("");
   const [institution, setinstitution] = useState("");
   const [periodofservice, setperiodofservice] = useState("");
@@ -105,7 +106,8 @@ export default function FormCat4() {
     }
 
     setMarks(totalMarks4);
-    handleMarksChange(false);
+    handleMarksChange(true);
+    updateFinalMarks("Based on Children of staff", totalMarks4);
   };
 
   return (

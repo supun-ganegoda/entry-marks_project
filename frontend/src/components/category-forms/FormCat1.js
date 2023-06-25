@@ -7,6 +7,7 @@ import { MarksContext } from "../context/MarksContext";
 
 export default function FormCat1() {
   const { updateMarks } = useContext(MarksContext);
+  const { updateFinalMarks } = useContext(MarksContext);
   const schoolNumber = useSchoolCount(); //school count from the home to selected school
   //console.log(schoolCount);
   const [applicantNumber, setapplicantNumber] = useState("");
@@ -23,11 +24,6 @@ export default function FormCat1() {
   const [withThirdDoc, setwithThirdDoc] = useState(false);
   const [withoutThirdDoc, setwithoutThirdDoc] = useState(false);
   const [marks, setMarks] = useState(0);
-  //const [isMarksCalculated, setIsMarksCalculated] = useState(false)
-
-  // useEffect(() => {
-  //   handleMarksChange(false);
-  // }, []);
 
   const handleMarksChange = (isMarksCalculated) => {
     updateMarks("cat1", isMarksCalculated);
@@ -172,6 +168,7 @@ export default function FormCat1() {
     }
     setMarks(totalMarks);
     handleMarksChange(true);
+    updateFinalMarks("Based on proximity", totalMarks);
   };
 
   return (

@@ -9,6 +9,7 @@ import { MarksContext } from "../context/MarksContext";
 
 export default function FormCat6() {
   const { updateMarks } = useContext(MarksContext);
+  const { updateFinalMarks } = useContext(MarksContext);
   const [returnedDate, setreturnedDate] = useState("");
   const schoolNumber = useSchoolCount(); //school count from the home to selected school
   const [fromAbroadDate, setfromAbroadDate] = useState("");
@@ -72,6 +73,10 @@ export default function FormCat6() {
 
     setmarks(totalMarks);
     handleMarksChange(true);
+    updateFinalMarks(
+      "Based on Children of persons arriving after living abroad",
+      totalMarks
+    );
   };
 
   return (

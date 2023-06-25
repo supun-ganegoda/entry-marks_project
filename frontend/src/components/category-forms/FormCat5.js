@@ -10,6 +10,7 @@ import { MarksContext } from "../context/MarksContext";
 
 export default function FormCat5() {
   const { updateMarks } = useContext(MarksContext);
+  const { updateFinalMarks } = useContext(MarksContext);
   const schoolCount = useSchoolCount();
   const [reportingDate, setreportingDate] = useState(null);
   const [newName, setnewName] = useState("");
@@ -138,6 +139,7 @@ export default function FormCat5() {
 
     setmarks(totalMarks);
     handleMarksChange(true);
+    updateFinalMarks("Based on Children of officers", totalMarks);
   };
 
   return (

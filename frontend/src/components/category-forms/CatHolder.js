@@ -21,10 +21,19 @@ const CatHolder = () => {
   const { updateMarks } = useContext(MarksContext);
   const checkboxes = location.state?.checkboxes || {};
 
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeComponent, setActiveComponent] = useState(null);
 
-  const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue);
+  useEffect(() => {
+    // Find the first checked checkbox and set it as the active component
+    const checkedComponent = Object.keys(checkboxes).find(
+      (key) => checkboxes[key]
+    );
+    setActiveComponent(checkedComponent);
+  }, [checkboxes]);
+
+  const handleTabChange = (event, newActiveComponent) => {
+    console.log(newActiveComponent);
+    setActiveComponent(newActiveComponent);
   };
 
   const handleMarksInit = () => {
@@ -48,6 +57,8 @@ const CatHolder = () => {
     }
   };
 
+  console.log(checkboxes);
+
   useEffect(() => {
     handleMarksInit();
   }, []);
@@ -65,7 +76,7 @@ const CatHolder = () => {
         }}
       >
         <Tabs
-          value={activeTab}
+          value={activeComponent}
           onChange={handleTabChange}
           variant="scrollable"
           allowScrollButtonsMobile
@@ -78,33 +89,42 @@ const CatHolder = () => {
         >
           {checkboxes.checkbox1 && (
             <BoldTab
+              value="checkbox1"
               label="Children of residents close proximity to the school"
               wrapped
             />
           )}
           {checkboxes.checkbox2 && (
-            <BoldTab label="Children of past pupils" wrapped />
+            <BoldTab
+              value="checkbox2"
+              label="Children of past pupils"
+              wrapped
+            />
           )}
           {checkboxes.checkbox3 && (
             <BoldTab
+              value="checkbox3"
               label="Brothers/ sistors of students studying in the school at present"
               wrapped
             />
           )}
           {checkboxes.checkbox4 && (
             <BoldTab
+              value="checkbox4"
               label="Children of staff in education institutions involved in school education"
               wrapped
             />
           )}
           {checkboxes.checkbox5 && (
             <BoldTab
+              value="checkbox5"
               label="Children of officers transffered due to government exigencies or annual transfers"
               wrapped
             />
           )}
           {checkboxes.checkbox6 && (
             <BoldTab
+              value="checkbox6"
               label="Children of persons arriving after living abroad with the child"
               wrapped
             />
@@ -112,12 +132,12 @@ const CatHolder = () => {
         </Tabs>
       </Box>
 
-      {checkboxes.checkbox1 && activeTab === 0 && <FormCat1 />}
-      {checkboxes.checkbox2 && activeTab === 1 && <FormCat2 />}
-      {checkboxes.checkbox3 && activeTab === 2 && <FormCat3 />}
-      {checkboxes.checkbox4 && activeTab === 3 && <FormCat4 />}
-      {checkboxes.checkbox5 && activeTab === 4 && <FormCat5 />}
-      {checkboxes.checkbox6 && activeTab === 5 && <FormCat6 />}
+      {activeComponent === "checkbox1" && <FormCat1 />}
+      {activeComponent === "checkbox2" && <FormCat2 />}
+      {activeComponent === "checkbox3" && <FormCat3 />}
+      {activeComponent === "checkbox4" && <FormCat4 />}
+      {activeComponent === "checkbox5" && <FormCat5 />}
+      {activeComponent === "checkbox6" && <FormCat6 />}
 
       <FloatingSummary />
     </>

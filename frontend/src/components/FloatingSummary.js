@@ -19,12 +19,33 @@ const style = {
 
 export default function FloatingSummary() {
   const { areMarksCalculated } = useContext(MarksContext);
+  const { finalMarks } = useContext(MarksContext);
   const [open, setOpen] = useState(false);
   const [clicked, setClicked] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  //console.log("Marks are calculated ", areMarksCalculated);
+  ///console.log("finalMarks ", finalMarks);
+  const displaySummaryTable = () => {
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Marks</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.keys(finalMarks).map((key) => (
+            <tr key={key}>
+              <td>{key}</td>
+              <td>{finalMarks[key]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
 
   const displayModal = () => {
     setClicked(true);
@@ -79,6 +100,7 @@ export default function FloatingSummary() {
             >
               Marks based on selected categories
             </Typography>
+            {displaySummaryTable()}
           </Box>
         </Modal>
       )}

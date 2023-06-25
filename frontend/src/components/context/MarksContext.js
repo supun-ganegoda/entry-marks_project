@@ -6,6 +6,7 @@ export const MarksContext = createContext();
 // Create a MarksProvider component
 export const MarksProvider = ({ children }) => {
   const [marks, setMarks] = useState({});
+  const [finalMarks, setFinalMarks] = useState({});
 
   // Update the marks value
   const updateMarks = (componentName, value) => {
@@ -15,14 +16,26 @@ export const MarksProvider = ({ children }) => {
     }));
   };
 
+  const updateFinalMarks = (compName, value) => {
+    setFinalMarks((prev) => ({ ...prev, [compName]: value }));
+  };
+
   // Check if all marks calculated
-  //   console.log(marks);
+  //console.log(finalMarks);
   const areMarksCalculated = Object.values(marks).every(
     (value) => value === true
   );
 
   return (
-    <MarksContext.Provider value={{ marks, updateMarks, areMarksCalculated }}>
+    <MarksContext.Provider
+      value={{
+        marks,
+        updateMarks,
+        areMarksCalculated,
+        finalMarks,
+        updateFinalMarks,
+      }}
+    >
       {children}
     </MarksContext.Provider>
   );
