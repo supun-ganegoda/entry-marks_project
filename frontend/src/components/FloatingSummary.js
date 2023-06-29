@@ -1,5 +1,8 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Fab from "@mui/material/Fab";
+import axios from "axios";
+import Dialog from "../components/Dialog";
+import { Alert, Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -19,13 +22,17 @@ const style = {
 
 export default function FloatingSummary() {
   const { areMarksCalculated } = useContext(MarksContext);
+  const [userName, setUserName] = useState(null);
+  const [saved, setSaved] = useState(false);
+  const [email, setEmail] = useState(null);
+  const [isLogged, setIsLogged] = useState(false);
   const { finalMarks } = useContext(MarksContext);
   const [open, setOpen] = useState(false);
   const [clicked, setClicked] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  ///console.log("finalMarks ", finalMarks);
+  console.log("finalMarks ", finalMarks);
   const displaySummaryTable = () => {
     return (
       <table>
@@ -45,6 +52,51 @@ export default function FloatingSummary() {
         </tbody>
       </table>
     );
+  };
+
+  const checkLogin = () => {
+    setUserName(localStorage.getItem("userName"));
+    setEmail(localStorage.getItem("email"));
+    //console.log(userName);
+    if (userName === null || email === null) {
+      setIsLogged(false);
+    } else {
+      setIsLogged(true);
+    }
+  };
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
+
+  const saveMarks = async (e) => {
+    const marks = {
+      proximity: finalMarks["Based on proximity"],
+      pastPupils: finalMarks["Based on Children of past pupils"],
+      cousins: finalMarks["Based on Brothers/ sistors of student"],
+      staff: finalMarks["Based on Children of staff"],
+      officers: finalMarks["Based on Children of officers"],
+      forign:
+        finalMarks["Based on Children of persons arriving after living abroad"],
+    };
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        "http://localhost:4000/api/save-marks",
+        marks,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(response.data); // Handle success response
+      setSaved(true);
+      setOpen(false);
+    } catch (error) {
+      console.error(error); // Handle error
+    }
   };
 
   const displayModal = () => {
@@ -88,10 +140,14 @@ export default function FloatingSummary() {
         >
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              User Name: {localStorage.getItem("userName")}
+              {userName === null ? (
+                <Alert severity="info">Please login to save progress</Alert>
+              ) : (
+                "User name: " + userName
+              )}
             </Typography>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Email: sample@gmail.com
+              {email !== null ? "Email: " + email : null}
             </Typography>
             <hr></hr>
             <Typography
@@ -101,9 +157,23 @@ export default function FloatingSummary() {
               Marks based on selected categories
             </Typography>
             {displaySummaryTable()}
+            <Button
+              variant="contained"
+              onClick={(e) => saveMarks()}
+              disabled={isLogged}
+            >
+              Save
+            </Button>
           </Box>
         </Modal>
       )}
+      {saved ? (
+        <Dialog
+          toOpen={true}
+          title={"Info"}
+          body={"Saved successfully!"}
+        ></Dialog>
+      ) : null}
     </div>
   );
 }

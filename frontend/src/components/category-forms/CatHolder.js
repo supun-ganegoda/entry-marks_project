@@ -57,7 +57,7 @@ const CatHolder = () => {
     }
   };
 
-  console.log(checkboxes);
+  //console.log(checkboxes);
 
   useEffect(() => {
     handleMarksInit();

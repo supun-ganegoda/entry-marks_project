@@ -1,5 +1,5 @@
 import Features from "../Features";
-import Footer from "../Footer";
+import Footer from "../ModernFooter";
 import HeroSection from "../HeroSection";
 
 const Home = () => {

@@ -11,6 +11,7 @@ const {
   deleteUser,
   updateUser,
   submitChildDetails,
+  saveMarks,
 } = require("../controller/userController");
 
 //getting the router object
@@ -36,6 +37,8 @@ router.patch("/:id", updateUser);
 /* ########################################################## */
 //form submitting routes
 router.post("/child-details", verifyToken, submitChildDetails);
+
+router.post("/save-marks", verifyToken, saveMarks);
 
 //export the router object
 module.exports = router;

@@ -1,20 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./CategorySelector.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 //import { useUpdateSelectedForms } from "./context/FormContext";
 
 const CategorySelector = () => {
-  // const selectedForms = useUpdateSelectedForms();
-  // const [proximity, setProximity] = useState(false);
-  // const [pastPupil, setPastPupil] = useState(false);
-  // const [cousins, setCousins] = useState(false);
-  // const [staff, setStaff] = useState(false);
-  // const [officers, setOfficers] = useState(false);
-  // const [forigion, setForigion] = useState(false);
-  // let selectedCategories;
-
   const navigate = useNavigate();
+  const [isChecked, setIsChecked] = useState(false);
   const [checkboxes, setCheckboxes] = useState({
     checkbox1: false,
     checkbox2: false,
@@ -29,40 +21,21 @@ const CategorySelector = () => {
     setCheckboxes((prevState) => ({ ...prevState, [name]: checked }));
   };
 
+  useEffect(() => {
+    checkChecked();
+  }, [checkboxes]);
+
+  const checkChecked = () => {
+    let checked = false;
+    Object.keys(checkboxes).forEach((key) => {
+      checked ||= checkboxes[key];
+    });
+    setIsChecked(checked);
+  };
+
   const handleProceed = () => {
     navigate("/catHolder", { state: { checkboxes } });
   };
-
-  // const handleProximityChange = () => {
-  //   setProximity(!proximity);
-  // };
-  // const handlePastPupilChange = () => {
-  //   setPastPupil(!pastPupil);
-  // };
-  // const handleCousinsChange = () => {
-  //   setCousins(!cousins);
-  // };
-  // const handleStaffChange = () => {
-  //   setStaff(!staff);
-  // };
-  // const handleOfficersChange = () => {
-  //   setOfficers(!officers);
-  // };
-  // const handleForigionChange = () => {
-  //   setForigion(!forigion);
-  // };
-  // const handleProceed = () => {
-  //   selectedCategories = {
-  //     proximity,
-  //     pastPupil,
-  //     cousins,
-  //     staff,
-  //     officers,
-  //     forigion,
-  //   };
-  //   //console.log(selectedCategories);
-  //   selectedForms(selectedCategories);
-  // };
 
   return (
     <>
@@ -132,7 +105,7 @@ const CategorySelector = () => {
           <Link to="/sidebar">
             <button>Back</button>
           </Link>
-          <button onClick={handleProceed}>Next</button>
+          {isChecked ? <button onClick={handleProceed}>Next</button> : null}
         </div>
       </div>
     </>
