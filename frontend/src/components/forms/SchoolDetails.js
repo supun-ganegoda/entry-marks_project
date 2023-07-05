@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import "./SchoolDetails.css";
 import { useUpdateSelectedSchools } from "../context/SelectedSchoolsContext";
+import Alert from "@mui/material/Alert";
 
 const SchoolDetails = () => {
   //suggestions model
@@ -59,17 +60,6 @@ const SchoolDetails = () => {
     selectedSchools(selected);
     alert("Schools are set !");
   };
-
-  // const handleClick = (school) => {
-  //   if (school && school !== "" && school.length > 1) {
-  //     selectedSchools((prevSelectedSchools) => [
-  //       ...prevSelectedSchools,
-  //       school,
-  //     ]);
-  //   }
-  // };
-
-  //console.log(selectedSchool1);
 
   return (
     <>
@@ -136,6 +126,9 @@ const SchoolDetails = () => {
         <button className="set-button" onClick={(e) => updateOnClose()}>
           Set Schools
         </button>
+        <Alert severity="info" style={{ marginTop: "8px", marginRight: "4px" }}>
+          Marks are calculated for the first preffered school
+        </Alert>
       </div>
     </>
   );

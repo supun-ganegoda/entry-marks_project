@@ -143,7 +143,7 @@ const SchoolLocator = () => {
     <>
       <div className="school-detailes-wrapper">
         <LoadScript
-          googleMapsApiKey="AIzaSyBGNDiPaU1jWUUFF9xiTwCNqNpa2Zd1ngI"
+          googleMapsApiKey="AIzaSyDA22GGNjkZa1MuC3ChlVyacbqQP2S5MxM"
           libraries={["geometry"]}
           onLoad={onLoadMap}
         >

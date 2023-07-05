@@ -27,7 +27,7 @@ const GMap = ({ handleMapClose }) => {
   return (
     <>
       <div>
-        <LoadScript googleMapsApiKey="AIzaSyBGNDiPaU1jWUUFF9xiTwCNqNpa2Zd1ngI">
+        <LoadScript googleMapsApiKey="AIzaSyDA22GGNjkZa1MuC3ChlVyacbqQP2S5MxM">
           <GoogleMap
             mapContainerClassName="map-container"
             center={center}
