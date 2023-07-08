@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
+import NotFound from "./components/pages/NotFound";
 import Navbar from "./components/Navbar";
 import Application from "./components/pages/Application";
 import ChildDetails from "./components/forms/ChildDetails";
@@ -40,6 +41,8 @@ function App() {
                   <Route path="/catHolder" element={<CatHolder />} />
 
                   <Route path="/login-form" exact element={<LoginForm />} />
+                  {/* Add the catch-all route for 404 Page Not Found */}
+                  <Route path="*" element={<NotFound />} />
                 </Routes>
               </Router>
             </MarksProvider>
