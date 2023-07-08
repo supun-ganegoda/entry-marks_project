@@ -12,7 +12,7 @@ import { useLatLng } from "./context/LocationContext";
 
 let center;
 const radius = 5000;
-const apiKey = "AIzaSyDA22GGNjkZa1MuC3ChlVyacbqQP2S5MxM";
+const apiKey = "";
 const libraries = ["places"];
 
 const SchoolFinder = () => {
