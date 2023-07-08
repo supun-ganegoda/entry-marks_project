@@ -1,17 +1,26 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./FormCat.css";
+import Modal from "../Modal";
 import { differenceInYears } from "date-fns";
+import { useSchoolCount } from "../context/SchoolCountContext";
+import { MarksContext } from "../context/MarksContext";
 
 export default function FormCat6() {
+  const { updateMarks } = useContext(MarksContext);
+  const { updateFinalMarks } = useContext(MarksContext);
   const [returnedDate, setreturnedDate] = useState("");
+  const schoolNumber = useSchoolCount(); //school count from the home to selected school
   const [fromAbroadDate, setfromAbroadDate] = useState("");
   const [toAbroadDate, settoAbroadDate] = useState("");
-  const [otherSchools, setotherSchools] = useState("");
   const [selectedReason, setSelectedReason] = useState("");
-  const [marks6, setMarks6] = useState(0);
+  const [marks, setmarks] = useState(0);
   const [duration, setDuration] = useState(0);
+
+  const handleMarksChange = (newValue) => {
+    updateMarks("cat6", newValue);
+  };
 
   const handleReasonChange = (e) => {
     setSelectedReason(e.target.value);
@@ -57,12 +66,17 @@ export default function FormCat6() {
       totalMarks += 20;
     }
 
-    if (otherSchools >= 0 && otherSchools <= 10) {
+    if (schoolNumber >= 0 && schoolNumber <= 10) {
       totalMarks += 35;
-      totalMarks -= otherSchools * 3.5;
+      totalMarks -= schoolNumber * 3.5;
     }
 
-    setMarks6(totalMarks);
+    setmarks(totalMarks);
+    handleMarksChange(true);
+    updateFinalMarks(
+      "Based on Children of persons arriving after living abroad",
+      totalMarks
+    );
   };
 
   return (
@@ -70,10 +84,6 @@ export default function FormCat6() {
       <div className="cat-form-container">
         <form>
           <fieldset>
-            <legend>
-              Children of persons arriving after living abroad with the child
-            </legend>
-
             <div className="form-religion">
               <label className="form-label">
                 Date returned to the country:{" "}
@@ -184,8 +194,8 @@ export default function FormCat6() {
               <input
                 type="text"
                 id="otherSchools"
-                value={otherSchools}
-                onChange={(e) => setotherSchools(e.target.value)}
+                value={schoolNumber[0]}
+                readOnly
                 required
               />
             </div>
@@ -193,11 +203,14 @@ export default function FormCat6() {
         </form>
       </div>
 
-      <button onClick={calculateMarks}>Calculate</button>
-
-      <div>
-        <p>Marks: {marks6}</p>
-        <p>Duration: {duration} years</p>
+      <div className="form-display-marks" onClick={(e) => calculateMarks()}>
+        <Modal
+          buttonText={"View Marks"}
+          bodyHeader={
+            "Marks for category based on Children of persons arriving after living abroad with the child"
+          }
+          bodyText={marks.toString()}
+        />
       </div>
     </>
   );

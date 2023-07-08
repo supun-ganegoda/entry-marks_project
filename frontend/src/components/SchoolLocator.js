@@ -6,6 +6,7 @@ import { useSelectedSchools } from "./context/SelectedSchoolsContext";
 import { useUpdateSchoolCount } from "./context/SchoolCountContext";
 
 const SchoolLocator = () => {
+  const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
   const schoolCount = useUpdateSchoolCount();
   let tempSchoolCount = [];
   const circleColors = ["#ff0000", "#32a852", "#f5ef3d", "#3dd6f5"];
@@ -143,7 +144,7 @@ const SchoolLocator = () => {
     <>
       <div className="school-detailes-wrapper">
         <LoadScript
-          googleMapsApiKey="AIzaSyBGNDiPaU1jWUUFF9xiTwCNqNpa2Zd1ngI"
+          googleMapsApiKey={apiKey}
           libraries={["geometry"]}
           onLoad={onLoadMap}
         >

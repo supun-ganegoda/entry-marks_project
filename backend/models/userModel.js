@@ -15,6 +15,14 @@ const userSchema = new mongoose.Schema(
       selectedSchoolDetails: [selectedSchoolSchema],
       electorialDetails: [electorialSchema],
     },
+    marks: {
+      proximity: { type: String },
+      pastPupils: { type: String },
+      cousins: { type: String },
+      staff: { type: String },
+      officers: { type: String },
+      forign: { type: String },
+    },
   },
   { collection: "user-data" }
 );

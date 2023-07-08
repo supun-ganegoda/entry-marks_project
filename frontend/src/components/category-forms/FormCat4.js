@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Modal from "../Modal";
 import "./FormCat.css";
+import { MarksContext } from "../context/MarksContext";
 
 export default function FormCat4() {
+  const { updateMarks } = useContext(MarksContext);
+  const { updateFinalMarks } = useContext(MarksContext);
   const [post, setpost] = useState("");
   const [institution, setinstitution] = useState("");
   const [periodofservice, setperiodofservice] = useState("");
@@ -21,6 +24,10 @@ export default function FormCat4() {
   const [withoutForwardedDoc, setwithoutForwardedDoc] = useState(false);
   const [currentDistance, setcurrentDistance] = useState("");
   const [marks, setMarks] = useState(0);
+
+  const handleMarksChange = (newValue) => {
+    updateMarks("cat4", newValue);
+  };
 
   function handleWithForwardedDoc() {
     setwithForwardedDoc(true);
@@ -99,6 +106,8 @@ export default function FormCat4() {
     }
 
     setMarks(totalMarks4);
+    handleMarksChange(true);
+    updateFinalMarks("Based on Children of staff", totalMarks4);
   };
 
   return (
@@ -106,11 +115,6 @@ export default function FormCat4() {
       <div className="cat-form-container">
         <form>
           <fieldset>
-            <legend>
-              Children of staff in education institutions involved in school
-              education
-            </legend>
-
             <div className="label-container">
               <label className="form-label">
                 Post held as a permanent employee in the relevant institutions

@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import "./FormCat.css";
 import Modal from "../Modal";
+import { MarksContext } from "../context/MarksContext";
 
 export default function FormCat2() {
+  const { updateMarks } = useContext(MarksContext);
+  const { updateFinalMarks } = useContext(MarksContext);
   const [classNumber, setclassNumber] = useState("");
   const [fromGrade, setfromGrade] = useState("");
   const [toGrade, settoGrade] = useState("");
@@ -13,6 +16,10 @@ export default function FormCat2() {
   const [withMembership, setwithMembership] = useState(false);
   const [withoutMembership, setwithoutMembership] = useState(false);
   const [marks, setMarks] = useState(0);
+
+  const handleMarksChange = (newValue) => {
+    updateMarks("cat2", newValue);
+  };
 
   function handleWithMembership() {
     setwithMembership(true);
@@ -62,6 +69,8 @@ export default function FormCat2() {
     }
 
     setMarks(totalMarks2);
+    handleMarksChange(true);
+    updateFinalMarks("Based on Children of past pupils", totalMarks2);
   };
 
   return (
@@ -69,8 +78,6 @@ export default function FormCat2() {
       <div className="cat-form-container">
         <form>
           <fieldset>
-            <legend>Children of Past Pupils</legend>
-
             <div className="form-religion">
               <label className="form-label">
                 No of classes studied in school:{" "}

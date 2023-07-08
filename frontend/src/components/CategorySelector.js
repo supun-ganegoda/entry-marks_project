@@ -1,47 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./CategorySelector.css";
 import { Link } from "react-router-dom";
-import { useUpdateSelectedForms } from "./context/FormContext";
+import { useNavigate } from "react-router-dom";
+//import { useUpdateSelectedForms } from "./context/FormContext";
 
 const CategorySelector = () => {
-  const selectedForms = useUpdateSelectedForms();
-  const [proximity, setProximity] = useState(false);
-  const [pastPupil, setPastPupil] = useState(false);
-  const [cousins, setCousins] = useState(false);
-  const [staff, setStaff] = useState(false);
-  const [officers, setOfficers] = useState(false);
-  const [forigion, setForigion] = useState(false);
-  let selectedCategories;
+  const navigate = useNavigate();
+  const [isChecked, setIsChecked] = useState(false);
+  const [checkboxes, setCheckboxes] = useState({
+    checkbox1: false,
+    checkbox2: false,
+    checkbox3: false,
+    checkbox4: false,
+    checkbox5: false,
+    checkbox6: false,
+  });
 
-  const handleProximityChange = () => {
-    setProximity(!proximity);
+  const handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
+    setCheckboxes((prevState) => ({ ...prevState, [name]: checked }));
   };
-  const handlePastPupilChange = () => {
-    setPastPupil(!pastPupil);
+
+  useEffect(() => {
+    checkChecked();
+  }, [checkboxes]);
+
+  const checkChecked = () => {
+    let checked = false;
+    Object.keys(checkboxes).forEach((key) => {
+      checked ||= checkboxes[key];
+    });
+    setIsChecked(checked);
   };
-  const handleCousinsChange = () => {
-    setCousins(!cousins);
-  };
-  const handleStaffChange = () => {
-    setStaff(!staff);
-  };
-  const handleOfficersChange = () => {
-    setOfficers(!officers);
-  };
-  const handleForigionChange = () => {
-    setForigion(!forigion);
-  };
+
   const handleProceed = () => {
-    selectedCategories = {
-      proximity,
-      pastPupil,
-      cousins,
-      staff,
-      officers,
-      forigion,
-    };
-    //console.log(selectedCategories);
-    selectedForms(selectedCategories);
+    navigate("/catHolder", { state: { checkboxes } });
   };
 
   return (
@@ -72,33 +65,39 @@ const CategorySelector = () => {
           <div className="selectors">
             <input
               type="checkbox"
-              checked={proximity}
-              onChange={handleProximityChange}
+              name="checkbox1"
+              checked={checkboxes.checkbox1}
+              onChange={handleCheckboxChange}
             />
             <input
               type="checkbox"
-              checked={pastPupil}
-              onChange={handlePastPupilChange}
+              name="checkbox2"
+              checked={checkboxes.checkbox2}
+              onChange={handleCheckboxChange}
             />
             <input
               type="checkbox"
-              checked={cousins}
-              onChange={handleCousinsChange}
+              name="checkbox3"
+              checked={checkboxes.checkbox3}
+              onChange={handleCheckboxChange}
             />
             <input
               type="checkbox"
-              checked={staff}
-              onChange={handleStaffChange}
+              name="checkbox4"
+              checked={checkboxes.checkbox4}
+              onChange={handleCheckboxChange}
             />
             <input
               type="checkbox"
-              checked={officers}
-              onChange={handleOfficersChange}
+              name="checkbox5"
+              checked={checkboxes.checkbox5}
+              onChange={handleCheckboxChange}
             />
             <input
               type="checkbox"
-              checked={forigion}
-              onChange={handleForigionChange}
+              name="checkbox6"
+              checked={checkboxes.checkbox6}
+              onChange={handleCheckboxChange}
             />
           </div>
         </div>
@@ -106,16 +105,7 @@ const CategorySelector = () => {
           <Link to="/sidebar">
             <button>Back</button>
           </Link>
-          <Link to="/categoryHolder">
-            {proximity ||
-            pastPupil ||
-            cousins ||
-            staff ||
-            officers ||
-            forigion ? (
-              <button onClick={handleProceed}>Next</button>
-            ) : null}
-          </Link>
+          {isChecked ? <button onClick={handleProceed}>Next</button> : null}
         </div>
       </div>
     </>

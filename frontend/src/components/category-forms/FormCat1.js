@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Alert from "@mui/material/Alert";
 import "./FormCat.css";
 import Modal from "../Modal";
 import { useSchoolCount } from "../context/SchoolCountContext";
+import { MarksContext } from "../context/MarksContext";
 
 export default function FormCat1() {
+  const { updateMarks } = useContext(MarksContext);
+  const { updateFinalMarks } = useContext(MarksContext);
   const schoolNumber = useSchoolCount(); //school count from the home to selected school
   //console.log(schoolCount);
   const [applicantNumber, setapplicantNumber] = useState("");
@@ -21,6 +24,10 @@ export default function FormCat1() {
   const [withThirdDoc, setwithThirdDoc] = useState(false);
   const [withoutThirdDoc, setwithoutThirdDoc] = useState(false);
   const [marks, setMarks] = useState(0);
+
+  const handleMarksChange = (isMarksCalculated) => {
+    updateMarks("cat1", isMarksCalculated);
+  };
 
   function handleWithMainCheckboxChange() {
     setwithMainDoc(true);
@@ -160,6 +167,8 @@ export default function FormCat1() {
       totalMarks += 50 - schoolNumber[0] * 5;
     }
     setMarks(totalMarks);
+    handleMarksChange(true);
+    updateFinalMarks("Based on proximity", totalMarks);
   };
 
   return (
@@ -167,9 +176,6 @@ export default function FormCat1() {
       <div className="cat-form-container">
         <form>
           <fieldset>
-            <legend>
-              Children of residents in close proximity to the school
-            </legend>
             <div className="form-sex">
               <label className="form-label">
                 Main document in proof of place of living:{" "}

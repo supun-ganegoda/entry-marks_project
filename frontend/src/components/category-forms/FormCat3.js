@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import "./FormCat.css";
+import Modal from "../Modal";
+import Alert from "@mui/material/Alert";
+import { MarksContext } from "../context/MarksContext";
 
 export default function FormCat3() {
+  const { updateMarks } = useContext(MarksContext);
+  const { updateFinalMarks } = useContext(MarksContext);
   const [mainDoc, setMainDoc] = useState(false);
   const [noMainDoc, setNoMainDoc] = useState(false);
   const [noOfBrothers, setNoOfbrothers] = useState("");
@@ -24,6 +29,10 @@ export default function FormCat3() {
     ["", "", "", "", ""],
   ]);
   const [marks, setMarks] = useState(0);
+
+  const handleMarksChange = (newValue) => {
+    updateMarks("cat3", newValue);
+  };
 
   const handleMainDocChange = () => {
     setMainDoc(true);
@@ -78,132 +87,116 @@ export default function FormCat3() {
 
   const calculateMarks = () => {
     let totalMarks3 = 0;
-    
+
     let AdmissionGrade = 0;
 
     let maxValue = Number.MIN_SAFE_INTEGER;
 
     tableData.forEach((rowData) => {
-    const fifthColumnValue = rowData[4];
+      const fifthColumnValue = rowData[4];
 
-    if (parseInt(fifthColumnValue) >= maxValue) {
-     maxValue = parseInt(fifthColumnValue);
-     AdmissionGrade = rowData[3];
-    }
+      if (fifthColumnValue > maxValue) {
+        maxValue = fifthColumnValue;
+        AdmissionGrade = rowData[3];
+      }
     });
+    totalMarks3 += parseFloat(maxValue) * 2;
 
-    if(maxValue >= 10){
-      totalMarks3 += 20;
-    }else if (maxValue < 10)
-    {
-      totalMarks3 += maxValue*2;
-
-    }
-    
-
-    if(AdmissionGrade === "1")
-    {
+    if (AdmissionGrade === "1") {
       totalMarks3 += 5;
     }
 
-    if(noOfBrothers >= 2)
-    {
+    if (noOfBrothers >= 2) {
       totalMarks3 += 5;
     }
-    
-    if (gainedAchievements)
-    {
+
+    if (gainedAchievements) {
       totalMarks3 += 10;
     }
 
     if (mainDoc) {
-      if(selectOption === "option1"){
-        if(year === "5") {
+      if (selectOption === "option1") {
+        if (year === "5") {
           totalMarks3 += 10;
-        }else if (year === "4") {
+        } else if (year === "4") {
           totalMarks3 += 8;
-        }else if (year === "3") {
+        } else if (year === "3") {
           totalMarks3 += 6;
-        }else if (year === "2") {
+        } else if (year === "2") {
           totalMarks3 += 4;
-        }else if (year === "1") {
+        } else if (year === "1") {
           totalMarks3 += 1;
-        }else if (year === "6")  {
+        } else if (year === "6") {
           totalMarks3 += 2;
-        }else   {
+        } else {
           totalMarks3 += 0.5;
         }
-
-      }else if(selectOption === "option2"){
-        if(year === "5") {
+      } else if (selectOption === "option2") {
+        if (year === "5") {
           totalMarks3 += 6;
-        }else if (year === "4") {
+        } else if (year === "4") {
           totalMarks3 += 4;
-        }else if (year === "3") {
+        } else if (year === "3") {
           totalMarks3 += 3.6;
-        }else if (year === "2") {
+        } else if (year === "2") {
           totalMarks3 += 2.4;
-        }else if (year === "1") {
+        } else if (year === "1") {
           totalMarks3 += 0.6;
-        }else if (year === "6") {
+        } else if (year === "6") {
           totalMarks3 += 1.2;
-        }
-        else  {
+        } else {
           totalMarks3 += 0.3;
-
+        }
+      } else if (
+        selectOption === "option3" ||
+        selectOption === "option4" ||
+        selectOption === "option5"
+      ) {
+        if (year === "5") {
+          totalMarks3 += 4;
+        } else if (year === "4") {
+          totalMarks3 += 3.2;
+        } else if (year === "3") {
+          totalMarks3 += 2.4;
+        } else if (year === "2") {
+          totalMarks3 += 1.6;
+        } else if (year === "1") {
+          totalMarks3 += 0.4;
+        } else if (year === "6") {
+          totalMarks3 += 0.8;
+        } else {
+          totalMarks3 += 0.2;
+        }
       }
-    }else if (selectOption === "option3" || selectOption === "option4"|| selectOption === "option5"){
-      if(year === "5") {
-        totalMarks3 += 4;
-      }else if (year === "4") {
-        totalMarks3 += 3.2;
-      }else if (year === "3") {
-        totalMarks3 += 2.4;
-      }else if (year === "2") {
-        totalMarks3 += 1.6;
-      }else if (year === "1") {
-        totalMarks3 += 0.4;
-      }else if (year === "6") {
-        totalMarks3 += 0.8;
+    } else if (noMainDoc && secondDoc) {
+      totalMarks3 += 2;
+    } else if (noSecondDoc && thirdDoc) {
+      totalMarks3 += 6;
+    }
+
+    if (yearsApplicant >= 5 || yearsRegister >= 5) {
+      if (yearsSpouse >= 5 || yearsRegister >= 5) {
+        totalMarks3 += 20;
+      } else if (yearsSpouse >= 4) {
+        totalMarks3 += 18;
+      } else if (yearsSpouse >= 3) {
+        totalMarks3 += 16;
+      } else if (yearsSpouse >= 2) {
+        totalMarks3 += 14;
+      } else if (yearsSpouse >= 1) {
+        totalMarks3 += 12;
+      } else {
+        totalMarks3 += 10;
       }
-      else  {
-        totalMarks3 += 0.2;
-    }
     }
 
-    
-  
-  }else if(noMainDoc && secondDoc){
-    totalMarks3 += 2;
-  }else if ( noSecondDoc && thirdDoc) {
-    totalMarks3 += 6;
-  }
-
-  if(yearsApplicant >= "5"|| yearsRegister >= "5"){
-    if( yearsSpouse >= "5" || yearsRegister >= "5" ){
-      totalMarks3 += 20;
-    }else if ( yearsSpouse  >= "4") {
-      totalMarks3 += 18;
-    }else if( yearsSpouse  >= "3"){
-      totalMarks3 += 16;
-    }else if( yearsSpouse  >= "2"){
-      totalMarks3 += 14;
-    }else if( yearsSpouse  >= "1"){
-      totalMarks3 += 12;
-    }else{
-      totalMarks3 += 10;
-
-    }
-
-  }
-
-
-  //totalMarks3 += 30 - noOfSchooles*3;
-
-    
+    //totalMarks3 += 30 - noOfSchooles*3;
+    console.log(totalMarks3);
     setMarks(totalMarks3);
+    handleMarksChange(true);
+    updateFinalMarks("Based on Brothers/ sistors of student", totalMarks3);
   };
-   
+
 
   const renderTable = () => {
     return (
@@ -242,26 +235,27 @@ export default function FormCat3() {
       <div className="cat-form-container">
         <form>
           <fieldset>
-            <legend>
-              Brothers/ sisters of students studying in the school at present
-            </legend>
+            <Alert severity="info" style={{ marginBottom: "8px" }}>
+              If a child/children of applicant is/are studying in the school
+            </Alert>
 
-            <div>
-              <p>
-                If a child/children of applicant is/are studying in the school
-              </p>
-              <div className="form-religion">
+            <div className="form-religion">
               <label className="form-label">
                 Number of brothers / sisters study in the applied school :{" "}
               </label>
               <input
-                type="text"
+                type="number"
                 id="noOfBrothers"
                 value={noOfBrothers}
                 onChange={(e) => setNoOfbrothers(e.target.value)}
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                }}
               />
-            </div>
             </div>
 
             <div className="elec-form-table">{renderTable()}</div>
@@ -316,19 +310,21 @@ export default function FormCat3() {
               </label>
               {mainDoc && (
                 <div>
-                  {<div>
-                    <label>Year: </label>
-                    <select value={year} onChange={handleYearChange}>
-                      <option value="">select the year</option>
-                      <option value="5">5 years or more</option>
-                      <option value="4">4 - 5 years</option>
-                      <option value="3">3 - 4 years</option>
-                      <option value="2">2 - 3 years</option>
-                      <option value="6">1 - 2 years</option>
-                      <option value="1">1 year - 6 months</option>
-                      <option value="0">Less than 6 months</option>
-                    </select>
-                  </div>}
+                  {
+                    <div className="yearSelector" style={{ marginTop: "8px" }}>
+                      <label>Year: </label>
+                      <select value={year} onChange={handleYearChange}>
+                        <option value="">select the year</option>
+                        <option value="5">5 years or more</option>
+                        <option value="4">4 - 5 years</option>
+                        <option value="3">3 - 4 years</option>
+                        <option value="2">2 - 3 years</option>
+                        <option value="6">1 - 2 years</option>
+                        <option value="1">1 year - 6 months</option>
+                        <option value="0">Less than 6 months</option>
+                      </select>
+                    </div>
+                  }
                   {
                     <div className="form-medium">
                       <div className="form-medium-selector">
@@ -341,7 +337,10 @@ export default function FormCat3() {
                             checked={selectOption === "option1"}
                             onChange={handleSelectOptionChange}
                           />
-                          <label htmlFor="option1">Ownwership of the place of residence is in the name of the applicant/ spouse</label>
+                          <label htmlFor="option1">
+                            Ownwership of the place of residence is in the name
+                            of the applicant/ spouse
+                          </label>
                         </div>
                         <div>
                           <input
@@ -352,7 +351,10 @@ export default function FormCat3() {
                             checked={selectOption === "option2"}
                             onChange={handleSelectOptionChange}
                           />
-                          <label htmlFor="option2">Ownwership is in the name of mother/ father of applicant/ spouse</label>
+                          <label htmlFor="option2">
+                            Ownwership is in the name of mother/ father of
+                            applicant/ spouse
+                          </label>
                         </div>
                         <div>
                           <input
@@ -363,7 +365,10 @@ export default function FormCat3() {
                             checked={selectOption === "option3"}
                             onChange={handleSelectOptionChange}
                           />
-                          <label htmlFor="option3">Continuously registered leased bond only in the name of applicant/ spouse</label>
+                          <label htmlFor="option3">
+                            Continuously registered leased bond only in the name
+                            of applicant/ spouse
+                          </label>
                         </div>
                         <div>
                           <input
@@ -374,7 +379,11 @@ export default function FormCat3() {
                             checked={selectOption === "option4"}
                             onChange={handleSelectOptionChange}
                           />
-                          <label htmlFor="option4">Government Quarters List only in name if applicant/ spouse</label>
+
+                          <label htmlFor="option4">
+                            Government Quarters List only in name if applicant/
+                            spouse
+                          </label>
                         </div>
                         <div>
                           <input
@@ -385,11 +394,14 @@ export default function FormCat3() {
                             checked={selectOption === "option5"}
                             onChange={handleSelectOptionChange}
                           />
-                          <label htmlFor="option5">The applicant/ spouse resides conteneously 10 years or more in a government property</label>
+                          <label htmlFor="option5">
+                            The applicant/ spouse resides conteneously 10 years
+                            or more in a government property
+                          </label>
                         </div>
                       </div>
-                    </div>}
-
+                    </div>
+                  }
                 </div>
               )}
 
@@ -429,7 +441,8 @@ export default function FormCat3() {
                   {
                     <div className="form-sex">
                       <label className="form-label">
-                        Documents to prove the present place of living after the marriage{" "}
+                        Documents to prove the present place of living after the
+                        marriage{" "}
                       </label>
                       <label className="form-sex-label">
                         <input
@@ -462,11 +475,17 @@ export default function FormCat3() {
                 register:{" "}
               </label>
               <input
-                type="text"
+                type="number"
                 id="applicantNumber"
                 value={yearsApplicant}
                 onChange={(e) => setYearApplicant(e.target.value)}
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                }}
               />
             </div>
 
@@ -476,11 +495,17 @@ export default function FormCat3() {
                 electoral register:{" "}
               </label>
               <input
-                type="text"
+                type="number"
                 id="spouseNumber"
                 value={yearsSpouse}
                 onChange={(e) => setYearSpouse(e.target.value)}
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                }}
               />
             </div>
 
@@ -490,20 +515,24 @@ export default function FormCat3() {
                 electoral register:{" "}
               </label>
               <input
-                type="text"
+                type="number"
                 id="guardianNumber"
                 value={yearsRegister}
                 onChange={(e) => setYearsRegister(e.target.value)}
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                }}
               />
             </div>
 
-            <div>
-              <p>
-                (This is applicable for a period of recent 05 years, prior to
-                the year the application is submitted)
-              </p>
-            </div>
+            <Alert severity="info" style={{ marginBottom: "8px" }}>
+              This is applicable for a period of recent 05 years, prior to the
+              year the application is submitted
+            </Alert>
 
             <div className="form-religion">
               <label className="form-label">
@@ -526,6 +555,16 @@ export default function FormCat3() {
 
       <div>
         <p>Marks: {marks}</p>
+      </div>
+
+      <div className="form-display-marks" onClick={(e) => calculateMarks()}>
+        <Modal
+          buttonText={"View Marks"}
+          bodyHeader={
+            "Marks for category based on Brothers/ sistors of students studying in the school at present"
+          }
+          bodyText={marks.toString()}
+        />
       </div>
     </>
   );

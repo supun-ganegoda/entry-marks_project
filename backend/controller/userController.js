@@ -43,7 +43,9 @@ const loginUser = async (req, res) => {
       "entryMarks123"
     );
 
-    return res.status(200).json({ username: user.username, user: token });
+    return res
+      .status(200)
+      .json({ username: user.username, user: token, email: req.body.email });
   } else {
     return res.status(404).json({ user: false });
   }
@@ -141,6 +143,40 @@ const submitChildDetails = async (req, res) => {
   }
 };
 
+//save marks to the database
+const saveMarks = async (req, res) => {
+  let marksObj = {
+    proximity: null,
+    pastPupils: null,
+    cousins: null,
+    staff: null,
+    officers: null,
+    forign: null,
+  };
+  console.log(req.body);
+  try {
+    marksObj.proximity = req.body.proximity;
+    marksObj.pastPupils = req.body.pastPupils;
+    marksObj.cousins = req.body.cousins;
+    marksObj.staff = req.body.staff;
+    marksObj.officers = req.body.officers;
+    marksObj.forign = req.body.forign;
+    const { email } = req.user;
+    await userDetailsModel.findOneAndUpdate(
+      { email: email }, // Find the document by email
+      {
+        $set: {
+          marks: marksObj,
+        },
+      }
+    );
+    res.status(200).json({ message: "Saved successfully !" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error saving marks" });
+  }
+};
+
 //export the controller
 module.exports = {
   registerUser,
@@ -151,4 +187,5 @@ module.exports = {
   deleteUser,
   updateUser,
   submitChildDetails,
+  saveMarks,
 };

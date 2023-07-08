@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import Button from "./Button";
 import "./HeroSection.css";
+import VideoPlayer from "./VideoPlayer";
 
 const HeroSection = () => {
   return (
     <>
       <div className="home__hero--section dark">
-        <div className="container">
+        <div className="container" style={{ maxWidth: "1500px" }}>
           <div className="top-line">GRADE ONE ADMISSION MARK PORTAL</div>
           <div className="row home__hero-row">
             <div className="col">
@@ -37,7 +38,8 @@ const HeroSection = () => {
             </div>
             <div className="col">
               <div className="home__hero-img-wrapper">
-                <img src="images/img-2.jpg" alt="school" />
+                <VideoPlayer />
+                <div className="video-header">How to use our website</div>
               </div>
             </div>
           </div>

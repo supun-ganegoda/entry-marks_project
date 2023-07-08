@@ -22,11 +22,12 @@ const LoginForm = () => {
 
     const data = await response.json();
 
-    console.log(data);
+    //console.log(data);
     if (data.user) {
       localStorage.setItem("token", data.user);
+      localStorage.setItem("email", data.email);
       localStorage.setItem("userName", data.username);
-      alert("Login successful");
+      alert("Login Success!");
       navigate("/");
       window.location.reload();
     } else {

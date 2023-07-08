@@ -9,6 +9,8 @@ const center = {
   lng: 80.220978,
 };
 const GMap = ({ handleMapClose }) => {
+  const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+  console.log(apiKey);
   const updateLatLng = useUpdateLatLng();
 
   const [markerPosition, setMarkerPosition] = useState(null);
@@ -27,7 +29,7 @@ const GMap = ({ handleMapClose }) => {
   return (
     <>
       <div>
-        <LoadScript googleMapsApiKey="AIzaSyBGNDiPaU1jWUUFF9xiTwCNqNpa2Zd1ngI">
+        <LoadScript googleMapsApiKey={apiKey}>
           <GoogleMap
             mapContainerClassName="map-container"
             center={center}

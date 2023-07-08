@@ -4,8 +4,9 @@
 
 fieldset {
   /* border: none; */
-  width: 100%;
+  width: 99%;
   padding: 8px;
+  margin: 4px;
 }
 
 legend {
@@ -52,6 +53,7 @@ legend {
 .yearSelector select {
   margin-left: 400px;
   margin-bottom: 4px;
+  width: auto;
 }
 
 input[type="text"],

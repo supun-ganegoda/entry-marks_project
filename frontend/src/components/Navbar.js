@@ -17,7 +17,7 @@ const Navbar = () => {
     showButton();
     if (localStorage.getItem("userName")) {
       setUserName(localStorage.getItem("userName"));
-      console.log(userName);
+      //console.log(userName);
     } else {
       setUserName("REGISTER");
     }
@@ -38,6 +38,7 @@ const Navbar = () => {
         if (data.success) {
           localStorage.removeItem("token");
           localStorage.removeItem("userName");
+          localStorage.removeItem("email");
           setUserName("REGISTER");
           alert("Log out Success! ");
           navigate("/");
