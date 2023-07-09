@@ -197,6 +197,7 @@ export default function FormCat3() {
     updateFinalMarks("Based on Brothers/ sistors of student", totalMarks3);
   };
 
+
   const renderTable = () => {
     return (
       <table>
@@ -378,6 +379,7 @@ export default function FormCat3() {
                             checked={selectOption === "option4"}
                             onChange={handleSelectOptionChange}
                           />
+
                           <label htmlFor="option4">
                             Government Quarters List only in name if applicant/
                             spouse
@@ -465,6 +467,7 @@ export default function FormCat3() {
                 </div>
               )}
             </div>
+            
 
             <div className="form-religion">
               <label className="form-label">
@@ -547,6 +550,11 @@ export default function FormCat3() {
             </div>
           </fieldset>
         </form>
+        </div>
+      <button onClick={calculateMarks}>Calculate</button>
+
+      <div>
+        <p>Marks: {marks}</p>
       </div>
 
       <div className="form-display-marks" onClick={(e) => calculateMarks()}>
