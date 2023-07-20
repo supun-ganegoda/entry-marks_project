@@ -21,6 +21,7 @@ const style = {
 };
 
 export default function FloatingSummary() {
+  const url = process.env.REACT_APP_SERVER_URL;
   const { areMarksCalculated } = useContext(MarksContext);
   const [userName, setUserName] = useState(null);
   const [saved, setSaved] = useState(false);
@@ -81,15 +82,11 @@ export default function FloatingSummary() {
     };
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(
-        "http://localhost:4000/api/save-marks",
-        marks,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${url}save-marks`, marks, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       console.log(response.data); // Handle success response
       setSaved(true);

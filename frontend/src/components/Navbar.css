@@ -101,9 +101,9 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
-  scale: 1.3;
+  scale: 0.8;
 }
-.logOut::before {
+/* .logOut::before {
   content: attr(data-tooltip);
   position: absolute;
   top: -25px;
@@ -123,6 +123,15 @@
 .logOut:hover::before {
   visibility: visible;
   opacity: 1;
+} */
+
+.login {
+  margin-top: 4px;
+  margin-left: 1rem;
+  scale: 1.5;
+}
+.login:hover {
+  scale: 1;
 }
 
 @media screen and (max-width: 960px) {

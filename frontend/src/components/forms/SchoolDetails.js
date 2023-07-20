@@ -6,6 +6,7 @@ import { useUpdateSelectedSchools } from "../context/SelectedSchoolsContext";
 import Alert from "@mui/material/Alert";
 
 const SchoolDetails = () => {
+  const url = process.env.REACT_APP_SERVER_URL;
   //suggestions model
   const selectedSchools = useUpdateSelectedSchools();
   const [inputValue, setInputValue] = useState("");
@@ -35,7 +36,7 @@ const SchoolDetails = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:4000/api/schools/suggestions?input=${userInput}`
+        `${url}schools/suggestions?input=${userInput}`
       );
       const data = await response.json();
       //console.log(data);

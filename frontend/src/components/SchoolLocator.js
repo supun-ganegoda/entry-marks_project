@@ -7,6 +7,7 @@ import { useUpdateSchoolCount } from "./context/SchoolCountContext";
 
 const SchoolLocator = () => {
   const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+  const url = process.env.REACT_APP_SERVER_URL;
   const schoolCount = useUpdateSchoolCount();
   let tempSchoolCount = [];
   const circleColors = ["#ff0000", "#32a852", "#f5ef3d", "#3dd6f5"];
@@ -79,9 +80,7 @@ const SchoolLocator = () => {
   const onLoadMap = () => {
     const getAllSchoolDetails = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:4000/api/schools/allschools"
-        );
+        const response = await fetch(`${url}schools/allschools`);
         const data = await response.json();
         // console.log(data);
         //setSchools(data);

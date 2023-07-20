@@ -6,6 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./ChildDetails.css";
 
 const ChildDetails = () => {
+  const url = process.env.REACT_APP_SERVER_URL;
   const [fullName, setFullName] = useState("");
   const [initials, setInitials] = useState("");
   const [religion, setReligion] = useState("");
@@ -49,7 +50,7 @@ const ChildDetails = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:4000/api/child-details",
+        `${url}child-details`,
         childDetailsData,
         {
           headers: {

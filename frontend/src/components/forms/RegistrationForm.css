@@ -2,12 +2,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: calc(100vh - 80px);
   background: linear-gradient(
       rgba(255, 255, 255, 0.7),
       rgba(255, 255, 255, 0.3)
     ),
-    url("https://images.pexels.com/photos/114979/pexels-photo-114979.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500");
+    url("https://www.saraswatiborsad.org/wp-content/uploads/2020/07/Questions-to-ask-while-choosing-a-school-for-your-child.jpg");
   background-size: cover;
   background-position: center;
 }
