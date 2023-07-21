@@ -6,6 +6,7 @@ import { Alert, Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { saveAs } from "file-saver";
 import { MarksContext } from "./context/MarksContext";
 
 const style = {
@@ -32,8 +33,9 @@ export default function FloatingSummary() {
   const [clicked, setClicked] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [mailSend, setMailSend] = useState(false);
 
-  console.log("finalMarks ", finalMarks);
+  //console.log("finalMarks ", finalMarks);
   const displaySummaryTable = () => {
     return (
       <table>
@@ -70,7 +72,7 @@ export default function FloatingSummary() {
     checkLogin();
   }, []);
 
-  const saveMarks = async (e) => {
+  const makeObject = () => {
     const marks = {
       proximity: finalMarks["Based on proximity"],
       pastPupils: finalMarks["Based on Children of past pupils"],
@@ -80,6 +82,47 @@ export default function FloatingSummary() {
       forign:
         finalMarks["Based on Children of persons arriving after living abroad"],
     };
+    return marks;
+  };
+
+  const setDefaultZero = () => {
+    const data = makeObject();
+    data.userName = userName;
+    data.email = email;
+    for (const key in data) {
+      if (data.hasOwnProperty(key) && data[key] === undefined) {
+        data[key] = 0;
+      }
+    }
+    return data;
+  };
+
+  const sendMail = async (e) => {
+    const data = setDefaultZero();
+
+    await axios
+      .post(`${url}pdf/createPdf`, data) //create pdf next=> get pdf
+      .then(() =>
+        axios
+          .get(`${url}pdf/fetchPdf`, { responseType: "blob" }) //to fetch the generated pdf
+          .then((res) => {
+            const pdfBlob = new Blob([res.data], { type: "application/pdf" });
+            saveAs(pdfBlob, "Summary-Report.pdf"); //to save we use file saver
+          })
+          .then(() =>
+            axios
+              .post(`${url}pdf/sendPdf`, { email: "dinethjkd00@gmail.com" })
+              .then((response) => {
+                console.log(response);
+                //alert(response.data);
+                setMailSend(true);
+              })
+          )
+      );
+  };
+
+  const saveMarks = async (e) => {
+    const marks = makeObject();
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(`${url}save-marks`, marks, {
@@ -112,6 +155,13 @@ export default function FloatingSummary() {
         justifyContent: "flex - end",
       }}
     >
+      {mailSend && (
+        <Dialog
+          toOpen={true}
+          title={"Info"}
+          body={"PDF version of report is sended to your mail."}
+        />
+      )}
       {areMarksCalculated && (
         <Fab
           onClick={(e) => displayModal()}
@@ -154,13 +204,20 @@ export default function FloatingSummary() {
               Marks based on selected categories
             </Typography>
             {displaySummaryTable()}
-            <Button
-              variant="contained"
-              onClick={(e) => saveMarks()}
-              disabled={isLogged}
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "8px" }}
             >
-              Save
-            </Button>
+              <Button
+                variant="contained"
+                onClick={(e) => saveMarks()}
+                disabled={isLogged}
+              >
+                Save
+              </Button>
+              <Button variant="contained" onClick={(e) => sendMail()}>
+                Download Report
+              </Button>
+            </div>
           </Box>
         </Modal>
       )}
