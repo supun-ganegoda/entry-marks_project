@@ -111,7 +111,7 @@ export default function FloatingSummary() {
           })
           .then(() =>
             axios
-              .post(`${url}pdf/sendPdf`, { email: "dinethjkd00@gmail.com" })
+              .post(`${url}pdf/sendPdf`, { email: email })
               .then((response) => {
                 console.log(response);
                 //alert(response.data);
