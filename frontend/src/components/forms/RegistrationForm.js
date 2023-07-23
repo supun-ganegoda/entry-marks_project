@@ -2,11 +2,15 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./RegistrationForm.css";
 import { inputs } from "../data/RegistrationFormData";
+import Dialog from "../Dialog";
 
 const RegistrationForm = () => {
+  const url = process.env.REACT_APP_SERVER_URL;
   const navigate = useNavigate();
   const [formValues, setFormValues] = useState({});
   const [errors, setErrors] = useState({});
+  const [errorMsg, setErrorMsg] = useState("");
+  const [isError, setIsError] = useState(false);
 
   const handleChange = (event) => {
     setFormValues({
@@ -14,29 +18,41 @@ const RegistrationForm = () => {
       [event.target.name]: event.target.value,
     });
   };
-
+  //console.log(formValues);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    //console.log(formValues);
-    const response = await fetch("http://localhost:4000/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: formValues.username,
-        email: formValues.email,
-        password: formValues.password,
-      }),
-    });
+    if (formValues.password === formValues.confirmPassword) {
+      try {
+        const response = await fetch(`${url}register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: formValues.username,
+            email: formValues.email,
+            password: formValues.password,
+          }),
+        });
 
-    const res = await response.json();
-    console.log(res);
+        const res = await response.json();
+        console.log(res);
 
-    if (response.ok) {
-      navigate("/login-form");
+        if (response.ok) {
+          navigate("/login-form");
+        } else {
+          setErrorMsg(res.error);
+          setIsError(true);
+          //console.log(res.error);
+        }
+      } catch (error) {
+        //console.log(error.message);
+        setIsError(true);
+        setErrorMsg(error.message + ". Check your connection");
+      }
     } else {
-      console.log(res.error);
+      setIsError(true);
+      setErrorMsg("Passwords don't match each other!");
     }
   };
 
@@ -56,6 +72,12 @@ const RegistrationForm = () => {
 
   return (
     <>
+      {isError && (
+        <div onClick={(e) => setIsError(false)}>
+          <Dialog toOpen={true} title={"Error"} body={errorMsg.toString()} />
+        </div>
+      )}
+
       <div className="register-container">
         <form onSubmit={handleSubmit}>
           <h1>REGISTER NOW</h1>

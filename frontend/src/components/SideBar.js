@@ -205,10 +205,16 @@ const SideBar = () => {
         </div>
       </div>
 
-      {applicationForm && <ApplicantDetails />}
-      {childForm && <ChildDetails />}
-      {schoolDetails && <SchoolDetails />}
-      {otherSchoolDetails && <OtherSchoolDetails />}
+      {applicationForm && (
+        <ApplicantDetails handleClick={setSchoolFormVisible} />
+      )}
+      {childForm && <ChildDetails handleClick={setApplicationFormVisible} />}
+      {schoolDetails && (
+        <SchoolDetails handleClick={setOhterScoolFormVisible} />
+      )}
+      {otherSchoolDetails && (
+        <OtherSchoolDetails onClick={setElectFormVisible} />
+      )}
       {elecForm && <ElectorialForm />}
     </>
   );

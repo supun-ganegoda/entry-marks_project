@@ -4,8 +4,12 @@ import DatePicker from "react-datepicker";
 import Button from "@mui/material/Button";
 import "react-datepicker/dist/react-datepicker.css";
 import "./ChildDetails.css";
+import Dialog from "../Dialog";
 
-const ChildDetails = () => {
+const ChildDetails = (props) => {
+  const { handleClick } = props;
+
+  const url = process.env.REACT_APP_SERVER_URL;
   const [fullName, setFullName] = useState("");
   const [initials, setInitials] = useState("");
   const [religion, setReligion] = useState("");
@@ -13,6 +17,8 @@ const ChildDetails = () => {
   const [femaleChecked, setFemaleChecked] = useState(false);
   const [medium, setmedium] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+  const [isError, setIsError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleOptionChange = (e) => {
     setmedium(e.target.value);
@@ -49,7 +55,7 @@ const ChildDetails = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:4000/api/child-details",
+        `${url}child-details`,
         childDetailsData,
         {
           headers: {
@@ -59,13 +65,21 @@ const ChildDetails = () => {
       );
 
       console.log(response.data); // Handle success response
+      handleClick();
     } catch (error) {
       console.error(error); // Handle error
+      setIsError(true);
+      setErrorMsg(error.message);
     }
   };
 
   return (
     <>
+      {isError && (
+        <div onClick={(e) => setIsError(false)}>
+          <Dialog toOpen={true} title={"Error"} body={errorMsg.toString()} />
+        </div>
+      )}
       <div className="form-container">
         <form onSubmit={handleChildDetailsSubmit}>
           <fieldset>
@@ -181,7 +195,7 @@ const ChildDetails = () => {
           </fieldset>
           <div className="save-btn">
             <Button type="submit" variant="outlined">
-              SAVE
+              SAVE & CONTINUE
             </Button>
           </div>
         </form>

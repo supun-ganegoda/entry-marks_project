@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 //register the users
 const registerUser = async (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   try {
     const newPassword = await bcrypt.hash(req.body.password, 10);
     const user = await userDetailsModel.create({
@@ -24,9 +24,8 @@ const loginUser = async (req, res) => {
   const user = await userDetailsModel.findOne({
     email: req.body.email,
   });
-
   if (!user) {
-    return res.json({ status: "error", error: "Invalid login" });
+    return res.json({ status: "error", error: "No such user" });
   }
   //console.log("reqBodypass: ", req.body.password);
   const isPasswordValid = await bcrypt.compare(
