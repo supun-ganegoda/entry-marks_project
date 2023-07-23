@@ -32,7 +32,7 @@ const CatHolder = () => {
   }, [checkboxes]);
 
   const handleTabChange = (event, newActiveComponent) => {
-    console.log(newActiveComponent);
+    //console.log(newActiveComponent);
     setActiveComponent(newActiveComponent);
   };
 

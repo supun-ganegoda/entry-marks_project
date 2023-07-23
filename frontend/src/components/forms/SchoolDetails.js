@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import "./SchoolDetails.css";
 import { useUpdateSelectedSchools } from "../context/SelectedSchoolsContext";
 import Alert from "@mui/material/Alert";
+import Dialog from "../Dialog";
 
-const SchoolDetails = () => {
+const SchoolDetails = ({ handleClick }) => {
   const url = process.env.REACT_APP_SERVER_URL;
   //suggestions model
   const selectedSchools = useUpdateSelectedSchools();
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [isSchoolsSet, setIsSchoolsSet] = useState(false);
 
   const [selectedSchool1, setselectedSchool1] = useState(null);
   const [selectedSchool2, setselectedSchool2] = useState(null);
@@ -46,11 +49,7 @@ const SchoolDetails = () => {
     }
   };
 
-  useEffect(() => {
-    selectedSchools([]);
-  }, []);
-
-  const updateOnClose = () => {
+  const getSelectedSchools = () => {
     const temp = [
       selectedSchool1,
       selectedSchool2,
@@ -58,12 +57,47 @@ const SchoolDetails = () => {
       selectedSchool4,
     ];
     const selected = temp.filter((sc) => sc !== null);
+    return selected;
+  };
+
+  const saveToDatabase = async () => {
+    const temp = getSelectedSchools();
+    //convert array into object
+    const selected = temp.reduce((acc, value, index) => {
+      acc[index] = value;
+      return acc;
+    }, {});
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`${url}selected-schools`, selected, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log(response.data); // Handle success response
+    } catch (error) {
+      console.error(error); // Handle error
+    }
+  };
+
+  useEffect(() => {
+    selectedSchools([]);
+  }, []);
+
+  const updateOnClose = () => {
+    const selected = getSelectedSchools();
     selectedSchools(selected);
-    alert("Schools are set !");
+    setIsSchoolsSet(true);
+    saveToDatabase();
+    handleClick();
   };
 
   return (
     <>
+      {isSchoolsSet && (
+        <Dialog toOpen={true} title={"Info"} body={"Schools are set !"} />
+      )}
       <div className="school-details-wrapper">
         <fieldset>
           <legend className="school-details-header">
@@ -125,7 +159,7 @@ const SchoolDetails = () => {
           </div>
         </fieldset>
         <button className="set-button" onClick={(e) => updateOnClose()}>
-          Set Schools
+          SAVE & CONTINUE
         </button>
         <Alert severity="info" style={{ marginTop: "8px", marginRight: "4px" }}>
           Marks are calculated for the first preffered school

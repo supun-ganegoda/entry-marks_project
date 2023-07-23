@@ -7,6 +7,8 @@ export const MarksContext = createContext();
 export const MarksProvider = ({ children }) => {
   const [marks, setMarks] = useState({});
   const [finalMarks, setFinalMarks] = useState({});
+  const initialMarks = {};
+  const initialFinalMarks = {};
 
   // Update the marks value
   const updateMarks = (componentName, value) => {
@@ -26,6 +28,11 @@ export const MarksProvider = ({ children }) => {
     (value) => value === true
   );
 
+  const clearMarksContext = () => {
+    setMarks(initialMarks);
+    setFinalMarks(initialFinalMarks);
+  };
+
   return (
     <MarksContext.Provider
       value={{
@@ -34,6 +41,7 @@ export const MarksProvider = ({ children }) => {
         areMarksCalculated,
         finalMarks,
         updateFinalMarks,
+        clearMarksContext,
       }}
     >
       {children}

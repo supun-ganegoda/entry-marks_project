@@ -123,7 +123,7 @@ const submitChildDetails = async (req, res) => {
     await userDetailsModel.findOneAndUpdate(
       { email: email }, // Find the document by email
       {
-        $push: {
+        $set: {
           "data.childDetails": {
             fullName,
             initials,
@@ -139,6 +139,37 @@ const submitChildDetails = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error updating child details" });
+  }
+};
+
+//save selected schools to the database
+const saveSelectedSchools = async (req, res) => {
+  try {
+    const {
+      0: preference1,
+      1: preference2,
+      2: preference3,
+      3: preference4,
+    } = req.body;
+
+    const { email } = req.user;
+    // console.log(req.user);
+    await userDetailsModel.findOneAndUpdate(
+      { email: email }, // Find the document by email
+      {
+        $set: {
+          "data.selectedSchoolDetails": {
+            preference1,
+            preference2,
+            preference3,
+            preference4,
+          },
+        },
+      }
+    );
+    res.status(200).json({ message: "Schools saved successfully" });
+  } catch (e) {
+    console.log(e);
   }
 };
 
@@ -186,5 +217,6 @@ module.exports = {
   deleteUser,
   updateUser,
   submitChildDetails,
+  saveSelectedSchools,
   saveMarks,
 };

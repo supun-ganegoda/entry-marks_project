@@ -12,6 +12,7 @@ const {
   updateUser,
   submitChildDetails,
   saveMarks,
+  saveSelectedSchools,
 } = require("../controller/userController");
 
 //getting the router object
@@ -37,6 +38,7 @@ router.patch("/:id", updateUser);
 /* ########################################################## */
 //form submitting routes
 router.post("/child-details", verifyToken, submitChildDetails);
+router.post("/selected-schools", verifyToken, saveSelectedSchools); //save selected schools to the database
 
 router.post("/save-marks", verifyToken, saveMarks);
 
