@@ -6,6 +6,7 @@ const pdfTemplate = require("../document/document");
 const env = require("dotenv");
 env.config();
 
+/****** Generate PDF with file system permission
 exports.createPdf = (req, res) => {
   //console.log("create pdf request received", req.body);
   const pdfFolder = path.join(__dirname, "../pdfs"); // Path to the "pdfs" folder inside your project directory
@@ -71,4 +72,83 @@ exports.sendPdf = (req, res) => {
       }
     }
   );
+};
+*/
+
+exports.createPdf = (req, res) => {
+  const pdfBuffer = pdf
+    .create(pdfTemplate(req.body), {})
+    .toBuffer((err, buffer) => {
+      if (err) {
+        console.log("Error generating PDF:", err);
+        return res.status(500).send("Error generating PDF");
+      }
+
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=Summary-Report.pdf"
+      );
+      res.send(buffer);
+    });
+};
+
+exports.fetchPdf = (req, res) => {
+  const pdfPath = path.join(__dirname, "../pdfs/Summary-Report.pdf");
+  const pdfBuffer = fs.readFileSync(pdfPath);
+
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader(
+    "Content-Disposition",
+    "attachment; filename=Summary-Report.pdf"
+  );
+  res.send(pdfBuffer);
+};
+
+exports.sendPdf = (req, res) => {
+  console.log("send mail req received");
+  const pdfBuffer = pdf
+    .create(pdfTemplate(req.body), {})
+    .toBuffer((err, buffer) => {
+      if (err) {
+        console.log("Error generating PDF:", err);
+        return res.status(500).send("Error generating PDF");
+      }
+
+      let smtpTransport = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        service: "Gmail",
+        port: 465,
+        secure: true,
+        auth: {
+          user: process.env.USER,
+          pass: process.env.PASSWORD,
+        },
+        tls: { rejectUnauthorized: false },
+      });
+
+      smtpTransport.sendMail(
+        {
+          from: process.env.EMAIL,
+          to: req.body.email,
+          subject: "Summary Report of Admission Marks Calculation",
+          html: `
+          The pdf version of the report is attached with this email, Thanks.`,
+          attachments: [
+            {
+              filename: "Summary-Report.pdf",
+              contentType: "application/pdf",
+              content: buffer,
+            },
+          ],
+        },
+        function (error, info) {
+          if (error) {
+            console.log(error);
+          } else {
+            res.send("Mail has been sent to your email. Check your mail");
+          }
+        }
+      );
+    });
 };
