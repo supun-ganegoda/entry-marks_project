@@ -9,6 +9,7 @@ import Modal from "@mui/material/Modal";
 import { saveAs } from "file-saver";
 import { MarksContext } from "./context/MarksContext";
 import "./Spinner.css";
+import { Link } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -125,8 +126,9 @@ export default function FloatingSummary() {
       );
     */
 
+    /*  
     try {
-      await axios.post(`${url}pdf/createPdf`, data);
+      await axios.post(`${url}pdf/generatePDF`, data);
 
       const response = await axios.get(`${url}pdf/fetchPdf`, {
         responseType: "arraybuffer",
@@ -142,6 +144,23 @@ export default function FloatingSummary() {
       console.log(error);
       setIsSendingEmail(false);
       // Handle any errors here
+    }
+    */
+
+    //pdf generation using puppeteer
+    try {
+      const response = await axios.get(`${url}pdf/generatePDF`, {
+        responseType: "blob",
+      });
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const uri = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = uri;
+      a.download = "test-generated.pdf";
+      a.click();
+      URL.revokeObjectURL(uri);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
     }
   };
 
@@ -249,9 +268,11 @@ export default function FloatingSummary() {
                 >
                   Save
                 </Button>
-                <Button variant="contained" onClick={(e) => sendMail()}>
-                  Download Report
-                </Button>
+                <Link to="/pdf-report">
+                  <Button variant="contained" onClick={(e) => sendMail()}>
+                    View Report
+                  </Button>
+                </Link>
                 {downloadClicked ? (
                   <p>Please wait... Generating in progress</p>
                 ) : null}

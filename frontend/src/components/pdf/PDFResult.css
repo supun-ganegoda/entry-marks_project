@@ -1,0 +1,57 @@
+/* PDFResultTemplate.css */
+
+.invoice-box {
+    max-width: 800px;
+    margin: auto;
+    padding: 30px;
+    border: 1px solid #eee;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    font-size: 16px;
+    line-height: 24px;
+    font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
+    color: #555;
+}
+
+.top td {
+    width: 50%;
+    vertical-align: top;
+}
+
+.title-image {
+    width: 100%;
+    max-width: 156px;
+}
+
+.table {
+    width: 100%;
+    line-height: inherit;
+    text-align: left;
+}
+
+.table-cell {
+    padding: 5px;
+}
+
+.heading-row {
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+
+.item-row {
+    border-bottom: 1px solid #eee;
+}
+
+.total-row td:nth-child(2) {
+    border-top: 2px solid #eee;
+    font-weight: bold;
+}
+
+.special-row {
+    background-color: #e7e6e6f6;
+}
+
+.test-row td {
+    width: 50%;
+    text-align: left;
+}

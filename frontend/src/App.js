@@ -16,6 +16,7 @@ import LoginForm from "./components/forms/LoginForm";
 import SchoolCountProvider from "./components/context/SchoolCountContext";
 import SchoolProvider from "./components/context/SelectedSchoolsContext";
 import { MarksProvider } from "./components/context/MarksContext";
+import PDFResult from "./components/pdf/PDFResult";
 
 function App() {
   return (
@@ -41,6 +42,8 @@ function App() {
                   <Route path="/catHolder" element={<CatHolder />} />
 
                   <Route path="/login-form" exact element={<LoginForm />} />
+
+                  <Route path="/pdf-report" exact element={<PDFResult />} />
                   {/* Add the catch-all route for 404 Page Not Found */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
