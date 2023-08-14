@@ -19,7 +19,10 @@ const puppeteer = require("puppeteer");
 exports.generatePDF = async (req, res) => {
   try {
     //console.log("req to generate pdf");
-    const browser = await puppeteer.launch({ headless: { value: true } });
+    const browser = await puppeteer.launch({
+      headless: { value: true },
+      userDataDir: "/tmp/puppeteerCache",
+    });
     const page = await browser.newPage();
     await page.goto("http://localhost:3000/pdf-report");
     const pdfBuffer = await page.pdf({
