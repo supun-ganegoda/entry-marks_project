@@ -24,7 +24,7 @@ exports.generatePDF = async (req, res) => {
       userDataDir: "/opt/render/.cache/puppeteer",
     });
     const page = await browser.newPage();
-    await page.goto("http://localhost:3000/pdf-report");
+    await page.goto("https://entry-marks-portal.netlify.app/applications");
     const pdfBuffer = await page.pdf({
       format: "A4",
       margin: {
