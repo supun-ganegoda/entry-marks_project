@@ -12,7 +12,10 @@ const {
   updateUser,
   submitChildDetails,
   saveMarks,
+  getMarks,
   saveSelectedSchools,
+  getApplicantDetails,
+  getPrefferedSchools,
 } = require("../controller/userController");
 
 //getting the router object
@@ -27,9 +30,15 @@ router.post("/login", loginUser);
 //logout user
 router.post("/logout", logoutUser);
 
-router.get("/", getAllUserDetails);
+router.get("/test", getAllUserDetails);
 
-router.get("/:id", getUserDetails);
+router.get("/get-marks", verifyToken, getMarks); //retrive marks from the database
+
+router.get("/get-user-details", verifyToken, getUserDetails); //get user information
+
+router.get("/get-applicant-details", verifyToken, getApplicantDetails); //get child information
+
+router.get("/get-preffered-schools", verifyToken, getPrefferedSchools); //get preffered schools
 
 router.delete("/:id", deleteUser);
 
@@ -39,8 +48,6 @@ router.patch("/:id", updateUser);
 //form submitting routes
 router.post("/child-details", verifyToken, submitChildDetails);
 router.post("/selected-schools", verifyToken, saveSelectedSchools); //save selected schools to the database
-
 router.post("/save-marks", verifyToken, saveMarks);
 
-//export the router object
 module.exports = router;

@@ -22,6 +22,13 @@ exports.generatePDF = async (req, res) => {
     const browser = await puppeteer.launch({ headless: { value: true } });
     const page = await browser.newPage();
     await page.goto("http://localhost:3000/pdf-report");
+
+    await page.evaluate(() => {
+      const navContainer = document.querySelector(".nav-container");
+      if (navContainer) {
+        navContainer.remove();
+      }
+    });
     const pdfBuffer = await page.pdf({
       format: "A4",
       margin: {
