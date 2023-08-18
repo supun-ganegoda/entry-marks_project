@@ -67,16 +67,61 @@ const getAllUserDetails = async (req, res) => {
 
 //get a single user details
 const getUserDetails = async (req, res) => {
-  const { id } = req.params;
-  //check if the ID is valid ID
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Not a valid ID" });
+  try {
+    const { email } = req.user;
+
+    const user = await userDetailsModel.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    //console.log(user.marks);
+    const userObj = {
+      ID: user._id,
+      userName: user.username,
+      email: user.email,
+    };
+
+    res.status(200).json(userObj);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error retrieving marks" });
   }
-  const tempObj = await userDetailsModel.findById(id);
-  if (tempObj) {
-    return res.status(200).json(tempObj);
+};
+
+const getApplicantDetails = async (req, res) => {
+  try {
+    const { email } = req.user;
+
+    const user = await userDetailsModel.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    //console.log(user.marks);
+    const userObj = user.data.childDetails;
+
+    res.status(200).json(userObj);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error retrieving child details" });
   }
-  res.status(404).json({ error: "No such user available!" });
+};
+
+const getPrefferedSchools = async (req, res) => {
+  try {
+    const { email } = req.user;
+
+    const user = await userDetailsModel.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    //console.log(user.marks);
+    const userObj = user.data.selectedSchoolDetails;
+
+    res.status(200).json(userObj);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error retrieving preffered schools" });
+  }
 };
 
 //delete a user
@@ -123,7 +168,7 @@ const submitChildDetails = async (req, res) => {
     await userDetailsModel.findOneAndUpdate(
       { email: email }, // Find the document by email
       {
-        $push: {
+        $set: {
           "data.childDetails": {
             fullName,
             initials,
@@ -139,6 +184,37 @@ const submitChildDetails = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error updating child details" });
+  }
+};
+
+//save selected schools to the database
+const saveSelectedSchools = async (req, res) => {
+  try {
+    const {
+      0: preference1,
+      1: preference2,
+      2: preference3,
+      3: preference4,
+    } = req.body;
+
+    const { email } = req.user;
+    // console.log(req.user);
+    await userDetailsModel.findOneAndUpdate(
+      { email: email }, // Find the document by email
+      {
+        $set: {
+          "data.selectedSchoolDetails": {
+            preference1,
+            preference2,
+            preference3,
+            preference4,
+          },
+        },
+      }
+    );
+    res.status(200).json({ message: "Schools saved successfully" });
+  } catch (e) {
+    console.log(e);
   }
 };
 
@@ -176,6 +252,32 @@ const saveMarks = async (req, res) => {
   }
 };
 
+//retrive marks from the database
+const getMarks = async (req, res) => {
+  try {
+    const { email } = req.user;
+
+    const user = await userDetailsModel.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    //console.log(user.marks);
+    const marksObj = {
+      proximity: user.marks.proximity,
+      pastPupils: user.marks.pastPupils,
+      cousins: user.marks.cousins,
+      staff: user.marks.staff,
+      officers: user.marks.officers,
+      forign: user.marks.forign,
+    };
+
+    res.status(200).json(marksObj);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error retrieving marks" });
+  }
+};
+
 //export the controller
 module.exports = {
   registerUser,
@@ -186,5 +288,9 @@ module.exports = {
   deleteUser,
   updateUser,
   submitChildDetails,
+  saveSelectedSchools,
   saveMarks,
+  getMarks,
+  getApplicantDetails,
+  getPrefferedSchools,
 };

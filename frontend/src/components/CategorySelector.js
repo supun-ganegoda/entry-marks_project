@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import "./CategorySelector.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { MarksContext } from "./context/MarksContext";
 //import { useUpdateSelectedForms } from "./context/FormContext";
 
 const CategorySelector = () => {
   const navigate = useNavigate();
+  const { clearMarksContext } = useContext(MarksContext); //set all calculated marks to zero if return back
   const [isChecked, setIsChecked] = useState(false);
   const [checkboxes, setCheckboxes] = useState({
     checkbox1: false,
@@ -23,6 +25,7 @@ const CategorySelector = () => {
 
   useEffect(() => {
     checkChecked();
+    clearMarksContext();
   }, [checkboxes]);
 
   const checkChecked = () => {

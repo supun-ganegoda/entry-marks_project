@@ -7,7 +7,7 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
-.container {
+.modern-container {
   max-width: 1170px;
   margin: auto;
 }

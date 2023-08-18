@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <footer className="footer">
-      <div className="container">
+      <div className="modern-container">
         <div className="row">
           <div className="footer-col">
             <h4>company</h4>
@@ -21,27 +21,13 @@ const Footer = () => {
             <h4>get help</h4>
             <ul>
               <li>
-                <a href="https://sddk.com/faq" target="_blank" rel="noreferrer">
-                  FAQ
-                </a>
+                <Link to="/FAQ">FAQ</Link>
               </li>
               <li>
-                <a
-                  href="https://sddk.com/privacy-policy"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Privacy Policy
-                </a>
+                <Link to="/privacy-policy">Privacy Policy</Link>
               </li>
               <li>
-                <a
-                  href="https://sddk.com/terms-conditions"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Terms & Conditions
-                </a>
+                <Link to="/terms">Terms & Conditions</Link>
               </li>
             </ul>
           </div>

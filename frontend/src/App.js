@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import "./App.css";
 import NotFound from "./components/pages/NotFound";
 import Navbar from "./components/Navbar";
@@ -16,6 +21,12 @@ import LoginForm from "./components/forms/LoginForm";
 import SchoolCountProvider from "./components/context/SchoolCountContext";
 import SchoolProvider from "./components/context/SelectedSchoolsContext";
 import { MarksProvider } from "./components/context/MarksContext";
+import PDFResult from "./components/pdf/PDFResult";
+import { NavbarProvider } from "./components/context/NavbarContext";
+import VerificationPage from "./components/pages/VerificationPage";
+import TermsAndConditions from "./components/pages/Terms";
+import PrivacyPolicy from "./components/pages/PrivacyPolicy";
+import FAQ from "./components/pages/FAQ";
 
 function App() {
   return (
@@ -24,27 +35,47 @@ function App() {
         <SchoolCountProvider value={[]}>
           <SchoolProvider value={[]}>
             <MarksProvider>
-              <Router>
-                <Navbar />
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/applications" element={<Application />} />
-                  <Route path="/child-details" element={<ChildDetails />} />
-                  <Route path="/register" element={<RegistrationForm />} />
-                  <Route path="/about-us" element={<AboutUs />} />
-                  <Route
-                    path="/categorySelector"
-                    element={<CategorySelector />}
-                  />
-                  <Route path="/sidebar" element={<SideBar />} />
+              <NavbarProvider>
+                <Router>
+                  <Navbar />
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route
+                      path="/verification"
+                      exact
+                      element={<VerificationPage />}
+                    />
+                    <Route path="/applications" element={<Application />} />
+                    <Route path="/child-details" element={<ChildDetails />} />
+                    <Route path="/register" element={<RegistrationForm />} />
+                    <Route path="/about-us" element={<AboutUs />} />
+                    <Route path="/FAQ" exact element={<FAQ />} />
+                    <Route
+                      path="/terms"
+                      exact
+                      element={<TermsAndConditions />}
+                    />
+                    <Route
+                      path="/privacy-policy"
+                      exact
+                      element={<PrivacyPolicy />}
+                    />
+                    <Route
+                      path="/categorySelector"
+                      element={<CategorySelector />}
+                    />
+                    <Route path="/sidebar" element={<SideBar />} />
 
-                  <Route path="/catHolder" element={<CatHolder />} />
+                    <Route path="/catHolder" element={<CatHolder />} />
 
-                  <Route path="/login-form" exact element={<LoginForm />} />
-                  {/* Add the catch-all route for 404 Page Not Found */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Router>
+                    <Route path="/login-form" exact element={<LoginForm />} />
+
+                    <Route path="/pdf-report" exact element={<PDFResult />} />
+                    {/* Add the catch-all route for 404 Page Not Found */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Router>
+              </NavbarProvider>
             </MarksProvider>
           </SchoolProvider>
         </SchoolCountProvider>

@@ -1,0 +1,34 @@
+.terms-container h1 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.terms-content p {
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.terms-content ol {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: justify;
+}
+
+.terms-content ol li {
+  margin-bottom: 10px;
+}
+
+.terms-container {
+  max-width: 800px;
+  margin: 0 auto;
+  margin-bottom: 12px;
+}
+
+.terms-content {
+  border: 1px solid #ccc;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 5px;
+}

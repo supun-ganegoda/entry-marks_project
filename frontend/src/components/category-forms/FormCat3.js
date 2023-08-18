@@ -409,10 +409,10 @@ export default function FormCat3() {
                 <div>
                   {
                     <div className="form-sex">
-                      <label className="form-label">
-                        Other Documents to prove place of residance{" "}
+                      <label>
+                        Other Documents to prove place of residance: {" "}
                       </label>
-                      <label className="form-sex-label">
+                      <label >
                         <input
                           className="form-sex-checkbox"
                           type="checkbox"
@@ -439,10 +439,10 @@ export default function FormCat3() {
                 <div>
                   {<p>If the nearest school is the applied school,</p>}
                   {
-                    <div className="form-sex">
-                      <label className="form-label">
+                    <div className="form-label">
+                      <label>
                         Documents to prove the present place of living after the
-                        marriage{" "}
+                        marriage: {" "}
                       </label>
                       <label className="form-sex-label">
                         <input
@@ -453,7 +453,7 @@ export default function FormCat3() {
                         />
                         Yes
                       </label>
-                      <label className="form-sex-label">
+                      <label >
                         <input
                           className="form-sex-checkbox"
                           type="checkbox"
@@ -551,11 +551,6 @@ export default function FormCat3() {
           </fieldset>
         </form>
         </div>
-      <button onClick={calculateMarks}>Calculate</button>
-
-      <div>
-        <p>Marks: {marks}</p>
-      </div>
 
       <div className="form-display-marks" onClick={(e) => calculateMarks()}>
         <Modal

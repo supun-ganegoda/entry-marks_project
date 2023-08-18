@@ -6,8 +6,9 @@ import { Alert, Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { saveAs } from "file-saver";
 import { MarksContext } from "./context/MarksContext";
+import "./Spinner.css";
+import { Link } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -33,7 +34,7 @@ export default function FloatingSummary() {
   const [clicked, setClicked] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [mailSend, setMailSend] = useState(false);
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
 
   //console.log("finalMarks ", finalMarks);
   const displaySummaryTable = () => {
@@ -97,9 +98,11 @@ export default function FloatingSummary() {
     return data;
   };
 
+  /*
   const sendMail = async (e) => {
     const data = setDefaultZero();
-
+    setDownloadClicked(true);
+    
     await axios
       .post(`${url}pdf/createPdf`, data) //create pdf next=> get pdf
       .then(() =>
@@ -111,7 +114,7 @@ export default function FloatingSummary() {
           })
           .then(() =>
             axios
-              .post(`${url}pdf/sendPdf`, { email: "dinethjkd00@gmail.com" })
+              .post(`${url}pdf/sendPdf`, { email: email })
               .then((response) => {
                 console.log(response);
                 //alert(response.data);
@@ -119,7 +122,27 @@ export default function FloatingSummary() {
               })
           )
       );
+
+    try {
+      await axios.post(`${url}pdf/generatePDF`, data);
+
+      const response = await axios.get(`${url}pdf/fetchPdf`, {
+        responseType: "arraybuffer",
+      });
+      const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+      saveAs(pdfBlob, "Summary-Report.pdf");
+
+      setIsSendingEmail(true);
+      await axios.post(`${url}pdf/sendPdf`, { email });
+      setIsSendingEmail(false);
+      setMailSend(true);
+    } catch (error) {
+      console.log(error);
+      setIsSendingEmail(false);
+      // Handle any errors here
+    }
   };
+*/
 
   const saveMarks = async (e) => {
     const marks = makeObject();
@@ -145,89 +168,96 @@ export default function FloatingSummary() {
   };
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        right: "20px",
-        bottom: "10%",
-        transform: "translateY(50%)",
-        display: "flex",
-        justifyContent: "flex - end",
-      }}
-    >
-      {mailSend && (
-        <Dialog
-          toOpen={true}
-          title={"Info"}
-          body={"PDF version of report is sended to your mail."}
-        />
+    <>
+      {isSendingEmail && (
+        <div className="spinner-overlay">
+          <div className="spinner-container">
+            <div className="spinner"></div>
+            <span className="waiting-message" style={{ marginLeft: "0" }}>
+              Generating Report...
+            </span>
+          </div>
+        </div>
       )}
-      {areMarksCalculated && (
-        <Fab
-          onClick={(e) => displayModal()}
-          variant="extended"
-          style={{
-            //   transform: "rotate(-90deg)",
-            whiteSpace: "nowrap",
-            width: "100px",
-            backgroundColor: "rgb(39, 106, 251)",
-            color: "#fff",
-            fontWeight: "bold",
-          }}
-        >
-          Summary
-        </Fab>
-      )}
-      {clicked && (
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              {userName === null ? (
-                <Alert severity="info">Please login to save progress</Alert>
-              ) : (
-                "User name: " + userName
-              )}
-            </Typography>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              {email !== null ? "Email: " + email : null}
-            </Typography>
-            <hr></hr>
-            <Typography
-              id="modal-modal-title"
-              sx={{ fontWeight: "bold", mt: 2 }}
-            >
-              Marks based on selected categories
-            </Typography>
-            {displaySummaryTable()}
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "8px" }}
-            >
-              <Button
-                variant="contained"
-                onClick={(e) => saveMarks()}
-                disabled={isLogged}
+      <div
+        style={{
+          position: "fixed",
+          right: "20px",
+          bottom: "10%",
+          transform: "translateY(50%)",
+          display: "flex",
+          justifyContent: "flex - end",
+        }}
+      >
+        {areMarksCalculated && (
+          <Fab
+            onClick={(e) => displayModal()}
+            variant="extended"
+            style={{
+              //   transform: "rotate(-90deg)",
+              whiteSpace: "nowrap",
+              width: "100px",
+              backgroundColor: "rgb(39, 106, 251)",
+              color: "#fff",
+              fontWeight: "bold",
+            }}
+          >
+            Summary
+          </Fab>
+        )}
+        {clicked && (
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                {userName === null ? (
+                  <Alert severity="info">Please login to save progress</Alert>
+                ) : (
+                  "User name: " + userName
+                )}
+              </Typography>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                {email !== null ? "Email: " + email : null}
+              </Typography>
+              <hr></hr>
+              <Typography
+                id="modal-modal-title"
+                sx={{ fontWeight: "bold", mt: 2 }}
               >
-                Save
-              </Button>
-              <Button variant="contained" onClick={(e) => sendMail()}>
-                Download Report
-              </Button>
-            </div>
-          </Box>
-        </Modal>
-      )}
-      {saved ? (
-        <Dialog
-          toOpen={true}
-          title={"Info"}
-          body={"Saved successfully!"}
-        ></Dialog>
-      ) : null}
-    </div>
+                Marks based on selected categories
+              </Typography>
+              {displaySummaryTable()}
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "8px" }}
+              >
+                <Button
+                  variant="contained"
+                  onClick={(e) => saveMarks()}
+                  disabled={isLogged}
+                >
+                  Save
+                </Button>
+                <Link to="/pdf-report">
+                  <Button variant="contained" style={{ width: "100%" }}>
+                    View Report
+                  </Button>
+                </Link>
+              </div>
+            </Box>
+          </Modal>
+        )}
+        {saved ? (
+          <Dialog
+            toOpen={true}
+            title={"Info"}
+            body={"Saved successfully!"}
+          ></Dialog>
+        ) : null}
+      </div>
+    </>
   );
 }
