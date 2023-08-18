@@ -34,14 +34,14 @@ export default function FormCat4() {
     setwithoutForwardedDoc(false);
   }
 
-  function handleWithDifficultSchool() {
-    setwithDifficultSchool(true);
-    setwithoutDifficultSchool(false);
-  }
-
   function handleWithoutForwardedDoc() {
     setwithoutForwardedDoc(true);
     setwithForwardedDoc(false);
+  }
+
+  function handleWithDifficultSchool() {
+    setwithDifficultSchool(true);
+    setwithoutDifficultSchool(false);
   }
 
   function handleWithoutDifficultSchool() {

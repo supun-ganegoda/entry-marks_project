@@ -468,8 +468,8 @@ export default function FormCat2() {
                       color: "#a8a2a2",
                     }}
                   >
-                    <div>
-                      <label>Passed 6 subjects</label>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <label style={{ marginRight: "10px" }}>Passed 6 subjects</label>
                       <input
                         type="checkbox"
                         // style={{ marginLeft: "10px" }}
@@ -478,8 +478,8 @@ export default function FormCat2() {
                       />
                     </div>
 
-                    <div>
-                      <label>Number of S passes:</label>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <label style={{ marginRight: "10px" }}>Number of S passes:</label>
                       <input
                         type="number"
                         value={input1Value}
@@ -487,8 +487,8 @@ export default function FormCat2() {
                       />
                     </div>
 
-                    <div>
-                      <label>Number of C/B passes:</label>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <label style={{ marginRight: "10px" }}>Number of C/B passes:</label>
                       <input
                         type="number"
                         value={input2Value}
@@ -496,8 +496,8 @@ export default function FormCat2() {
                       />
                     </div>
 
-                    <div>
-                      <label>Number of D/A passes:</label>
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <label style={{ marginRight: "10px" }}>Number of D/A passes:</label>
                       <input
                         type="number"
                         value={input3Value}
@@ -512,7 +512,12 @@ export default function FormCat2() {
             {moreCheckboxes[2] && (
               <div
                 className="form-medium-selector"
-                style={{ color: "#a8a2a2" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  color: "#a8a2a2",
+                  alignItems: "end",
+                }}
               >
                 <label>
                   <input
@@ -597,7 +602,11 @@ export default function FormCat2() {
             </div>
 
             {withactivity && (
-              <div className="form-medium-selector">
+              <div className="form-medium-selector"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}>
                 <div>
                   <input
                     type="checkbox"
@@ -644,7 +653,11 @@ export default function FormCat2() {
                 </div>
 
                 {activityCheckboxes[0] && (
-                  <div style={{ color: "#a8a2a2" }}>
+                  <div style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    color: "#a8a2a2",
+                  }}>
                     <div>
                       <input
                         type="checkbox"
@@ -889,7 +902,11 @@ export default function FormCat2() {
             </div>
 
             {withMembership && (
-              <div className="form-medium-selector">
+              <div className="form-medium-selector"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}>
                 <div>
                   <input
                     type="checkbox"
