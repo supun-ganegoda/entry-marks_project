@@ -32,6 +32,7 @@ export default function FormCat2() {
   const [societyActivityCheckboxes, setsocietyActivityCheckboxes] = useState(
     []
   );
+
   const [winningInput, setwinningInput] = useState("");
   const [membershipCheckboxes, setmembershipCheckboxes] = useState([]);
   const [postMembershipInput, setpostMembershipInput] = useState("");
@@ -91,9 +92,11 @@ export default function FormCat2() {
     setInput3Value(event.target.value);
   };
 
+
   const handleGceALInputChange = (event) => {
     setGceALInput(event.target.value);
   };
+
 
   const handleWithActivity = (event) => {
     setwithactivity(event.target.checked);
@@ -157,6 +160,7 @@ export default function FormCat2() {
 
     if (classNumber <= 13) {
       totalMarks2 += classNumber * 2;
+
     }
     if (classNumber > 13) {
       totalMarks2 += 26;
@@ -180,6 +184,7 @@ export default function FormCat2() {
         if (input2Value) {
           bMarks = input2Value * 0.5;
           if (bMarks > 4) {
+
             bMarks = 4;
           }
           totalMarks2 += bMarks;
@@ -504,12 +509,14 @@ export default function FormCat2() {
                         onChange={handleInput3Change}
                       />
                     </div>
+
                   </div>
                 )}
               </div>
             )}
 
             {moreCheckboxes[2] && (
+
               <div
                 className="form-medium-selector"
                 style={{
@@ -519,6 +526,7 @@ export default function FormCat2() {
                   alignItems: "end",
                 }}
               >
+
                 <label>
                   <input
                     type="radio"
@@ -602,6 +610,7 @@ export default function FormCat2() {
             </div>
 
             {withactivity && (
+
               <div className="form-medium-selector"
                 style={{
                   display: "flex",
@@ -622,9 +631,9 @@ export default function FormCat2() {
                     checked={activityCheckboxes[1] || false}
                     onChange={(e) => handleActivityCheckboxChange(1, e)}
                   />
+
                   <label>Other group activities</label>
                 </div>
-
                 <div>
                   <input
                     type="checkbox"
@@ -712,6 +721,7 @@ export default function FormCat2() {
                       />
                       <label>Team sports captain</label>
                     </div>
+              
                   </div>
                 )}
 
@@ -772,6 +782,7 @@ export default function FormCat2() {
                       />
                       <label>Member</label>
                     </div>
+
                   </div>
                 )}
 
@@ -803,6 +814,8 @@ export default function FormCat2() {
 
                 {activityCheckboxes[3] && (
                   <div style={{ color: "#a8a2a2" }}>
+
+             
                     <label>
                       <input
                         type="radio"
@@ -908,11 +921,13 @@ export default function FormCat2() {
                   flexDirection: "column",
                 }}>
                 <div>
+
                   <input
                     type="checkbox"
                     checked={membershipCheckboxes[0] || false}
                     onChange={(e) => handlemembershipCheckboxChange(0, e)}
                   />
+
                   <label>Membership of School Past Pupils Association</label>
                 </div>
                 <div>
@@ -921,6 +936,7 @@ export default function FormCat2() {
                     checked={membershipCheckboxes[1] || false}
                     onChange={(e) => handlemembershipCheckboxChange(1, e)}
                   />
+
                   <label>School Past Pupils Association Posts</label>
                 </div>
                 <div>
@@ -929,17 +945,21 @@ export default function FormCat2() {
                     checked={membershipCheckboxes[2] || false}
                     onChange={(e) => handlemembershipCheckboxChange(2, e)}
                   />
+
                   <label>Achievements After School</label>
                 </div>
                 <div>
+
                   <input
                     type="checkbox"
                     checked={membershipCheckboxes[3] || false}
                     onChange={(e) => handlemembershipCheckboxChange(3, e)}
                   />
+
                   <label>Prefer for Donation</label>
                 </div>
                 <div>
+
                   <input
                     type="checkbox"
                     checked={membershipCheckboxes[4] || false}
@@ -987,7 +1007,9 @@ export default function FormCat2() {
                 )}
 
                 {membershipCheckboxes[2] && (
+
                   <div style={{ color: "#a8a2a2" }}>
+
                     <label>
                       <input
                         type="radio"
@@ -996,6 +1018,7 @@ export default function FormCat2() {
                         checked={
                           winningMembershipInput === "winningMembership1"
                         }
+
                         onChange={handlewinningMembershipInputChange}
                       />
                       Ph.D
@@ -1009,6 +1032,7 @@ export default function FormCat2() {
                         checked={
                           winningMembershipInput === "winningMembership2"
                         }
+
                         onChange={handlewinningMembershipInputChange}
                       />
                       Post Graduate/Diploma in Masters
@@ -1019,9 +1043,11 @@ export default function FormCat2() {
                         type="radio"
                         name="winningMembershipInput"
                         value="winningMembership3"
+
                         checked={
                           winningMembershipInput === "winningMembership3"
                         }
+
                         onChange={handlewinningMembershipInputChange}
                       />
                       Degree from Government/Government Registered Institutions
@@ -1032,9 +1058,11 @@ export default function FormCat2() {
                         type="radio"
                         name="winningMembershipInput"
                         value="winningMembership4"
+
                         checked={
                           winningMembershipInput === "winningMembership4"
                         }
+
                         onChange={handlewinningMembershipInputChange}
                       />
                       Diploma Level
@@ -1045,9 +1073,11 @@ export default function FormCat2() {
                         type="radio"
                         name="winningMembershipInput"
                         value="winningMembership5"
+
                         checked={
                           winningMembershipInput === "winningMembership5"
                         }
+
                         onChange={handlewinningMembershipInputChange}
                       />
                       Certicate Level
@@ -1066,6 +1096,7 @@ export default function FormCat2() {
                       Obtained Patents
                     </label>
                     <br />
+
                   </div>
                 )}
               </div>
