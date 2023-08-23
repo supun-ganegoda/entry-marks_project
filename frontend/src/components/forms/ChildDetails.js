@@ -1,205 +1,76 @@
-import { useState } from "react";
-import axios from "axios";
-import DatePicker from "react-datepicker";
-import Button from "@mui/material/Button";
-import "react-datepicker/dist/react-datepicker.css";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./ChildDetails.css";
-import Dialog from "../Dialog";
+import GMap from "../GMap";
+import { useLatLng } from "../context/LocationContext";
 
-const ChildDetails = (props) => {
-  const { handleClick } = props;
 
-  const url = process.env.REACT_APP_SERVER_URL;
-  const [fullName, setFullName] = useState("");
-  const [initials, setInitials] = useState("");
-  const [religion, setReligion] = useState("");
-  const [maleChecked, setMaleChecked] = useState(false);
-  const [femaleChecked, setFemaleChecked] = useState(false);
-  const [medium, setmedium] = useState("");
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [isError, setIsError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+const ChildDetails = () => {
 
-  const handleOptionChange = (e) => {
-    setmedium(e.target.value);
+  const latLng = useLatLng();
+
+  const [newlatlong, setNewLatlong] = useState(latLng.lat + ", " + latLng.lng);
+  const [tel1, setTel1] = useState("");
+
+  const [mapDisplay, setMapDisplay] = useState(false);
+
+
+  useEffect(() => {
+    setNewLatlong(latLng.lat + ", " + latLng.lng);
+  }, [latLng]);
+
+  const handleMapDisplay = () => {
+    setMapDisplay(true);
   };
 
-  function handleMaleCheckboxChange() {
-    setMaleChecked(true);
-    setFemaleChecked(false);
-  }
-
-  function handleFemaleCheckboxChange() {
-    setFemaleChecked(true);
-    setMaleChecked(false);
-  }
-
-  //backend connections
-
-  const handleChildDetailsSubmit = async (event) => {
-    console.log("Submit clicked");
-    event.preventDefault();
-    let gender = "";
-    maleChecked ? (gender = "male") : (gender = "female");
-    let birth = selectedDate.toLocaleDateString();
-
-    const childDetailsData = {
-      fullName,
-      initials,
-      religion,
-      gender,
-      medium,
-      birth,
-    };
-
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${url}child-details`,
-        childDetailsData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      console.log(response.data); // Handle success response
-      handleClick();
-    } catch (error) {
-      console.error(error); // Handle error
-      setIsError(true);
-      setErrorMsg(error.message);
-    }
+  const handleMapClose = () => {
+    setMapDisplay(false);
   };
+
 
   return (
     <>
-      {isError && (
-        <div onClick={(e) => setIsError(false)}>
-          <Dialog toOpen={true} title={"Error"} body={errorMsg.toString()} />
-        </div>
-      )}
       <div className="form-container">
-        <form onSubmit={handleChildDetailsSubmit}>
+        <form>
           <fieldset>
-            <legend>Child Details</legend>
-            <div className="form-fullname">
-              <label className="label-form">Name in full: </label>
+            <legend>Applicant Details</legend>
+            
+
+            <div className="label-wrapper">
+              <label className="label-form">Latitude and longitude: </label>
               <input
                 type="text"
-                id="fullName"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                id="latlong"
+                value={newlatlong}
+                readOnly={true}
+                //onChange={(e) => setNewLatlong(e.target.value)}
                 required
               />
+              <button
+                className="form-map-button"
+                onClick={handleMapDisplay}
+                title="Click your location to set coordinates"
+              >
+                Find
+              </button>
+              {/* {mapDisplay&&<Map handleMapClose={handleMapClose} setLatLong={setLatlong}/>} */}
             </div>
 
-            <div className="form-initilas">
-              <label className="label-form">Name with initials: </label>
+            <div className="label-wrapper">
+              <label className="label-form">Telephone number: </label>
               <input
                 type="text"
-                id="initials"
-                value={initials}
-                onChange={(e) => setInitials(e.target.value)}
+                id="tel1"
+                value={tel1}
+                onChange={(e) => setTel1(e.target.value)}
                 required
               />
-            </div>
-
-            <div className="form-sex">
-              <label className="label-form">Sex: </label>
-              <div className="form-sex-label">
-                <input
-                  className="form-sex-checkbox"
-                  type="checkbox"
-                  checked={maleChecked}
-                  onChange={handleMaleCheckboxChange}
-                />
-                Male
-              </div>
-              <div className="form-sex-label">
-                <input
-                  className="form-sex-checkbox"
-                  type="checkbox"
-                  checked={femaleChecked}
-                  onChange={handleFemaleCheckboxChange}
-                />
-                Female
-              </div>
-            </div>
-
-            <div className="form-religion">
-              <label className="label-form">Religion: </label>
-              <input
-                type="text"
-                id="initials"
-                value={religion}
-                onChange={(e) => setReligion(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="form-medium">
-              <label className="label-form">Medium of learning: </label>
-              <div className="medium-selector">
-                <div>
-                  <input
-                    type="radio"
-                    id="sinhala"
-                    name="listBox"
-                    value="sinhala"
-                    checked={medium === "sinhala"}
-                    onChange={handleOptionChange}
-                  />
-                  <label htmlFor="sinhala">Sinhala</label>
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    id="tamil"
-                    name="listBox"
-                    value="tamil"
-                    checked={medium === "tamil"}
-                    onChange={handleOptionChange}
-                  />
-                  <label htmlFor="tamil">Tamil</label>
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    id="english"
-                    name="listBox"
-                    value="english"
-                    checked={medium === "english"}
-                    onChange={handleOptionChange}
-                  />
-                  <label htmlFor="english">English</label>
-                </div>
-              </div>
-            </div>
-
-            <div className="form-dob">
-              <label className="label-form">Date of birth:</label>
-              <div className="form-datePicker">
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={(date) => setSelectedDate(date)}
-                  dateFormat="dd/MM/yyyy"
-                  showYearDropdown
-                  scrollableYearDropdown
-                  yearDropdownItemNumber={10}
-                  showMonthDropdown
-                />
-              </div>
             </div>
           </fieldset>
-          <div className="save-btn">
-            <Button type="submit" variant="outlined">
-              SAVE & CONTINUE
-            </Button>
-          </div>
         </form>
       </div>
+
+      {mapDisplay && <GMap handleMapClose={handleMapClose} />}
     </>
   );
 };

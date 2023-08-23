@@ -5,10 +5,9 @@ import { FaBars } from "react-icons/fa";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import "./SideBar.css";
 import ChildDetails from "./forms/ChildDetails";
-import ApplicantDetails from "./forms/ApplicantDetails";
 import SchoolDetails from "./forms/SchoolDetails";
 import OtherSchoolDetails from "./forms/OtherSchoolDetails";
-import ElectorialForm from "./forms/ElectorialForm";
+
 
 const SideBar = () => {
   const [pane, setShowPane] = useState(true);
@@ -75,18 +74,6 @@ const SideBar = () => {
     setElectButtonClicked(false);
   };
 
-  const setApplicationFormVisible = () => {
-    setApplicationForm(true);
-    setSchoolDetails(false);
-    setOtherSchoolDetails(false);
-    setChildForm(false);
-    setElecForm(false);
-    setChildButtonClicked(false);
-    setapplButtonClicked(true);
-    setschooldButtonClicked(false);
-    setOtherSchooldButtonClicked(false);
-    setElectButtonClicked(false);
-  };
 
   const setSchoolFormVisible = () => {
     setSchoolDetails(true);
@@ -150,18 +137,6 @@ const SideBar = () => {
                   <span>{SideBarData[0].title}</span>
                 </Link>
               </li>
-              <li className={SideBarData[1].cName}>
-                <Link
-                  to="#"
-                  onClick={setApplicationFormVisible}
-                  style={{
-                    backgroundColor: applButtonClicked ? "#1a83ff" : null,
-                  }}
-                >
-                  {SideBarData[1].icon}
-                  <span>{SideBarData[1].title}</span>
-                </Link>
-              </li>
               <li className={SideBarData[2].cName}>
                 <Link
                   to="#"
@@ -188,34 +163,19 @@ const SideBar = () => {
                   <span>{SideBarData[3].title}</span>
                 </Link>
               </li>
-              <li className={SideBarData[4].cName}>
-                <Link
-                  to="#"
-                  onClick={setElectFormVisible}
-                  style={{
-                    backgroundColor: electButtonClicked ? "#1a83ff" : null,
-                  }}
-                >
-                  {SideBarData[4].icon}
-                  <span>{SideBarData[4].title}</span>
-                </Link>
-              </li>
             </ul>
           </nav>
         </div>
       </div>
 
-      {applicationForm && (
-        <ApplicantDetails handleClick={setSchoolFormVisible} />
-      )}
-      {childForm && <ChildDetails handleClick={setApplicationFormVisible} />}
+      
+      {childForm && <ChildDetails handleClick={setSchoolFormVisible} />}
       {schoolDetails && (
         <SchoolDetails handleClick={setOhterScoolFormVisible} />
       )}
       {otherSchoolDetails && (
-        <OtherSchoolDetails onClick={setElectFormVisible} />
+        <OtherSchoolDetails  />
       )}
-      {elecForm && <ElectorialForm />}
     </>
   );
 };

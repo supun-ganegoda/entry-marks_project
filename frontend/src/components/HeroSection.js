@@ -19,18 +19,11 @@ const HeroSection = () => {
                   <br />
                   You can check your eligibility to select for the schools by
                   submitting your data.
-                  <br />
-                  We offer document verification as well
                 </p>
                 <div className="home__hero-button-wrapper">
                   <Link to="/applications">
                     <Button buttonStyle="btn--wide" buttonColor="blue">
                       Get Started
-                    </Button>
-                  </Link>
-                  <Link to="/verification">
-                    <Button buttonStyle="btn--wide" buttonColor="light-blue">
-                      Verification
                     </Button>
                   </Link>
                 </div>

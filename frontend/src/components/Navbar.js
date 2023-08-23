@@ -22,66 +22,6 @@ const Navbar = () => {
   const [welcome, setWelcome] = useState(false);
   const location = useLocation();
 
-  // useEffect(() => {
-  //   showButton();
-  //   if (localStorage.getItem("userName")) {
-  //     setUserName(localStorage.getItem("userName"));
-  //     //console.log(userName);
-  //   } else {
-  //     setUserName("REGISTER");
-  //   }
-  // }, [userName]);
-
-  const resetStates = () => {
-    if (localStorage.getItem("userName")) {
-      setWelcome(true);
-      setUserName(localStorage.getItem("userName"));
-      //console.log(userName);
-    } else {
-      setUserName("REGISTER");
-    }
-  };
-
-  useEffect(() => {
-    if (location.pathname === "/") {
-      resetStates();
-    }
-  }, [location.pathname]);
-
-  const handleLogOut = (e) => {
-    setLoggedOut(false);
-  };
-
-  const logOutUser = () => {
-    fetch(`${url}logout`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: localStorage.getItem("token"), // Include the token in the request body
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          localStorage.removeItem("token");
-          localStorage.removeItem("userName");
-          localStorage.removeItem("email");
-          localStorage.removeItem("holders");
-          setUserName("REGISTER");
-          // alert("Log out Success! ");
-          setLoggedOut(true);
-          navigate("/");
-          // Redirect or perform any other actions after successful logout
-        } else {
-          console.log("Something went wrong!");
-        }
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  };
 
   const handleClick = () => {
     setClick(!click);
@@ -108,7 +48,7 @@ const Navbar = () => {
             <div className="navbar">
               <div className="navbar-container container">
                 <Link to="/" className="navbar-logo">
-                  ENRTY MARKS PORTAL
+                  ENTRY MARKS PORTAL
                 </Link>
                 <div className="menu-icon" onClick={handleClick}>
                   {click ? <FaTimes /> : <FaBars />}
@@ -124,82 +64,11 @@ const Navbar = () => {
                       About us
                     </Link>
                   </li>
-                  <li className="nav-button" onClick={closeMobileMenu}>
-                    {button ? (
-                      userName === "REGISTER" ? (
-                        <div className="btn-link">
-                          <Link to="/register">
-                            <Button buttonStyle={"btn--outline"}>
-                              {userName}
-                            </Button>
-                          </Link>
-                          <div className="login" title="Click here to login">
-                            <Link to="/login-form">
-                              <AiOutlineLogin />
-                            </Link>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="userName-holder">
-                          <BLAvatars userName={userName} />
-
-                          <div className="logOut" title="Click here to logout">
-                            <AiOutlineLogout
-                              style={{
-                                marginLeft: "12px",
-                                marginTop: "5px",
-                                scale: "1.5",
-                              }}
-                              onClick={(e) => logOutUser()}
-                            />
-                          </div>
-                        </div>
-                      )
-                    ) : userName !== "REGISTER" ? (
-                      <div className="userName-holder-mobile">
-                        <label buttonStyle={"btn--outline"}>
-                          Hello ! {userName}
-                        </label>
-                        <Button
-                          buttonStyle={"btn--outline"}
-                          buttonSize={"btn--mobile"}
-                          onClick={(e) => logOutUser()}
-                        >
-                          LOGOUT
-                        </Button>
-                      </div>
-                    ) : (
-                      <>
-                        <Link to="/register" className="btn-link">
-                          <Button
-                            buttonStyle={"btn--outline"}
-                            buttonSize={"btn--mobile"}
-                          >
-                            {userName}
-                          </Button>
-                        </Link>
-                        <Link to="/login-form" className="btn-link">
-                          <Button
-                            buttonStyle={"btn--outline"}
-                            buttonSize={"btn--mobile"}
-                          >
-                            LOGIN
-                          </Button>
-                        </Link>
-                      </>
-                    )}
-                  </li>
                 </ul>
               </div>
             </div>
           </IconContext.Provider>
         </>
-      )}
-
-      {loggedout && (
-        <div onClick={(e) => handleLogOut()}>
-          <Dialog toOpen={true} title={"Alert"} body={"Logout successfully!"} />
-        </div>
       )}
     </>
   );
