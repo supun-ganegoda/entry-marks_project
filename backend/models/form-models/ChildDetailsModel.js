@@ -27,7 +27,7 @@ const childSchema = mongoose.Schema({
   },
 
   birth: {
-    type: Date,
+    type: String,
     required: true,
   },
 });

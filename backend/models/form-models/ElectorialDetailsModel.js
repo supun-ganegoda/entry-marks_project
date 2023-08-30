@@ -1,115 +1,50 @@
 const mongoose = require("mongoose");
 
 const electorialSchema = mongoose.Schema({
-  electorialYear: {
+  year: {
     type: String,
     required: true,
   },
 
-  electorialDistrict: {
+  district: {
     type: String,
     required: true,
   },
 
-  gramaNiladariDiv: {
+  division: {
     type: String,
     required: true,
   },
 
-  gramaNiladariNo: {
+  divisionNo: {
     type: String,
     required: true,
   },
 
-  streetRoadVillage: {
+  pollingDivision: {
     type: String,
     required: true,
   },
 
-  electorialOne: [
-    {
-      householdNo: {
-        type: String,
-        required: false,
-      },
-      serialNo: {
-        type: String,
-        required: false,
-      },
-      nameOfElectors: {
-        type: Number,
-        required: false,
-      },
-    },
-  ],
+  street: {
+    type: String,
+    required: true,
+  },
 
-  electorialTwo: [
-    {
-      householdNo: {
-        type: String,
-        required: false,
-      },
-      serialNo: {
-        type: String,
-        required: false,
-      },
-      nameOfElectors: {
-        type: Number,
-        required: false,
-      },
-    },
-  ],
+  houseHold: {
+    type: String,
+    required: true,
+  },
 
-  electorialThree: [
-    {
-      householdNo: {
-        type: String,
-        required: false,
-      },
-      serialNo: {
-        type: String,
-        required: false,
-      },
-      nameOfElectors: {
-        type: Number,
-        required: false,
-      },
-    },
-  ],
+  serial: {
+    type: String,
+    required: true,
+  },
 
-  electorialFour: [
-    {
-      householdNo: {
-        type: String,
-        required: false,
-      },
-      serialNo: {
-        type: String,
-        required: false,
-      },
-      nameOfElectors: {
-        type: Number,
-        required: false,
-      },
-    },
-  ],
-
-  electorialFive: [
-    {
-      householdNo: {
-        type: String,
-        required: false,
-      },
-      serialNo: {
-        type: String,
-        required: false,
-      },
-      nameOfElectors: {
-        type: Number,
-        required: false,
-      },
-    },
-  ],
+  electors: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = electorialSchema;

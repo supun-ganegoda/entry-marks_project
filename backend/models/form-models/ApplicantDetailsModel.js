@@ -1,52 +1,116 @@
 const mongoose = require("mongoose");
 
 const applicantSchema = mongoose.Schema({
-  fullName: {
+  apFullName: {
     type: String,
     required: true,
   },
 
-  namewithInitials: {
+  apInitials: {
     type: String,
     required: true,
   },
 
-  NIC: {
+  apNIC: {
     type: String,
     required: true,
   },
 
-  SriLankan: {
+  apSriLankan: {
     type: String,
     required: true,
   },
 
-  religion: {
+  apReligion: {
     type: String,
     required: true,
   },
 
-  address: {
+  apAddressLine1: {
+    type: String,
+    required: true,
+  },
+  apAddressLine2: {
+    type: String,
+    required: true,
+  },
+  apAddressLine3: {
     type: String,
     required: true,
   },
 
-  teleNumber: {
+  apLatLng: {
+    type: String,
+    required: true,
+  },
+
+  apTeleNumber: {
     type: Number,
     required: true,
   },
 
-  district: {
+  apDistrict: {
     type: String,
     required: true,
   },
 
-  divisionalSecretariat: {
+  apDivisionalSecretariat: {
     type: String,
     required: true,
   },
 
-  gramanildariDivision: {
+  apGramanildariDivision: {
+    type: String,
+    required: true,
+  },
+
+  //details of spouse
+  spFullName: {
+    type: String,
+    required: true,
+  },
+
+  spInitials: {
+    type: String,
+    required: true,
+  },
+
+  spNIC: {
+    type: String,
+    required: true,
+  },
+
+  spSriLankan: {
+    type: String,
+    required: true,
+  },
+
+  spReligion: {
+    type: String,
+    required: true,
+  },
+
+  spAddress: {
+    type: String,
+    required: true,
+  },
+
+  spTeleNumber: {
+    type: Number,
+    required: true,
+  },
+
+  spDistrict: {
+    type: String,
+    required: true,
+  },
+
+  spDivisionalSecretariat: {
+    type: String,
+    required: true,
+  },
+
+  spGramanildariDivision: {
     type: String,
     required: true,
   },

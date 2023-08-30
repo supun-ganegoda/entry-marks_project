@@ -11,6 +11,7 @@ const SchoolLocator = () => {
   const schoolCount = useUpdateSchoolCount();
   let tempSchoolCount = [];
   const circleColors = ["#ff0000", "#32a852", "#f5ef3d", "#3dd6f5"];
+  const markerColors = ["blue", "red", "purple", "ltblue"];
   const selectedSchools = useSelectedSchools();
   let selectedSchoolDetails;
   let distances;
@@ -19,6 +20,8 @@ const SchoolLocator = () => {
   const [tableRows, setTableRows] = useState();
   const home = useLatLng();
   const [markers, setMarkers] = useState([]);
+  const [selectedSchoolMarkers, setSelectedSchoolMarkers] = useState([]);
+  let selectedSchoolsMarkersData;
 
   const generateTable = (schools) => {
     if (selectedSchools.length === 0) {
@@ -96,12 +99,25 @@ const SchoolLocator = () => {
           selectedSchoolDetails = data.filter((school) =>
             selectedSchools.includes(school.Name)
           );
+
+          selectedSchoolsMarkersData = selectedSchoolDetails.map(
+            (school, index) => {
+              return {
+                id: index,
+                lat: parseFloat(school.Lat),
+                lng: parseFloat(school.Lng),
+              };
+            }
+          );
+
+          console.log(selectedSchoolsMarkersData);
+          setSelectedSchoolMarkers(selectedSchoolsMarkersData); //set Markers in selected schools
           distances = calcDistances(selectedSchoolDetails);
           allDistances = calcDistances(data);
           setTableRows(generateTable(data));
           //setCircles(drawCircles());
         }
-        console.log(selectedSchoolDetails);
+        console.log(markers);
       } catch (error) {
         console.log("Error fetching suggestions:", error);
       }
@@ -159,7 +175,6 @@ const SchoolLocator = () => {
                   lat: parseFloat(home.lat),
                   lng: parseFloat(home.lng),
                 }}
-                icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
               />
             )}
 
@@ -170,6 +185,22 @@ const SchoolLocator = () => {
                   lat: marker.lat,
                   lng: marker.lng,
                 }}
+                icon={"http://maps.google.com/mapfiles/ms/icons/yellow-dot.png"}
+              />
+            ))}
+
+            {selectedSchoolMarkers.map((marker, i) => (
+              <Marker
+                key={marker.id}
+                position={{
+                  lat: marker.lat,
+                  lng: marker.lng,
+                }}
+                icon={
+                  "http://maps.google.com/mapfiles/ms/icons/" +
+                  markerColors[i] +
+                  "-dot.png"
+                }
               />
             ))}
             {circles}
