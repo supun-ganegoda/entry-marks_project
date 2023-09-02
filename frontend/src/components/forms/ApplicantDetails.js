@@ -4,12 +4,10 @@ import axios from "axios";
 import "./ApplicationDetails.css";
 import GMap from "../GMap";
 import Button from "@mui/material/Button";
-import { useLatLng } from "../context/LocationContext";
 
 const ApplicantDetails = (props) => {
   const { handleClick } = props;
   const url = process.env.REACT_APP_SERVER_URL;
-  const latLng = useLatLng();
 
   const [apFullName, setapFullName] = useState("");
   const [apInitials, setapInitials] = useState("");
@@ -20,13 +18,12 @@ const ApplicantDetails = (props) => {
   const [apAddressLine1, setapAddressLine1] = useState("");
   const [apAddressLine2, setapAddressLine2] = useState("");
   const [apAddressLine3, setapAddressLine3] = useState("");
-  const [apLatLng, setapLatLng] = useState(latLng.lat + ", " + latLng.lng);
+  const [apLatLng, setapLatLng] = useState("");
   const [apTeleNumber, setapTeleNumber] = useState("");
   const [apDistrict, setapDistrict] = useState("");
   const [apDivisionalSecretariat, setapDivisionalSecretariat] = useState("");
   const [apGramanildariDivision, setapGramanildariDivision] = useState("");
   const [showIframe, setShowIframe] = useState(false);
-  const [mapDisplay, setMapDisplay] = useState(false);
 
   const [spFullName, setspFullName] = useState("");
   const [spInitials, setspInitials] = useState("");
@@ -41,17 +38,8 @@ const ApplicantDetails = (props) => {
   const [spGramanildariDivision, setspGramanildariDivision] = useState("");
 
   useEffect(() => {
-    setapLatLng(latLng.lat + ", " + latLng.lng);
     loadApplicantDetails();
-  }, [latLng]);
-
-  const handleMapDisplay = (e) => {
-    setMapDisplay(true);
-  };
-
-  const handleMapClose = () => {
-    setMapDisplay(false);
-  };
+  }, []);
 
   const handleHelpClick = () => {
     setShowIframe(true);
@@ -117,7 +105,7 @@ const ApplicantDetails = (props) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     let apSriLankan = "";
     yesChecked1 ? (apSriLankan = "yes") : (apSriLankan = "no");
     let spSriLankan = "";
@@ -286,18 +274,13 @@ const ApplicantDetails = (props) => {
                 id="latlong"
                 value={apLatLng}
                 readOnly={true}
-                //onChange={(e) => setapLatLng(e.target.value)}
+                onChange={(e) => setapLatLng(e.target.value)}
                 required
               />
-              <button
-                className="form-map-button"
-                type="button"
-                onClick={(e) => handleMapDisplay()}
-                title="Click your location to set coordinates"
-              >
-                Find
-              </button>
-              {/* {mapDisplay&&<Map handleMapClose={handleMapClose} setLatLong={setLatlong}/>} */}
+            </div>
+
+            <div className="label-wrapper">
+              <GMap setapLatLng={setapLatLng} city={apAddressLine3} />
             </div>
 
             <div className="label-wrapper">
@@ -368,7 +351,7 @@ const ApplicantDetails = (props) => {
       </div>
 
       <div className="form-container">
-        <form>
+        <form onSubmit={handleSubmit}>
           <fieldset>
             <legend>Details of Spouse</legend>
             <div className="label-wrapper">
@@ -517,8 +500,6 @@ const ApplicantDetails = (props) => {
           </div>
         </form>
       </div>
-
-      {mapDisplay && <GMap handleMapClose={handleMapClose} />}
     </>
   );
 };

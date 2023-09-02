@@ -1,38 +1,112 @@
 import { useEffect, useState } from "react";
 import "./SchoolFinder.css";
-import { GoogleMap, Marker, LoadScript, Circle } from "@react-google-maps/api";
-import { useLatLng } from "./context/LocationContext";
+import { GoogleMap, Marker, Circle } from "@react-google-maps/api";
 import { useSelectedSchools } from "./context/SelectedSchoolsContext";
 import { useUpdateSchoolCount } from "./context/SchoolCountContext";
+import { loadGoogleMapsApi } from "./GoogleMapsLoader";
+
+const libraries = "geometry";
 
 const SchoolLocator = () => {
   const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
   const url = process.env.REACT_APP_SERVER_URL;
+  const [isLoaded, setIsLoaded] = useState(false); //ensure that the map is loaded
+  var selection; //having selected schools with lat, lng
+  let distances; //having distances calculated from the home location
+  let filteredSchools;
+
+  const [zoom, setZoom] = useState(14);
   const schoolCount = useUpdateSchoolCount();
   let tempSchoolCount = [];
   const circleColors = ["#ff0000", "#32a852", "#f5ef3d", "#3dd6f5"];
   const markerColors = ["blue", "red", "purple", "ltblue"];
   const selectedSchools = useSelectedSchools();
-  let selectedSchoolDetails;
-  let distances;
+
   let allDistances;
   const [circles, setCircles] = useState();
   const [tableRows, setTableRows] = useState();
-  const home = useLatLng();
+  const [homeLat, setHomeLat] = useState(localStorage.getItem("lat"));
+  const [homeLng, setHomeLng] = useState(localStorage.getItem("lng"));
   const [markers, setMarkers] = useState([]);
   const [selectedSchoolMarkers, setSelectedSchoolMarkers] = useState([]);
-  let selectedSchoolsMarkersData;
 
-  const generateTable = (schools) => {
-    if (selectedSchools.length === 0) {
+  const loadAllSchools = async () => {
+    try {
+      const response = await fetch(`${url}schools/allschools`);
+      const data = await response.json();
+      let gender = "";
+      if (localStorage.getItem("gender") === "male") {
+        gender = "BOY";
+      } else {
+        gender = "GIRL";
+      }
+      // load schools according to the gender
+      const filteredData = data.filter(
+        (item) => item.Category === gender || item.Category === "mix"
+      );
+      const markersData = filteredData.map((school, index) => {
+        return {
+          id: index,
+          lat: parseFloat(school.Lat),
+          lng: parseFloat(school.Lng),
+        };
+      });
+      setMarkers(markersData);
+      return filteredData;
+      // console.log(filteredData);
+    } catch (e) {
+      console.log("Fail to load all schools from database");
+    }
+  };
+
+  const loadSelectedSchools = async () => {
+    const tempSchools = Object.values(selectedSchools);
+    tempSchools.pop();
+    filteredSchools = await loadAllSchools();
+
+    const extractedData = [];
+    // Iterate through tempSchool names
+    tempSchools.forEach((tempName) => {
+      // Find the matching school in filteredSchools
+      const matchingSchool = filteredSchools.find(
+        (filteredSchool) => filteredSchool.Name === tempName
+      );
+      // If a matching school is found, extract and push the data
+      if (matchingSchool) {
+        const { Name, Lat, Lng, Category } = matchingSchool;
+        extractedData.push({ Name, Lat, Lng, Category });
+      }
+    });
+    const markersData = extractedData.map((school, index) => {
+      return {
+        id: index,
+        lat: parseFloat(school.Lat),
+        lng: parseFloat(school.Lng),
+      };
+    });
+    setSelectedSchoolMarkers(markersData);
+    console.log(markersData);
+    return extractedData;
+  };
+
+  const generateTable = () => {
+    if (selection.length === 0) {
       return null;
     } else {
-      return selectedSchools.map((school, key) => {
+      return selection.map((school, key) => {
         return (
           <tr key={key}>
-            <td>{school}</td>
-            <td>{schools[key].Type}</td>
-            <td>{Math.round(distances[key])} meters</td>
+            <td>
+              <td>
+                <img
+                  src={`http://maps.google.com/mapfiles/ms/icons/${markerColors[key]}-dot.png`}
+                  alt="Marker Icon"
+                />
+              </td>
+            </td>
+            <td>{school.Name}</td>
+            <td>{school.Category.toLowerCase()}</td>
+            <td>{Math.round(distances[key] / 1000.0, 2)} km</td>
             <td>
               <button
                 className="show-btn"
@@ -53,20 +127,31 @@ const SchoolLocator = () => {
     count = allDistances.filter((distance) => distances[key] > distance).length;
     //schoolCount((sc) => [...sc, count]);
     tempSchoolCount.push(count);
-    console.log(count);
+    //console.log(count);
     return count;
   };
+
+  useEffect(() => {
+    loadGoogleMapsApi(apiKey, libraries)
+      .then((maps) => {
+        setIsLoaded(true);
+        // Now you can use the Google Maps API as needed
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [apiKey, libraries]);
 
   useEffect(() => {
     return schoolCount(tempSchoolCount);
   }, []);
 
   const handleDrawAndCalc = (key) => {
-    //console.log(allDistances);
+    if (distances[key] > 20000) setZoom(10);
     return (
       <Circle
         key={key}
-        center={{ lat: parseFloat(home.lat), lng: parseFloat(home.lng) }}
+        center={{ lat: parseFloat(homeLat), lng: parseFloat(homeLng) }}
         radius={distances[key]}
         //onLoad={onCircleLoad}
         options={{
@@ -80,57 +165,23 @@ const SchoolLocator = () => {
     );
   };
 
-  const onLoadMap = () => {
-    const getAllSchoolDetails = async () => {
-      try {
-        const response = await fetch(`${url}schools/allschools`);
-        const data = await response.json();
-        // console.log(data);
-        //setSchools(data);
-        const markersData = data.map((school, index) => {
-          return {
-            id: index,
-            lat: parseFloat(school.Lat),
-            lng: parseFloat(school.Lng),
-          };
-        });
-        setMarkers(markersData);
-        if (selectedSchools.length !== 0) {
-          selectedSchoolDetails = data.filter((school) =>
-            selectedSchools.includes(school.Name)
-          );
-
-          selectedSchoolsMarkersData = selectedSchoolDetails.map(
-            (school, index) => {
-              return {
-                id: index,
-                lat: parseFloat(school.Lat),
-                lng: parseFloat(school.Lng),
-              };
-            }
-          );
-
-          console.log(selectedSchoolsMarkersData);
-          setSelectedSchoolMarkers(selectedSchoolsMarkersData); //set Markers in selected schools
-          distances = calcDistances(selectedSchoolDetails);
-          allDistances = calcDistances(data);
-          setTableRows(generateTable(data));
-          //setCircles(drawCircles());
-        }
-        console.log(markers);
-      } catch (error) {
-        console.log("Error fetching suggestions:", error);
-      }
-    };
-
-    getAllSchoolDetails();
+  const onLoadMap = async () => {
+    //getAllSchoolDetails();
+    selection = await loadSelectedSchools();
+    //setSelectedSchoolMarkers(selection);
+    console.log(selection);
+    distances = calcDistances(selection);
+    allDistances = calcDistances(filteredSchools);
+    //console.log(distances);
+    setTableRows(generateTable());
+    //console.log(distances);
   };
 
-  const calcDistances = (selectedSchools) => {
-    //console.log(selectedSchools);
+  const calcDistances = (s) => {
+    //console.log(s);
     const tempDistances = [];
-    if (home.lat !== "" && home.lng !== "") {
-      selectedSchools.forEach((school) => {
+    if (homeLat !== "" && homeLng !== "") {
+      s.forEach((school) => {
         const distance =
           window.google.maps.geometry.spherical.computeDistanceBetween(
             {
@@ -138,42 +189,38 @@ const SchoolLocator = () => {
               lng: parseFloat(school.Lng),
             },
             {
-              lat: parseFloat(home.lat),
-              lng: parseFloat(home.lng),
+              lat: parseFloat(homeLat),
+              lng: parseFloat(homeLng),
             }
           );
+        //console.log(distance);
         tempDistances.push(distance);
       });
     }
-    // console.log(tempDistances);
-    // distances = tempDistances;
     return tempDistances;
-  };
-
-  const mapOptions = {
-    center: { lat: 6.053519, lng: 80.220978 }, // Set the initial center of the map
-    zoom: 12, // Set the initial zoom level of the map
   };
 
   return (
     <>
       <div className="school-detailes-wrapper">
-        <LoadScript
-          googleMapsApiKey={apiKey}
-          libraries={["geometry"]}
-          onLoad={onLoadMap}
-        >
-          <GoogleMap mapContainerClassName="map-wrapper" options={mapOptions}>
-            {home.lat === "" && home.lng === "" ? (
+        {isLoaded ? (
+          <GoogleMap
+            mapContainerClassName="map-wrapper"
+            onLoad={onLoadMap}
+            center={{ lat: parseFloat(homeLat), lng: parseFloat(homeLng) }}
+            panTo={{ lat: parseFloat(homeLat), lng: parseFloat(homeLng) }}
+            zoom={zoom}
+          >
+            {homeLat === "" && homeLng === "" ? (
               <div className="warning-class">
                 You have not set the home location. Demostration is running
               </div>
             ) : (
               <Marker
-                key={home}
+                key={"home"}
                 position={{
-                  lat: parseFloat(home.lat),
-                  lng: parseFloat(home.lng),
+                  lat: parseFloat(homeLat),
+                  lng: parseFloat(homeLng),
                 }}
               />
             )}
@@ -196,22 +243,22 @@ const SchoolLocator = () => {
                   lat: marker.lat,
                   lng: marker.lng,
                 }}
-                icon={
-                  "http://maps.google.com/mapfiles/ms/icons/" +
-                  markerColors[i] +
-                  "-dot.png"
-                }
+                icon={`http://maps.google.com/mapfiles/ms/icons/${markerColors[i]}-dot.png`}
               />
             ))}
+
             {circles}
           </GoogleMap>
-        </LoadScript>
+        ) : (
+          <p>Google maps is loading... </p>
+        )}
 
         <div className="school-details-table">
           {tableRows ? (
             <table>
               <thead>
                 <tr>
+                  <th>Legend</th>
                   <th>School name</th>
                   <th>School type</th>
                   <th>Distance from home</th>
