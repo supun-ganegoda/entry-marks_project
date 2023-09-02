@@ -4,10 +4,12 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { MarksContext } from "./context/MarksContext";
+import { useSelectedSchools } from "./context/SelectedSchoolsContext";
 //import { useUpdateSelectedForms } from "./context/FormContext";
 
 const CategorySelector = () => {
   const url = process.env.REACT_APP_SERVER_URL;
+  const prefferedSchools = useSelectedSchools();
   const navigate = useNavigate();
   const [selectedSchool, setSelectedSchool] = useState("");
   const [selectedSchools, setSelectedSchools] = useState([]);
@@ -50,6 +52,9 @@ const CategorySelector = () => {
         console.log(selectedSchools);
       } catch (error) {
         console.error("Error loading schools:", error);
+        const tempSchools = Object.values(prefferedSchools);
+        setSelectedSchools(tempSchools);
+        setSelectedSchool(tempSchools[0]);
       }
     };
 

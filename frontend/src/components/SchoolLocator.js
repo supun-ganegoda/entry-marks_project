@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import html2canvas from "html2canvas";
 import "./SchoolFinder.css";
 import { GoogleMap, Marker, Circle } from "@react-google-maps/api";
 import { useSelectedSchools } from "./context/SelectedSchoolsContext";
 import { useUpdateSchoolCount } from "./context/SchoolCountContext";
 import { loadGoogleMapsApi } from "./GoogleMapsLoader";
 
-const libraries = "geometry";
-
 const SchoolLocator = () => {
   const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
   const url = process.env.REACT_APP_SERVER_URL;
+  const googleMapRef = useRef(null);
+  const mapRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false); //ensure that the map is loaded
   var selection; //having selected schools with lat, lng
   let distances; //having distances calculated from the home location
   let filteredSchools;
+  const [center, setCenter] = useState({ lat: 6.053519, lng: 80.220978 });
 
   const [zoom, setZoom] = useState(14);
   const schoolCount = useUpdateSchoolCount();
@@ -61,7 +63,8 @@ const SchoolLocator = () => {
 
   const loadSelectedSchools = async () => {
     const tempSchools = Object.values(selectedSchools);
-    tempSchools.pop();
+    //empSchools.pop();
+    //console.log(tempSchools);
     filteredSchools = await loadAllSchools();
 
     const extractedData = [];
@@ -69,7 +72,7 @@ const SchoolLocator = () => {
     tempSchools.forEach((tempName) => {
       // Find the matching school in filteredSchools
       const matchingSchool = filteredSchools.find(
-        (filteredSchool) => filteredSchool.Name === tempName
+        (filteredSchool) => filteredSchool.Name.trim() === tempName.trim()
       );
       // If a matching school is found, extract and push the data
       if (matchingSchool) {
@@ -116,6 +119,11 @@ const SchoolLocator = () => {
               </button>
             </td>
             <td>{setSchoolCount(key)}</td>
+            {/* <td>
+              <button onClick={() => captureAndSaveScreenshot("school1")}>
+                Capture
+              </button>
+            </td> */}
           </tr>
         );
       });
@@ -132,21 +140,30 @@ const SchoolLocator = () => {
   };
 
   useEffect(() => {
-    loadGoogleMapsApi(apiKey, libraries)
-      .then((maps) => {
+    loadGoogleMapsApi(apiKey)
+      .then(() => {
         setIsLoaded(true);
         // Now you can use the Google Maps API as needed
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [apiKey, libraries]);
+  }, [apiKey]);
 
   useEffect(() => {
     return schoolCount(tempSchoolCount);
   }, []);
 
+  const panToLatLng = (lat, lng) => {
+    // Check if the GoogleMap component is available
+    if (googleMapRef.current) {
+      // Access the panTo method and use it
+      googleMapRef.current.panTo({ lat, lng });
+    }
+  };
+
   const handleDrawAndCalc = (key) => {
+    panToLatLng(parseFloat(homeLat), parseFloat(homeLng));
     if (distances[key] > 20000) setZoom(10);
     return (
       <Circle
@@ -165,8 +182,8 @@ const SchoolLocator = () => {
     );
   };
 
-  const onLoadMap = async () => {
-    //getAllSchoolDetails();
+  const onLoadMap = async (map) => {
+    googleMapRef.current = map;
     selection = await loadSelectedSchools();
     //setSelectedSchoolMarkers(selection);
     console.log(selection);
@@ -200,14 +217,36 @@ const SchoolLocator = () => {
     return tempDistances;
   };
 
+  const captureAndSaveScreenshot = (filename) => {
+    const divElement = mapRef.current;
+
+    if (!divElement) {
+      console.error(`Element with ID "${divElement}" not found.`);
+      return;
+    }
+
+    html2canvas(divElement).then((canvas) => {
+      // Convert the canvas to a data URL
+      const dataURL = canvas.toDataURL("image/png");
+
+      // Create a link element to download the screenshot
+      const link = document.createElement("a");
+      link.href = dataURL;
+      link.download = filename || "screenshot.png";
+
+      // Trigger a click event on the link to initiate the download
+      link.click();
+    });
+  };
+
   return (
     <>
-      <div className="school-detailes-wrapper">
+      <div className="school-detailes-wrapper" ref={mapRef}>
         {isLoaded ? (
           <GoogleMap
             mapContainerClassName="map-wrapper"
             onLoad={onLoadMap}
-            center={{ lat: parseFloat(homeLat), lng: parseFloat(homeLng) }}
+            center={center}
             panTo={{ lat: parseFloat(homeLat), lng: parseFloat(homeLng) }}
             zoom={zoom}
           >
@@ -264,6 +303,7 @@ const SchoolLocator = () => {
                   <th>Distance from home</th>
                   <th>Show radius</th>
                   <th>No of Schools within the radius</th>
+                  {/* <th>Capture</th> */}
                 </tr>
               </thead>
               <tbody>{tableRows}</tbody>

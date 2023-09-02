@@ -190,6 +190,7 @@ const ElectorialForm = () => {
       navigate("/categorySelector");
     } catch (error) {
       console.error(error); // Handle error
+      navigate("/categorySelector");
     }
   };
 

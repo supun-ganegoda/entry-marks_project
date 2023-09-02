@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import { useUpdateLatLng } from "./context/LocationContext";
 import { loadGoogleMapsApi } from "./GoogleMapsLoader";
 import "./Maps.css";
-
-const center = {
-  lat: 6.053519,
-  lng: 80.220978,
-};
-const libraries = ["places"];
 
 const GMap = ({ setapLatLng, city }) => {
   const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -46,15 +40,15 @@ const GMap = ({ setapLatLng, city }) => {
   };
 
   useEffect(() => {
-    loadGoogleMapsApi(apiKey, libraries)
-      .then((maps) => {
+    loadGoogleMapsApi(apiKey)
+      .then(() => {
         setIsLoaded(true);
         // Now you can use the Google Maps API as needed
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [apiKey, libraries]);
+  }, [apiKey]);
 
   useEffect(() => {
     if (city !== "" && city.length >= 5) {
@@ -64,27 +58,34 @@ const GMap = ({ setapLatLng, city }) => {
 
   const handleSearch = () => {
     // Use the Geocoding API to fetch the coordinates for the entered city name
-    const geocoder = new window.google.maps.Geocoder();
-    geocoder.geocode({ address: city }, (results, status) => {
-      if (status === "OK" && results[0]) {
-        const location = results[0].geometry.location;
-        if (
-          typeof location.lat === "function" &&
-          typeof location.lng === "function" &&
-          isFinite(location.lat()) &&
-          isFinite(location.lng())
-        ) {
-          const lat = location.lat();
-          const lng = location.lng();
-          setCenter({ lat, lng });
-          setZoom(14); // Adjust the zoom level as needed
-          map.panTo({ lat, lng });
-        }
+    const checkGoogleMapsAvailability = () => {
+      if (window.google && window.google.maps) {
+        const geocoder = new window.google.maps.Geocoder();
+        geocoder.geocode({ address: city }, (results, status) => {
+          if (status === "OK" && results[0]) {
+            const location = results[0].geometry.location;
+            if (
+              typeof location.lat === "function" &&
+              typeof location.lng === "function" &&
+              isFinite(location.lat()) &&
+              isFinite(location.lng())
+            ) {
+              const lat = location.lat();
+              const lng = location.lng();
+              setCenter({ lat, lng });
+              setZoom(14); // Adjust the zoom level as needed
+              map.panTo({ lat, lng });
+            }
+          } else {
+            // Handle error if city name couldn't be resolved
+            //console.log("City not found");
+          }
+        });
       } else {
-        // Handle error if city name couldn't be resolved
-        //console.log("City not found");
+        setTimeout(checkGoogleMapsAvailability, 100);
       }
-    });
+    };
+    checkGoogleMapsAvailability();
   };
 
   // const { isLoaded } = useJsApiLoader({

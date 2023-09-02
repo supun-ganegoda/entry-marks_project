@@ -1,10 +1,12 @@
 import axios from "axios";
 import "./PDFResult.css"; // Import the CSS file
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useReactToPrint } from "react-to-print";
 import { useNavbar } from "../context/NavbarContext";
 
 const PDFResult = () => {
   const url = process.env.REACT_APP_SERVER_URL;
+  const pdfRef = useRef();
   const { setShowNavbar } = useNavbar();
   const [userObj, setUserObj] = useState({});
   const [parentObj, setParentObj] = useState({});
@@ -16,22 +18,11 @@ const PDFResult = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
 
-  const generatePDF = async () => {
-    try {
-      const response = await axios.get(`${url}pdf/generatePDF`, {
-        responseType: "blob",
-      });
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const uri = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = uri;
-      a.download = "Summary-Report.pdf";
-      a.click();
-      URL.revokeObjectURL(uri);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    }
-  };
+  const generatePDF = useReactToPrint({
+    content: () => pdfRef.current,
+    documentTitle: "Summary Report",
+    onAfterPrint: () => alert("Print success"),
+  });
 
   const getDate = () => {
     const today = new Date();
@@ -168,7 +159,7 @@ const PDFResult = () => {
   const electors = electorialObj.electors;
 
   return (
-    <div className="invoice-box">
+    <div className="invoice-box" ref={pdfRef}>
       <div className="nav-container">
         <button className="download-btn" onClick={(e) => generatePDF()}>
           Download

@@ -109,7 +109,7 @@ const SchoolDetails = ({ handleClick }) => {
   useEffect(() => {
     loadSchools();
     //selectedSchools([]);
-  }, [selectedSchool1]);
+  }, []);
 
   const updateOnClose = () => {
     const selected = getSelectedSchools();
