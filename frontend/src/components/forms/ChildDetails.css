@@ -1,9 +1,9 @@
 .form-container {
-    max-width: 80vw;
-    margin-top: 84px;
-    margin-right: 0.4rem;
-    margin-left: 308px;
-    margin-bottom: 0.4rem;
+  max-width: 80vw;
+  margin-top: 84px;
+  margin-right: 0.4rem;
+  margin-left: 308px;
+  margin-bottom: 0.4rem;
 }
 
 .form-container2 {
@@ -15,132 +15,131 @@
 }
 
 fieldset {
-    /* border: none; */
-    width: 99%;
-    padding: 8px;
+  /* border: none; */
+  width: 99%;
+  padding: 8px;
 }
-  
+
 legend {
-    font-size: 1.5rem;
-    font-weight: bold;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .label-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-.form-race-label{
-    margin-left: 4px;
-    margin-right: 4px;
-  }
-  
-.form-race-checkbox{
-    margin-right: 8px;
+.form-race-label {
+  margin-left: 4px;
+  margin-right: 4px;
 }
-  
+
+.form-race-checkbox {
+  margin-right: 8px;
+}
+
 .form-label {
-    flex-basis: 200px;
-    margin-right: 1rem;
+  flex-basis: 200px;
+  margin-right: 1rem;
 }
 
 .form-help {
-    margin-left: 216px;
-    font-size: 0.8rem;
-    color: #666;
+  margin-left: 216px;
+  font-size: 0.8rem;
+  color: #666;
 }
 
-.form-help:hover{
-    cursor: pointer;
+.form-help:hover {
+  cursor: pointer;
 }
 
-input[type="text"]{
-    margin-right: auto;
+input[type="text"] {
+  margin-right: auto;
 }
 
 .iframe-container {
-    position: fixed;
-    top: 9rem;
-    left: 65rem;
-    width: 60%;
-    height: 80%;
-    padding: 1rem;
-    z-index: 9999;
-    background-color: white;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .iframe-container.show {
-    transform: translateX(0%);
-  }
-  
-  .iframe-container iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-  }
-  
-  .iframe-container button {
-    align-self: flex-end;
-    padding: 0.5rem;
-    border: none;
-    background-color: transparent;
-    color: #666;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .iframe-container button:hover {
-    color: #333;
-    transform: scale(1.1);
-  }
-  
-  .form-map-button{
-    margin-left: 1vw;
-    border: none;
-    padding: 4px;
-    border-radius: 4px;
-    background-color: #060b26;
-    width: 5rem;
-    color: #fff;
-  }
-  .form-map-button:hover{
-    background-color: #1a83ff;
-    cursor: pointer;
-  }
-  #latlong{
-    max-width: 12rem;
-  }
+  position: fixed;
+  top: 9rem;
+  left: 65rem;
+  width: 60%;
+  height: 80%;
+  padding: 1rem;
+  z-index: 9999;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
 
-  .form-map-button[title]:hover::before {
-    content: attr(title);
-    position: absolute;
-    background-color: #333;
-    color: #fff;
-    padding: 4px 8px;
-    border-radius: 4px;
-    white-space: nowrap;
-    font-size: 14px;
-  }
+.iframe-container.show {
+  transform: translateX(0%);
+}
+
+.iframe-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.iframe-container button {
+  align-self: flex-end;
+  padding: 0.5rem;
+  border: none;
+  background-color: transparent;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.iframe-container button:hover {
+  color: #333;
+  transform: scale(1.1);
+}
+
+.form-map-button {
+  margin-left: 1vw;
+  border: none;
+  padding: 4px;
+  border-radius: 4px;
+  background-color: #060b26;
+  width: 5rem;
+  color: #fff;
+}
+.form-map-button:hover {
+  background-color: #1a83ff;
+  cursor: pointer;
+}
+#latlong {
+  max-width: 12rem;
+}
+
+.form-map-button[title]:hover::before {
+  content: attr(title);
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-size: 14px;
+}
 
 @media screen and (max-width: 768px) {
-    .form-container {
-      width: 99%;
-      max-width: none;
-      margin-top: 88px;
-      margin-left: 0.6rem;
+  .form-container {
+    width: 99%;
+    max-width: none;
+    margin-top: 88px;
+    margin-left: 0.6rem;
+  }
 
-    }
-  
-    .form-label {
-      flex-basis: 100%;
-      margin-right: 0;
-      margin-bottom: 0.5rem;
-    }
+  .form-label {
+    flex-basis: 100%;
+    margin-right: 0;
+    margin-bottom: 0.5rem;
+  }
 }

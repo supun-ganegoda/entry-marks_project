@@ -1,76 +1,100 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "./ChildDetails.css";
 import GMap from "../GMap";
-import { useLatLng } from "../context/LocationContext";
+import Button from "@mui/material/Button";
 
+const ChildDetails = (props) => {
+  const { handleClick } = props;
+  const url = process.env.REACT_APP_SERVER_URL;
 
-const ChildDetails = () => {
+  const [apAddressLine1, setapAddressLine1] = useState("");
+  const [apAddressLine2, setapAddressLine2] = useState("");
+  const [apAddressLine3, setapAddressLine3] = useState("");
+  const [apLatLng, setapLatLng] = useState("");
 
-  const latLng = useLatLng();
-
-  const [newlatlong, setNewLatlong] = useState(latLng.lat + ", " + latLng.lng);
-  const [tel1, setTel1] = useState("");
-
-  const [mapDisplay, setMapDisplay] = useState(false);
+  const [showIframe, setShowIframe] = useState(false);
 
 
   useEffect(() => {
-    setNewLatlong(latLng.lat + ", " + latLng.lng);
-  }, [latLng]);
+  
+  }, []);
 
-  const handleMapDisplay = () => {
-    setMapDisplay(true);
+  const handleHelpClick = () => {
+    setShowIframe(true);
   };
 
-  const handleMapClose = () => {
-    setMapDisplay(false);
-  };
-
+  
 
   return (
     <>
       <div className="form-container">
-        <form>
+        <form >
           <fieldset>
-            <legend>Applicant Details</legend>
-            
+            <legend>Location Details</legend>
+
+            <div className="label-wrapper">
+              <label className="label-form">Permanant Address: </label>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4px",
+                  flexGrow: "1",
+                }}
+              >
+                <input
+                  type="text"
+                  id="apAddressLine1"
+                  placeholder="Address line 1"
+                  value={apAddressLine1}
+                  style={{ width: "100%" }}
+                  onChange={(e) => setapAddressLine1(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  id="apAddressLine2"
+                  placeholder="Address line 2"
+                  value={apAddressLine2}
+                  style={{ width: "100%" }}
+                  onChange={(e) => setapAddressLine2(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  id="apAddressLine3"
+                  placeholder="Address line 3"
+                  value={apAddressLine3}
+                  style={{ width: "100%" }}
+                  onChange={(e) => setapAddressLine3(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
 
             <div className="label-wrapper">
               <label className="label-form">Latitude and longitude: </label>
               <input
                 type="text"
                 id="latlong"
-                value={newlatlong}
+                value={apLatLng}
                 readOnly={true}
-                //onChange={(e) => setNewLatlong(e.target.value)}
+                onChange={(e) => setapLatLng(e.target.value)}
                 required
               />
-              <button
-                className="form-map-button"
-                onClick={handleMapDisplay}
-                title="Click your location to set coordinates"
-              >
-                Find
-              </button>
-              {/* {mapDisplay&&<Map handleMapClose={handleMapClose} setLatLong={setLatlong}/>} */}
             </div>
 
             <div className="label-wrapper">
-              <label className="label-form">Telephone number: </label>
-              <input
-                type="text"
-                id="tel1"
-                value={tel1}
-                onChange={(e) => setTel1(e.target.value)}
-                required
-              />
+              <GMap setapLatLng={setapLatLng} city={apAddressLine3} />
             </div>
+
+
           </fieldset>
         </form>
       </div>
 
-      {mapDisplay && <GMap handleMapClose={handleMapClose} />}
     </>
   );
 };

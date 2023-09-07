@@ -2,7 +2,7 @@ import { IoIosPaper } from "react-icons/io";
 
 export const SideBarData = [
   {
-    title: "Details of Child",
+    title: "Details of Location",
     onclick: "displayChild",
     icon: <IoIosPaper />,
     cName: "sidebar-text",
