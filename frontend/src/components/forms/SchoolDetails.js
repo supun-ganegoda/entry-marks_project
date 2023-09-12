@@ -191,7 +191,10 @@ const SchoolDetails = ({ handleClick }) => {
           <Button variant="outlined">SAVE & CONTINUE</Button>
         </div>
         <Alert severity="info" style={{ marginTop: "8px", marginRight: "4px" }}>
-          Marks are calculated for the first preffered school
+          <b>Marks are calculated for the first preffered school.</b>
+          <br />
+          School type, Distance from home, Number of schools within the radius can be obtained using other 
+          preference 2, 3, and 4.
         </Alert>
       </div>
     </>

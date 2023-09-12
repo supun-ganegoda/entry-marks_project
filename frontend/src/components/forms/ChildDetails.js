@@ -18,14 +18,17 @@ const ChildDetails = (props) => {
 
 
   useEffect(() => {
-  
+
   }, []);
 
   const handleHelpClick = () => {
     setShowIframe(true);
   };
 
-  
+  const updateOnClosing = () => {
+    handleClick();
+  };
+
 
   return (
     <>
@@ -92,6 +95,9 @@ const ChildDetails = (props) => {
 
 
           </fieldset>
+          <div className="save-btn" onClick={(e) => updateOnClosing()}>
+            <Button variant="outlined">SAVE & CONTINUE</Button>
+          </div>
         </form>
       </div>
 

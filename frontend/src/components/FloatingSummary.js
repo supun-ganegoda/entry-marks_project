@@ -98,68 +98,9 @@ export default function FloatingSummary() {
     return data;
   };
 
-  /*
-  const sendMail = async (e) => {
-    const data = setDefaultZero();
-    setDownloadClicked(true);
-    
-    await axios
-      .post(`${url}pdf/createPdf`, data) //create pdf next=> get pdf
-      .then(() =>
-        axios
-          .get(`${url}pdf/fetchPdf`, { responseType: "blob" }) //to fetch the generated pdf
-          .then((res) => {
-            const pdfBlob = new Blob([res.data], { type: "application/pdf" });
-            saveAs(pdfBlob, "Summary-Report.pdf"); //to save we use file saver
-          })
-          .then(() =>
-            axios
-              .post(`${url}pdf/sendPdf`, { email: email })
-              .then((response) => {
-                console.log(response);
-                //alert(response.data);
-                setMailSend(true);
-              })
-          )
-      );
 
-    try {
-      await axios.post(`${url}pdf/generatePDF`, data);
-
-      const response = await axios.get(`${url}pdf/fetchPdf`, {
-        responseType: "arraybuffer",
-      });
-      const pdfBlob = new Blob([response.data], { type: "application/pdf" });
-      saveAs(pdfBlob, "Summary-Report.pdf");
-
-      setIsSendingEmail(true);
-      await axios.post(`${url}pdf/sendPdf`, { email });
-      setIsSendingEmail(false);
-      setMailSend(true);
-    } catch (error) {
-      console.log(error);
-      setIsSendingEmail(false);
-      // Handle any errors here
-    }
-  };
-*/
-
-  const saveMarks = async (e) => {
-    const marks = makeObject();
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(`${url}save-marks`, marks, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      console.log(response.data); // Handle success response
-      setSaved(true);
-      setOpen(false);
-    } catch (error) {
-      console.error(error); // Handle error
-    }
+  const closeForm = () => {
+    setOpen(false);
   };
 
   const displayModal = () => {
@@ -213,16 +154,16 @@ export default function FloatingSummary() {
             aria-describedby="modal-modal-description"
           >
             <Box sx={style}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                {userName === null ? (
-                  <Alert severity="info">Please login to save progress</Alert>
-                ) : (
-                  "User name: " + userName
-                )}
-              </Typography>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                {email !== null ? "Email: " + email : null}
-              </Typography>
+              <div style={{
+                backgroundColor: '#00008B',
+                padding: '10px',
+                border: '1px solid #ccc',
+                borderRadius: '5px',
+                textAlign: 'center',
+              }}>
+                <p style={{ fontSize: '18px', fontWeight: 'bold', color: '#FFFFFF' }}>Summary of the Marks</p>
+              </div>
+
               <hr></hr>
               <Typography
                 id="modal-modal-title"
@@ -236,16 +177,11 @@ export default function FloatingSummary() {
               >
                 <Button
                   variant="contained"
-                  onClick={(e) => saveMarks()}
+                  onClick={(e) => closeForm()}
                   disabled={isLogged}
                 >
-                  Save
+                  Close
                 </Button>
-                <Link to="/pdf-report">
-                  <Button variant="contained" style={{ width: "100%" }}>
-                    View Report
-                  </Button>
-                </Link>
               </div>
             </Box>
           </Modal>
