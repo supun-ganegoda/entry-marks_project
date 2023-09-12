@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
-import html2canvas from "html2canvas";
+import { Link } from "react-router-dom";
 import "./SchoolFinder.css";
 import { GoogleMap, Marker, Circle } from "@react-google-maps/api";
 import { useSelectedSchools } from "./context/SelectedSchoolsContext";
-import { useUpdateSchoolCount } from "./context/SchoolCountContext";
+import {useUpdateSchoolCount } from "./context/SchoolCountContext";
 import { loadGoogleMapsApi } from "./GoogleMapsLoader";
 
 const SchoolLocator = () => {
@@ -15,6 +15,7 @@ const SchoolLocator = () => {
   var selection; //having selected schools with lat, lng
   let distances; //having distances calculated from the home location
   let filteredSchools;
+  let countSet=false;
   const [center, setCenter] = useState({ lat: 6.053519, lng: 80.220978 });
 
   const [zoom, setZoom] = useState(14);
@@ -64,7 +65,7 @@ const SchoolLocator = () => {
   const loadSelectedSchools = async () => {
     const tempSchools = Object.values(selectedSchools);
     //empSchools.pop();
-    //console.log(tempSchools);
+    console.log(tempSchools);
     filteredSchools = await loadAllSchools();
 
     const extractedData = [];
@@ -119,11 +120,6 @@ const SchoolLocator = () => {
               </button>
             </td>
             <td>{setSchoolCount(key)}</td>
-            {/* <td>
-              <button onClick={() => captureAndSaveScreenshot("school1")}>
-                Capture
-              </button>
-            </td> */}
           </tr>
         );
       });
@@ -135,6 +131,10 @@ const SchoolLocator = () => {
     count = allDistances.filter((distance) => distances[key] > distance).length;
     //schoolCount((sc) => [...sc, count]);
     tempSchoolCount.push(count);
+    if(!countSet){
+      schoolCount(tempSchoolCount);
+    }
+    countSet = true;
     //console.log(count);
     return count;
   };
@@ -150,9 +150,16 @@ const SchoolLocator = () => {
       });
   }, [apiKey]);
 
-  useEffect(() => {
-    return schoolCount(tempSchoolCount);
-  }, []);
+  // useEffect(() => {
+  //   return (
+  //     schoolCount(tempSchoolCount)
+
+  //     )
+  // }, []);
+
+  const proceedTo = ()=>{
+    schoolCount(tempSchoolCount);
+  }
 
   const panToLatLng = (lat, lng) => {
     // Check if the GoogleMap component is available
@@ -217,27 +224,7 @@ const SchoolLocator = () => {
     return tempDistances;
   };
 
-  const captureAndSaveScreenshot = (filename) => {
-    const divElement = mapRef.current;
-
-    if (!divElement) {
-      console.error(`Element with ID "${divElement}" not found.`);
-      return;
-    }
-
-    html2canvas(divElement).then((canvas) => {
-      // Convert the canvas to a data URL
-      const dataURL = canvas.toDataURL("image/png");
-
-      // Create a link element to download the screenshot
-      const link = document.createElement("a");
-      link.href = dataURL;
-      link.download = filename || "screenshot.png";
-
-      // Trigger a click event on the link to initiate the download
-      link.click();
-    });
-  };
+  
 
   return (
     <>
@@ -312,6 +299,11 @@ const SchoolLocator = () => {
             <p>No schools are selected !</p>
           )}
         </div>
+      </div>
+      <div className="form-proceed" >
+          <Link to="/categorySelector">
+            <button className="proceed-btn">PROCEED</button>
+          </Link>
       </div>
     </>
   );

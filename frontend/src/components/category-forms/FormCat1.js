@@ -9,7 +9,7 @@ export default function FormCat1() {
   const { updateMarks } = useContext(MarksContext);
   const { updateFinalMarks } = useContext(MarksContext);
   const schoolNumber = useSchoolCount(); //school count from the home to selected school
-  //console.log(schoolCount);
+  console.log(schoolNumber);
   const [applicantNumber, setapplicantNumber] = useState("");
   const [spouseNumber, setspouseNumber] = useState("");
   const [guardianNumber, setguardianNumber] = useState("");

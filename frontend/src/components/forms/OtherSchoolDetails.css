@@ -41,17 +41,22 @@ p {
   border-radius: 4px;
 }
 
-.otherSchool-button{
-    width: 100%;
+.proceed-btn{
+  margin-left: 90%;
+  border: none;
     border-radius: 4px;
-    padding: 2px;
+    padding: 6px;
+    margin-bottom: 8px;
+    margin-top: 8px;
     justify-content: center;
     background-color: #1a83ff;
     color: #fff;
+
 }
-.otherSchool-button:hover{
-    cursor: pointer;
-    background-color: #4694ee;
+.proceed-btn:hover{
+  cursor: pointer;
+  background-color: #4694ee;
+  scale: 0.9;
 }
 
 @media screen and (max-width: 768px) {

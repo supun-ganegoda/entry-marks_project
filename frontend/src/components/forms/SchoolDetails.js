@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import {useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
@@ -18,31 +17,31 @@ const SchoolDetails = ({ handleClick }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [isSchoolsSet, setIsSchoolsSet] = useState(false);
 
-  const loadSchools = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const schools = await axios.get(`${url}get-preffered-schools`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      selectedSchools(schools.data[0]); //set loaded schools to school context
-      setselectedSchool1(
-        schools.data[0].preference1 ? schools.data[0].preference1 : "-"
-      );
-      setselectedSchool2(
-        schools.data[0].preference2 ? schools.data[0].preference2 : "-"
-      );
-      setselectedSchool3(
-        schools.data[0].preference3 ? schools.data[0].preference3 : "-"
-      );
-      setselectedSchool4(
-        schools.data[0].preference4 ? schools.data[0].preference4 : "-"
-      );
-    } catch (error) {
-      console.error("Error loading schools:", error);
-    }
-  };
+  // const loadSchools = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const schools = await axios.get(`${url}get-preffered-schools`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     selectedSchools(schools.data[0]); //set loaded schools to school context
+  //     setselectedSchool1(
+  //       schools.data[0].preference1 ? schools.data[0].preference1 : "-"
+  //     );
+  //     setselectedSchool2(
+  //       schools.data[0].preference2 ? schools.data[0].preference2 : "-"
+  //     );
+  //     setselectedSchool3(
+  //       schools.data[0].preference3 ? schools.data[0].preference3 : "-"
+  //     );
+  //     setselectedSchool4(
+  //       schools.data[0].preference4 ? schools.data[0].preference4 : "-"
+  //     );
+  //   } catch (error) {
+  //     console.error("Error loading schools:", error);
+  //   }
+  // };
 
   //suggestions model
 
@@ -85,37 +84,37 @@ const SchoolDetails = ({ handleClick }) => {
     return selected;
   };
 
-  const saveToDatabase = async () => {
-    const temp = getSelectedSchools();
-    //convert array into object
-    const selected = temp.reduce((acc, value, index) => {
-      acc[index] = value;
-      return acc;
-    }, {});
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(`${url}selected-schools`, selected, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  // const saveToDatabase = async () => {
+  //   const temp = getSelectedSchools();
+  //   //convert array into object
+  //   const selected = temp.reduce((acc, value, index) => {
+  //     acc[index] = value;
+  //     return acc;
+  //   }, {});
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const response = await axios.post(`${url}selected-schools`, selected, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
 
-      console.log(response.data); // Handle success response
-    } catch (error) {
-      console.error(error); // Handle error
-    }
-  };
+  //     console.log(response.data); // Handle success response
+  //   } catch (error) {
+  //     console.error(error); // Handle error
+  //   }
+  // };
 
-  useEffect(() => {
-    loadSchools();
-    //selectedSchools([]);
-  }, []);
+  // useEffect(() => {
+  //   loadSchools();
+  //   //selectedSchools([]);
+  // }, []);
 
   const updateOnClose = () => {
     const selected = getSelectedSchools();
     selectedSchools(selected);
     setIsSchoolsSet(true);
-    saveToDatabase();
+    //saveToDatabase();
     handleClick();
   };
 
