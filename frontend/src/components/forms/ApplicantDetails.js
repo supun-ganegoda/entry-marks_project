@@ -4,10 +4,12 @@ import axios from "axios";
 import "./ApplicationDetails.css";
 import GMap from "../GMap";
 import Button from "@mui/material/Button";
+import { useUpdateLatLng } from "../context/LocationContext";
 
 const ApplicantDetails = (props) => {
   const { handleClick } = props;
   const url = process.env.REACT_APP_SERVER_URL;
+  const updateLatLng = useUpdateLatLng();
 
   const [apFullName, setapFullName] = useState("");
   const [apInitials, setapInitials] = useState("");
@@ -36,6 +38,10 @@ const ApplicantDetails = (props) => {
   const [spDivisionalSecretariat, setspDivisionalSecretariat] = useState("");
   const [spDistrict, setspDistrict] = useState("");
   const [spGramanildariDivision, setspGramanildariDivision] = useState("");
+
+  useEffect(() => {
+    updateLatLng(apLatLng);
+  }, [apLatLng]);
 
   useEffect(() => {
     loadApplicantDetails();
@@ -84,6 +90,10 @@ const ApplicantDetails = (props) => {
       setapAddressLine2(dataResponse.apAddressLine2);
       setapAddressLine3(dataResponse.apAddressLine3);
       setapLatLng(dataResponse.apLatLng);
+      let coo = dataResponse.apLatLng.split(",");
+      //console.log(coo);
+      localStorage.setItem("lat", coo[0]);
+      localStorage.setItem("lng", coo[1]);
       setapTeleNumber(dataResponse.apTeleNumber);
       setapDistrict(dataResponse.apDistrict);
       setapDivisionalSecretariat(dataResponse.apDivisionalSecretariat);

@@ -19,6 +19,7 @@ const {
   loadApplicantDetails,
   loadElectorialDetails,
   submitElectorialDetails,
+  saveHash,
 } = require("../controller/userController");
 
 //getting the router object
@@ -47,5 +48,6 @@ router.post("/applicant-details", verifyToken, submitApplicantDetails);
 router.post("/selected-schools", verifyToken, saveSelectedSchools); //save selected schools to the database
 router.post("/electorial-details", verifyToken, submitElectorialDetails);
 router.post("/save-marks", verifyToken, saveMarks);
+router.post("/save-hash", verifyToken, saveHash);
 
 module.exports = router;

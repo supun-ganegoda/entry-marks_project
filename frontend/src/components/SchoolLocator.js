@@ -5,6 +5,7 @@ import { GoogleMap, Marker, Circle } from "@react-google-maps/api";
 import { useSelectedSchools } from "./context/SelectedSchoolsContext";
 import { useUpdateSchoolCount } from "./context/SchoolCountContext";
 import { loadGoogleMapsApi } from "./GoogleMapsLoader";
+import { useLatLng } from "./context/LocationContext";
 
 const SchoolLocator = () => {
   const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -15,7 +16,9 @@ const SchoolLocator = () => {
   var selection; //having selected schools with lat, lng
   let distances; //having distances calculated from the home location
   let filteredSchools;
-  const [center, setCenter] = useState({ lat: 6.053519, lng: 80.220978 });
+  const [center] = useState({ lat: 6.053519, lng: 80.220978 });
+  const homeLatLng = useLatLng();
+  //console.log(homeLatLng);
 
   const [zoom, setZoom] = useState(14);
   const schoolCount = useUpdateSchoolCount();
@@ -133,7 +136,7 @@ const SchoolLocator = () => {
   const setSchoolCount = (key) => {
     let count = 0;
     count = allDistances.filter((distance) => distances[key] > distance).length;
-    //schoolCount((sc) => [...sc, count]);
+    schoolCount((sc) => [...sc, count]);
     tempSchoolCount.push(count);
     //console.log(count);
     return count;
@@ -195,9 +198,8 @@ const SchoolLocator = () => {
   };
 
   const calcDistances = (s) => {
-    //console.log(s);
     const tempDistances = [];
-    if (homeLat !== "" && homeLng !== "") {
+    if (homeLat !== null && homeLng !== null) {
       s.forEach((school) => {
         const distance =
           window.google.maps.geometry.spherical.computeDistanceBetween(

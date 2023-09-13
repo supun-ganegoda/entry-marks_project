@@ -79,10 +79,7 @@ exports.sendPdf = (req, res) => {
 
 exports.verifyPDF = async (req, res) => {
   try {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(200).json({ error: "not a valid ID" });
-    }
-    const user = await userDetailsModel.findOne({ _id: req.params.id });
+    const user = await userDetailsModel.findOne({ hash: req.params.id });
 
     if (!user) {
       return res.status(404).json({ message: "Document not found" });

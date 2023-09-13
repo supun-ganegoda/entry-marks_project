@@ -68,11 +68,14 @@ const Navbar = () => {
           localStorage.removeItem("token");
           localStorage.removeItem("userName");
           localStorage.removeItem("email");
-          localStorage.removeItem("holders");
+          localStorage.removeItem("lat");
+          localStorage.removeItem("lng");
+          localStorage.removeItem("selectedSchool");
           setUserName("REGISTER");
           // alert("Log out Success! ");
           setLoggedOut(true);
           navigate("/");
+          window.location.reload();
           // Redirect or perform any other actions after successful logout
         } else {
           console.log("Something went wrong!");

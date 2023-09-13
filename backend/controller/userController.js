@@ -79,6 +79,7 @@ const getUserDetails = async (req, res) => {
       ID: user._id,
       userName: user.username,
       email: user.email,
+      hashCode: user.hash,
     };
 
     res.status(200).json(userObj);
@@ -407,6 +408,26 @@ const saveMarks = async (req, res) => {
   }
 };
 
+//save hash code
+const saveHash = async (req, res) => {
+  console.log(req.body);
+  try {
+    const { email } = req.user;
+    await userDetailsModel.findOneAndUpdate(
+      { email: email }, // Find the document by email
+      {
+        $set: {
+          hash: req.body.hash,
+        },
+      }
+    );
+    res.status(200).json({ message: "Saved successfully !" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error saving hash" });
+  }
+};
+
 //retrive marks from the database
 const getMarks = async (req, res) => {
   try {
@@ -447,6 +468,7 @@ module.exports = {
   saveSelectedSchools,
   submitElectorialDetails,
   saveMarks,
+  saveHash,
   getMarks,
   loadApplicantDetails,
   getApplicantDetails,

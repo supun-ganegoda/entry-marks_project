@@ -102,7 +102,7 @@ const PDFResult = () => {
     };
   }, []);
 
-  const ID = userObj.ID;
+  const ID = userObj.hashCode;
   const pastPupils = marksObj.pastPupils ? marksObj.pastPupils : "-";
   const proximity = marksObj.proximity ? marksObj.proximity : "-";
   const cousins = marksObj.cousins ? marksObj.cousins : "-";
@@ -176,7 +176,11 @@ const PDFResult = () => {
                       <img
                         src="./images/SDDK.png"
                         alt="SDDK company"
-                        style={{ width: "100%", maxWidth: "156px" }}
+                        style={{
+                          width: "70%",
+                          maxWidth: "156px",
+                          height: "100px",
+                        }}
                       />
                     </td>
                     <td>
@@ -196,7 +200,9 @@ const PDFResult = () => {
                 <tbody>
                   <tr>
                     <td>User name: {`${userName}`}</td>
-                    <td>Hash: {`${ID}`}</td>
+                    <td>
+                      Hash: <b>{`${ID}`}</b>
+                    </td>
                   </tr>
                 </tbody>
               </table>

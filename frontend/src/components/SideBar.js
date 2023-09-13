@@ -25,6 +25,7 @@ const SideBar = () => {
   const [otherSchooldButtonClicked, setOtherSchooldButtonClicked] =
     useState(false);
   const [electButtonClicked, setElectButtonClicked] = useState(false);
+  const [formDisabled, setFormDisabled] = useState(true);
 
   useEffect(() => {
     showPane();
@@ -89,6 +90,7 @@ const SideBar = () => {
   };
 
   const setSchoolFormVisible = () => {
+    setFormDisabled(false); //enable the next form
     setSchoolDetails(true);
     setApplicationForm(false);
     setChildForm(false);
@@ -177,11 +179,17 @@ const SideBar = () => {
               <li className={SideBarData[3].cName}>
                 <Link
                   to="#"
-                  onClick={setOhterScoolFormVisible}
+                  onClick={
+                    formDisabled
+                      ? (e) => e.preventDefault()
+                      : setOhterScoolFormVisible
+                  }
                   style={{
                     backgroundColor: otherSchooldButtonClicked
                       ? "#1a83ff"
                       : null,
+                    pointerEvents: formDisabled ? "none" : "auto",
+                    opacity: formDisabled ? 0.5 : 1,
                   }}
                 >
                   {SideBarData[3].icon}
