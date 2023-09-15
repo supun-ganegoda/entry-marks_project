@@ -133,7 +133,7 @@ export default function FormCat6() {
 
             <div className="form-medium">
               <label className="form-label">Reason for being abroad: </label>
-              <div className="form-medium-selector">
+              <div>
                 <div>
                   <input
                     type="radio"

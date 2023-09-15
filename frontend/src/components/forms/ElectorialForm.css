@@ -47,7 +47,7 @@ th {
 }
 
 label {
-  width: 200px;
+  width: 11rem;
 }
 
 .elec-form-row input[type="text"] {
@@ -87,6 +87,22 @@ label {
   background-color: #0f58f6;
   color: #fff;
   scale: 1.05;
+}
+
+.add-block button {
+  width: 99%;
+  padding: 4px;
+  border-radius: 4px;
+  margin-top: 8px;
+  border: none;
+  background-color: rgb(131 163 234);
+  color: #fff;
+  cursor: pointer;
+}
+
+.add-block button:hover {
+  scale: 0.98;
+  background-color: rgb(113, 154, 241);
 }
 
 @media screen and (max-width: 768px) {

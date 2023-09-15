@@ -1,57 +1,122 @@
-/* PDFResultTemplate.css */
+/* PDFResult.css */
+
+.nav-container {
+  display: flex;
+  padding: 12px;
+  background-color: #a7c1f0;
+  align-items: center;
+  justify-content: flex-end;
+}
+.download-btn {
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.no-border-table {
+  border-collapse: collapse;
+  border: none;
+}
+
+.no-border-table th,
+.no-border-table td {
+  border: none;
+}
 
 .invoice-box {
-    max-width: 800px;
-    margin: auto;
-    padding: 30px;
-    border: 1px solid #eee;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-    font-size: 16px;
-    line-height: 24px;
-    font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
-    color: #555;
+  max-width: 800px;
+  margin: auto;
+  padding: 22px;
+  border: 1px solid #eee;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  font-size: 16px;
+  line-height: 24px;
+  font-family: "Helvetica Neue", "Helvetica";
+  color: #555;
 }
 
-.top td {
-    width: 50%;
-    vertical-align: top;
+.margin-top {
+  margin-top: 50px;
 }
 
-.title-image {
-    width: 100%;
-    max-width: 156px;
+.justify-center {
+  text-align: center;
 }
 
-.table {
-    width: 100%;
-    line-height: inherit;
-    text-align: left;
+.invoice-box table {
+  width: 100%;
+  line-height: inherit;
+  text-align: left;
 }
 
-.table-cell {
-    padding: 5px;
+.invoice-box table td {
+  padding: 5px;
+  vertical-align: top;
 }
 
-.heading-row {
-    background: #eee;
-    border-bottom: 1px solid #ddd;
-    font-weight: bold;
+.invoice-box table tr.top table td {
+  padding-bottom: 20px;
 }
 
-.item-row {
-    border-bottom: 1px solid #eee;
+.invoice-box table tr.top table td.title {
+  font-size: 45px;
+  line-height: 45px;
+  color: #333;
 }
 
-.total-row td:nth-child(2) {
-    border-top: 2px solid #eee;
-    font-weight: bold;
+.invoice-box table tr.information table td {
+  padding-bottom: 40px;
+}
+
+.invoice-box table tr.heading td {
+  background: #dfdddd;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  text-align: left;
+}
+
+.invoice-box table tr.details td {
+  padding-bottom: 20px;
+}
+
+.invoice-box table tr.item td {
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.invoice-box table tr.item.last td {
+  border-bottom: none;
+}
+
+.invoice-box table tr.total td:nth-child(2) {
+  border-top: 2px solid #eee;
+  font-weight: bold;
 }
 
 .special-row {
-    background-color: #e7e6e6f6;
+  background-color: #e7e6e6f6;
+}
+
+.special-row td {
+  width: 33.33%;
+  text-align: center;
+  font-weight: bold;
 }
 
 .test-row td {
-    width: 50%;
-    text-align: left;
+  width: 50%;
+  text-align: left;
+}
+
+@media only screen and (max-width: 600px) {
+  .invoice-box table tr.top table td {
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+
+  .invoice-box table tr.information table td {
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
 }

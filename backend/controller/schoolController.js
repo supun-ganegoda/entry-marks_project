@@ -18,7 +18,9 @@ const getSuggestions = async (req, res) => {
 
 //get all school details
 const getAllSchoolDetails = async (req, res) => {
-  const schools = await schoolDetailsModel.find({}).select("Name Lat Lng Type");
+  const schools = await schoolDetailsModel
+    .find({})
+    .select("Name Lat Lng Category");
   res.status(200).json(schools);
 };
 

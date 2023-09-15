@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import "./FormCat.css";
 import Modal from "../Modal";
 import Alert from "@mui/material/Alert";
+import { useSchoolCount } from "../context/SchoolCountContext";
 import { MarksContext } from "../context/MarksContext";
 
 export default function FormCat3() {
@@ -19,7 +20,8 @@ export default function FormCat3() {
   const [yearsApplicant, setYearApplicant] = useState("");
   const [yearsSpouse, setYearSpouse] = useState("");
   const [yearsRegister, setYearsRegister] = useState("");
-  const [noOfSchooles, setNoOfSchools] = useState("");
+  const schoolNumber = useSchoolCount(); //school count from the home to selected school
+  //console.log(schoolCount);
   const [gainedAchievements, setgainedAchievements] = useState(false);
   const [nogainedAchievements, setnogainedAchievements] = useState(false);
   const [tableData, setTableData] = useState([
@@ -90,7 +92,7 @@ export default function FormCat3() {
 
     let AdmissionGrade = 0;
 
-    let maxValue = Number.MIN_SAFE_INTEGER;
+    let maxValue = 0;
 
     tableData.forEach((rowData) => {
       const fifthColumnValue = rowData[4];
@@ -100,7 +102,12 @@ export default function FormCat3() {
         AdmissionGrade = rowData[3];
       }
     });
-    totalMarks3 += parseFloat(maxValue) * 2;
+
+    if (maxValue >= 10) {
+      totalMarks3 += 20;
+    } else if (maxValue < 10) {
+      totalMarks3 += maxValue * 2;
+    }
 
     if (AdmissionGrade === "1") {
       totalMarks3 += 5;
@@ -190,13 +197,15 @@ export default function FormCat3() {
       }
     }
 
-    //totalMarks3 += 30 - noOfSchooles*3;
+    if (30 - schoolNumber[0] * 3 > 0) {
+      totalMarks3 += 30 - schoolNumber[0] * 3;
+    }
+
     console.log(totalMarks3);
     setMarks(totalMarks3);
     handleMarksChange(true);
     updateFinalMarks("Based on Brothers/ sistors of student", totalMarks3);
   };
-
 
   const renderTable = () => {
     return (
@@ -204,7 +213,7 @@ export default function FormCat3() {
         <thead>
           <tr>
             <th>Name of the child</th>
-            <th>Garde</th>
+            <th>Grade</th>
             <th>Admission No</th>
             <th>Admission Grade</th>
             <th>Grades spent</th>
@@ -467,7 +476,6 @@ export default function FormCat3() {
                 </div>
               )}
             </div>
-            
 
             <div className="form-religion">
               <label className="form-label">
@@ -543,18 +551,13 @@ export default function FormCat3() {
               <input
                 type="text"
                 id="schoolNumber"
-                value={noOfSchooles}
-                onChange={(e) => setNoOfSchools(e.target.value)}
+                value={schoolNumber[0]}
+                readOnly
                 required
               />
             </div>
           </fieldset>
         </form>
-        </div>
-      <button onClick={calculateMarks}>Calculate</button>
-
-      <div>
-        <p>Marks: {marks}</p>
       </div>
 
       <div className="form-display-marks" onClick={(e) => calculateMarks()}>

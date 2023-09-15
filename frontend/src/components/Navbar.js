@@ -9,9 +9,11 @@ import "./Navbar.css";
 import BLAvatars from "./Avatar";
 import Dialog from "./Dialog";
 import WelcomeDialog from "./WelcomeDialog";
+import { useNavbar } from "./context/NavbarContext";
 
 const Navbar = () => {
   const url = process.env.REACT_APP_SERVER_URL;
+  const { showNavbar } = useNavbar();
   const navigate = useNavigate();
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
@@ -66,11 +68,14 @@ const Navbar = () => {
           localStorage.removeItem("token");
           localStorage.removeItem("userName");
           localStorage.removeItem("email");
-          localStorage.removeItem("holders");
+          localStorage.removeItem("lat");
+          localStorage.removeItem("lng");
+          localStorage.removeItem("selectedSchool");
           setUserName("REGISTER");
           // alert("Log out Success! ");
           setLoggedOut(true);
           navigate("/");
+          window.location.reload();
           // Redirect or perform any other actions after successful logout
         } else {
           console.log("Something went wrong!");
@@ -99,94 +104,101 @@ const Navbar = () => {
 
   return (
     <>
-      {welcome && <WelcomeDialog />}
-      <IconContext.Provider value={{ color: "#fff" }}>
-        <div className="navbar">
-          <div className="navbar-container container">
-            <Link to="/" className="navbar-logo">
-              ENRTY MARKS PORTAL
-            </Link>
-            <div className="menu-icon" onClick={handleClick}>
-              {click ? <FaTimes /> : <FaBars />}
-            </div>
-            <ul className={click ? "nav-menu active" : "nav-menu"}>
-              <li className="nav-item" onClick={closeMobileMenu}>
-                <Link to="/" className="nav-links">
-                  Home
+      {showNavbar && (
+        <>
+          {welcome && <WelcomeDialog />}
+          <IconContext.Provider value={{ color: "#fff" }}>
+            <div className="navbar">
+              <div className="navbar-container container">
+                <Link to="/" className="navbar-logo">
+                  ENTRY MARKS PORTAL
                 </Link>
-              </li>
-              <li className="nav-item" onClick={closeMobileMenu}>
-                <Link to="/about-Us" className="nav-links">
-                  About us
-                </Link>
-              </li>
-              <li className="nav-button" onClick={closeMobileMenu}>
-                {button ? (
-                  userName === "REGISTER" ? (
-                    <div className="btn-link">
-                      <Link to="/register">
-                        <Button buttonStyle={"btn--outline"}>{userName}</Button>
-                      </Link>
-                      <div className="login" title="Click here to login">
-                        <Link to="/login-form">
-                          <AiOutlineLogin />
-                        </Link>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="userName-holder">
-                      <BLAvatars userName={userName} />
+                <div className="menu-icon" onClick={handleClick}>
+                  {click ? <FaTimes /> : <FaBars />}
+                </div>
+                <ul className={click ? "nav-menu active" : "nav-menu"}>
+                  <li className="nav-item" onClick={closeMobileMenu}>
+                    <Link to="/" className="nav-links">
+                      Home
+                    </Link>
+                  </li>
+                  <li className="nav-item" onClick={closeMobileMenu}>
+                    <Link to="/about-Us" className="nav-links">
+                      About us
+                    </Link>
+                  </li>
+                  <li className="nav-button" onClick={closeMobileMenu}>
+                    {button ? (
+                      userName === "REGISTER" ? (
+                        <div className="btn-link">
+                          <Link to="/register">
+                            <Button buttonStyle={"btn--outline"}>
+                              {userName}
+                            </Button>
+                          </Link>
+                          <div className="login" title="Click here to login">
+                            <Link to="/login-form">
+                              <AiOutlineLogin />
+                            </Link>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="userName-holder">
+                          <BLAvatars userName={userName} />
 
-                      <div className="logOut" title="Click here to logout">
-                        <AiOutlineLogout
-                          style={{
-                            marginLeft: "12px",
-                            marginTop: "5px",
-                            scale: "1.5",
-                          }}
+                          <div className="logOut" title="Click here to logout">
+                            <AiOutlineLogout
+                              style={{
+                                marginLeft: "12px",
+                                marginTop: "5px",
+                                scale: "1.5",
+                              }}
+                              onClick={(e) => logOutUser()}
+                            />
+                          </div>
+                        </div>
+                      )
+                    ) : userName !== "REGISTER" ? (
+                      <div className="userName-holder-mobile">
+                        <label buttonStyle={"btn--outline"}>
+                          Hello ! {userName}
+                        </label>
+                        <Button
+                          buttonStyle={"btn--outline"}
+                          buttonSize={"btn--mobile"}
                           onClick={(e) => logOutUser()}
-                        />
+                        >
+                          LOGOUT
+                        </Button>
                       </div>
-                    </div>
-                  )
-                ) : userName !== "REGISTER" ? (
-                  <div className="userName-holder-mobile">
-                    <label buttonStyle={"btn--outline"}>
-                      Hello ! {userName}
-                    </label>
-                    <Button
-                      buttonStyle={"btn--outline"}
-                      buttonSize={"btn--mobile"}
-                      onClick={(e) => logOutUser()}
-                    >
-                      LOGOUT
-                    </Button>
-                  </div>
-                ) : (
-                  <>
-                    <Link to="/register" className="btn-link">
-                      <Button
-                        buttonStyle={"btn--outline"}
-                        buttonSize={"btn--mobile"}
-                      >
-                        {userName}
-                      </Button>
-                    </Link>
-                    <Link to="/login-form" className="btn-link">
-                      <Button
-                        buttonStyle={"btn--outline"}
-                        buttonSize={"btn--mobile"}
-                      >
-                        LOGIN
-                      </Button>
-                    </Link>
-                  </>
-                )}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </IconContext.Provider>
+                    ) : (
+                      <>
+                        <Link to="/register" className="btn-link">
+                          <Button
+                            buttonStyle={"btn--outline"}
+                            buttonSize={"btn--mobile"}
+                          >
+                            {userName}
+                          </Button>
+                        </Link>
+                        <Link to="/login-form" className="btn-link">
+                          <Button
+                            buttonStyle={"btn--outline"}
+                            buttonSize={"btn--mobile"}
+                          >
+                            LOGIN
+                          </Button>
+                        </Link>
+                      </>
+                    )}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </IconContext.Provider>
+        </>
+      )}
+
       {loggedout && (
         <div onClick={(e) => handleLogOut()}>
           <Dialog toOpen={true} title={"Alert"} body={"Logout successfully!"} />

@@ -1,0 +1,26 @@
+.privacy-container h1 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.privacy-content h2 {
+  font-size: 20px;
+}
+
+.privacy-content p {
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.privacy-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.privacy-content {
+  border: 1px solid #ccc;
+  padding: 20px;
+  background-color: #fff; /* White background for the privacy policy section */
+  border-radius: 5px;
+  margin-bottom: 12px;
+}

@@ -1,12 +1,18 @@
 import { useEffect, useState, useContext } from "react";
 import "./CategorySelector.css";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { MarksContext } from "./context/MarksContext";
+import { useSelectedSchools } from "./context/SelectedSchoolsContext";
 //import { useUpdateSelectedForms } from "./context/FormContext";
 
 const CategorySelector = () => {
+  const url = process.env.REACT_APP_SERVER_URL;
+  const prefferedSchools = useSelectedSchools();
   const navigate = useNavigate();
+  const [selectedSchool, setSelectedSchool] = useState("");
+  const [selectedSchools, setSelectedSchools] = useState([]);
   const { clearMarksContext } = useContext(MarksContext); //set all calculated marks to zero if return back
   const [isChecked, setIsChecked] = useState(false);
   const [checkboxes, setCheckboxes] = useState({
@@ -18,10 +24,42 @@ const CategorySelector = () => {
     checkbox6: false,
   });
 
+  const handleSchoolChange = (e) => {
+    setSelectedSchool(e.target.value);
+    console.log(selectedSchool);
+    //localStorage.setItem("selectedSchool", selectedSchool);
+  };
+
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
     setCheckboxes((prevState) => ({ ...prevState, [name]: checked }));
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`${url}get-preffered-schools`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        //console.log(Object.values(response.data[0]));
+        const temp = Object.values(response.data[0]);
+        temp.pop();
+        setSelectedSchools(temp);
+        setSelectedSchool(temp[0]);
+        console.log(selectedSchools);
+      } catch (error) {
+        console.error("Error loading schools:", error);
+        const tempSchools = Object.values(prefferedSchools);
+        setSelectedSchools(tempSchools);
+        setSelectedSchool(tempSchools[0]);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     checkChecked();
@@ -37,6 +75,7 @@ const CategorySelector = () => {
   };
 
   const handleProceed = () => {
+    localStorage.setItem("selectedSchool", selectedSchool);
     navigate("/catHolder", { state: { checkboxes } });
   };
 
@@ -44,8 +83,25 @@ const CategorySelector = () => {
     <>
       <div className="selector-container">
         <div className="selector-header">
-          <h3>Select the Relevent Categories</h3>
+          <h3>Apply based on Catergories</h3>
         </div>
+
+        <div className="school-selector">
+          <label>Select the applying school: </label>
+          <select
+            value={selectedSchool}
+            onChange={handleSchoolChange}
+            style={{ maxWidth: "100%" }}
+          >
+            {/* <option value="">select school</option> */}
+            {selectedSchools.map((school, key) => (
+              <option key={key} value={school}>
+                {school}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="selector-categories">
           <div className="categories">
             <label>Children of residents close proximity to the school</label>

@@ -59,8 +59,24 @@
   scale: 1.05;
 }
 
+.school-selector {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  width: 60%;
+}
+
 @media screen and (max-width: 968px) {
   .selectors input {
     margin: 8px 0px;
+  }
+  .school-selector {
+    flex-direction: column;
+  }
+  .school-selector label {
+    width: 100%;
+  }
+  .school-selector select {
+    width: 100%;
   }
 }

@@ -25,6 +25,13 @@ exports.generatePDF = async (req, res) => {
     });
     const page = await browser.newPage();
     await page.goto("https://entry-marks-portal.netlify.app/applications");
+
+    await page.evaluate(() => {
+      const navContainer = document.querySelector(".nav-container");
+      if (navContainer) {
+        navContainer.remove();
+      }
+    });
     const pdfBuffer = await page.pdf({
       format: "A4",
       margin: {

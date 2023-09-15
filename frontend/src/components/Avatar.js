@@ -33,11 +33,15 @@ function stringAvatar(name) {
   }
 
   const nameParts = name.split(" ");
-
-  const initials = nameParts
-    .map((part) => part[0])
-    .slice(0, 2)
-    .join("");
+  let initials;
+  if (nameParts.length > 1) {
+    initials = nameParts
+      .map((part) => part[0])
+      .slice(0, 2)
+      .join("");
+  } else {
+    initials = name.slice(0, 2);
+  }
 
   return {
     sx: {

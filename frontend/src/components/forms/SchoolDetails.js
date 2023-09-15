@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import Button from "@mui/material/Button";
 import "./SchoolDetails.css";
 import { useUpdateSelectedSchools } from "../context/SelectedSchoolsContext";
 import Alert from "@mui/material/Alert";
@@ -9,16 +10,41 @@ import Dialog from "../Dialog";
 
 const SchoolDetails = ({ handleClick }) => {
   const url = process.env.REACT_APP_SERVER_URL;
-  //suggestions model
-  const selectedSchools = useUpdateSelectedSchools();
-  const [inputValue, setInputValue] = useState("");
+  const [selectedSchool1, setselectedSchool1] = useState("");
+  const [selectedSchool2, setselectedSchool2] = useState("");
+  const [selectedSchool3, setselectedSchool3] = useState("");
+  const [selectedSchool4, setselectedSchool4] = useState("");
+  const selectedSchools = useUpdateSelectedSchools(); //school context
   const [suggestions, setSuggestions] = useState([]);
   const [isSchoolsSet, setIsSchoolsSet] = useState(false);
 
-  const [selectedSchool1, setselectedSchool1] = useState(null);
-  const [selectedSchool2, setselectedSchool2] = useState(null);
-  const [selectedSchool3, setselectedSchool3] = useState(null);
-  const [selectedSchool4, setselectedSchool4] = useState(null);
+  const loadSchools = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const schools = await axios.get(`${url}get-preffered-schools`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      selectedSchools(schools.data[0]); //set loaded schools to school context
+      setselectedSchool1(
+        schools.data[0].preference1 ? schools.data[0].preference1 : "-"
+      );
+      setselectedSchool2(
+        schools.data[0].preference2 ? schools.data[0].preference2 : "-"
+      );
+      setselectedSchool3(
+        schools.data[0].preference3 ? schools.data[0].preference3 : "-"
+      );
+      setselectedSchool4(
+        schools.data[0].preference4 ? schools.data[0].preference4 : "-"
+      );
+    } catch (error) {
+      console.error("Error loading schools:", error);
+    }
+  };
+
+  //suggestions model
 
   const handleSelectionChange1 = (event, values) => {
     setselectedSchool1(values);
@@ -35,7 +61,6 @@ const SchoolDetails = ({ handleClick }) => {
 
   const handleInputChange = async (event) => {
     const userInput = event.target.value;
-    setInputValue(userInput);
 
     try {
       const response = await fetch(
@@ -82,7 +107,8 @@ const SchoolDetails = ({ handleClick }) => {
   };
 
   useEffect(() => {
-    selectedSchools([]);
+    loadSchools();
+    //selectedSchools([]);
   }, []);
 
   const updateOnClose = () => {
@@ -109,6 +135,7 @@ const SchoolDetails = ({ handleClick }) => {
               <label className="school-label">Preference 1: </label>
 
               <Autocomplete
+                value={selectedSchool1}
                 options={suggestions}
                 onChange={handleSelectionChange1}
                 sx={{ width: "100%" }}
@@ -122,6 +149,7 @@ const SchoolDetails = ({ handleClick }) => {
               <label className="school-label">Preference 2: </label>
 
               <Autocomplete
+                value={selectedSchool2}
                 options={suggestions}
                 onChange={handleSelectionChange2}
                 sx={{ width: "100%" }}
@@ -135,6 +163,7 @@ const SchoolDetails = ({ handleClick }) => {
               <label className="school-label">Preference 3: </label>
 
               <Autocomplete
+                value={selectedSchool3}
                 options={suggestions}
                 onChange={handleSelectionChange3}
                 sx={{ width: "100%" }}
@@ -148,6 +177,7 @@ const SchoolDetails = ({ handleClick }) => {
               <label className="school-label">Preference 4: </label>
 
               <Autocomplete
+                value={selectedSchool4}
                 options={suggestions}
                 onChange={handleSelectionChange4}
                 sx={{ width: "100%" }}
@@ -158,9 +188,9 @@ const SchoolDetails = ({ handleClick }) => {
             </div>
           </div>
         </fieldset>
-        <button className="set-button" onClick={(e) => updateOnClose()}>
-          SAVE & CONTINUE
-        </button>
+        <div className="save-btn" onClick={(e) => updateOnClose()}>
+          <Button variant="outlined">SAVE & CONTINUE</Button>
+        </div>
         <Alert severity="info" style={{ marginTop: "8px", marginRight: "4px" }}>
           Marks are calculated for the first preffered school
         </Alert>

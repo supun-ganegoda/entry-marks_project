@@ -1,15 +1,15 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import Fab from "@mui/material/Fab";
 import axios from "axios";
 import Dialog from "../components/Dialog";
-import { Alert, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { saveAs } from "file-saver";
 import { MarksContext } from "./context/MarksContext";
 import "./Spinner.css";
 import { Link } from "react-router-dom";
+import CryptoJS from "crypto-js"; // crypto module
 
 const style = {
   position: "absolute",
@@ -26,18 +26,23 @@ const style = {
 export default function FloatingSummary() {
   const url = process.env.REACT_APP_SERVER_URL;
   const { areMarksCalculated } = useContext(MarksContext);
-  const [userName, setUserName] = useState(null);
+  const [userName] = useState(localStorage.getItem("userName"));
   const [saved, setSaved] = useState(false);
-  const [email, setEmail] = useState(null);
-  const [isLogged, setIsLogged] = useState(false);
+  const [email] = useState(localStorage.getItem("email"));
   const { finalMarks } = useContext(MarksContext);
   const [open, setOpen] = useState(false);
   const [clicked, setClicked] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [mailSend, setMailSend] = useState(false);
-  const [isSendingEmail, setIsSendingEmail] = useState(false);
-  const [downloadClicked, setDownloadClicked] = useState(false);
+  const [isSendingEmail] = useState(false);
+
+  // generate hashcode
+  const generateHashCode = (obj) => {
+    const hashInput = userName + email + JSON.stringify(obj); // hash function inputs
+    const hash = CryptoJS.SHA256(hashInput).toString(CryptoJS.enc.Hex);
+    const uniqueHashCode = hash.slice(0, 15);
+    return uniqueHashCode;
+  };
 
   //console.log("finalMarks ", finalMarks);
   const displaySummaryTable = () => {
@@ -60,21 +65,6 @@ export default function FloatingSummary() {
       </table>
     );
   };
-
-  const checkLogin = () => {
-    setUserName(localStorage.getItem("userName"));
-    setEmail(localStorage.getItem("email"));
-    //console.log(userName);
-    if (userName === null || email === null) {
-      setIsLogged(false);
-    } else {
-      setIsLogged(true);
-    }
-  };
-
-  useEffect(() => {
-    checkLogin();
-  }, []);
 
   const makeObject = () => {
     const marks = {
@@ -101,10 +91,11 @@ export default function FloatingSummary() {
     return data;
   };
 
+  /*
   const sendMail = async (e) => {
     const data = setDefaultZero();
     setDownloadClicked(true);
-    /*
+    
     await axios
       .post(`${url}pdf/createPdf`, data) //create pdf next=> get pdf
       .then(() =>
@@ -124,9 +115,7 @@ export default function FloatingSummary() {
               })
           )
       );
-    */
 
-    /*  
     try {
       await axios.post(`${url}pdf/generatePDF`, data);
 
@@ -145,36 +134,33 @@ export default function FloatingSummary() {
       setIsSendingEmail(false);
       // Handle any errors here
     }
-    */
-
-    //pdf generation using puppeteer
-    try {
-      const response = await axios.get(`${url}pdf/generatePDF`, {
-        responseType: "blob",
-      });
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const uri = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = uri;
-      a.download = "test-generated.pdf";
-      a.click();
-      URL.revokeObjectURL(uri);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    }
   };
+*/
 
   const saveMarks = async (e) => {
     const marks = makeObject();
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.post(`${url}save-marks`, marks, {
+      let response = await axios.post(`${url}save-marks`, marks, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
       console.log(response.data); // Handle success response
+      let hash = generateHashCode(marks);
+      console.log(hash);
+
+      response = await axios.post(
+        `${url}save-hash`,
+        { hash: hash },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       setSaved(true);
       setOpen(false);
     } catch (error) {
@@ -194,7 +180,7 @@ export default function FloatingSummary() {
           <div className="spinner-container">
             <div className="spinner"></div>
             <span className="waiting-message" style={{ marginLeft: "0" }}>
-              Sending email
+              Generating Report...
             </span>
           </div>
         </div>
@@ -209,13 +195,6 @@ export default function FloatingSummary() {
           justifyContent: "flex - end",
         }}
       >
-        {mailSend && (
-          <Dialog
-            toOpen={true}
-            title={"Info"}
-            body={"PDF version of report is sended to your mail."}
-          />
-        )}
         {areMarksCalculated && (
           <Fab
             onClick={(e) => displayModal()}
@@ -241,14 +220,10 @@ export default function FloatingSummary() {
           >
             <Box sx={style}>
               <Typography id="modal-modal-title" variant="h6" component="h2">
-                {userName === null ? (
-                  <Alert severity="info">Please login to save progress</Alert>
-                ) : (
-                  "User name: " + userName
-                )}
+                User name: {userName}
               </Typography>
               <Typography id="modal-modal-title" variant="h6" component="h2">
-                {email !== null ? "Email: " + email : null}
+                Email: {email}
               </Typography>
               <hr></hr>
               <Typography
@@ -264,30 +239,31 @@ export default function FloatingSummary() {
                 <Button
                   variant="contained"
                   onClick={(e) => saveMarks()}
-                  disabled={isLogged}
+                  disabled={saved}
                 >
                   Save
                 </Button>
                 <Link to="/pdf-report">
-                  <Button variant="contained" onClick={(e) => sendMail()}>
+                  <Button
+                    variant="contained"
+                    style={{ width: "100%" }}
+                    disabled={!saved}
+                  >
                     View Report
                   </Button>
                 </Link>
-                {downloadClicked ? (
-                  <p>Please wait... Generating in progress</p>
-                ) : null}
               </div>
             </Box>
           </Modal>
         )}
-        {saved ? (
-          <Dialog
-            toOpen={true}
-            title={"Info"}
-            body={"Saved successfully!"}
-          ></Dialog>
-        ) : null}
       </div>
+      {saved ? (
+        <Dialog
+          toOpen={true}
+          title={"Info"}
+          body={"Saved successfully!"}
+        ></Dialog>
+      ) : null}
     </>
   );
 }
