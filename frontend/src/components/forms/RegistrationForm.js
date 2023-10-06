@@ -32,6 +32,7 @@ const RegistrationForm = () => {
             username: formValues.username,
             email: formValues.email,
             password: formValues.password,
+            hash: null,
           }),
         });
 

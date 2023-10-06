@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import html2canvas from "html2canvas";
+import axios from "axios";
 import "./SchoolFinder.css";
 import { GoogleMap, Marker, Circle } from "@react-google-maps/api";
 import { useSelectedSchools } from "./context/SelectedSchoolsContext";
@@ -30,17 +31,24 @@ const SchoolLocator = () => {
   let allDistances;
   const [circles, setCircles] = useState();
   const [tableRows, setTableRows] = useState();
-  const [homeLat, setHomeLat] = useState(localStorage.getItem("lat"));
-  const [homeLng, setHomeLng] = useState(localStorage.getItem("lng"));
+  const [homeLat] = useState(localStorage.getItem("lat"));
+  const [homeLng] = useState(localStorage.getItem("lng"));
   const [markers, setMarkers] = useState([]);
   const [selectedSchoolMarkers, setSelectedSchoolMarkers] = useState([]);
 
   const loadAllSchools = async () => {
     try {
       const response = await fetch(`${url}schools/allschools`);
+      const childDetails = await axios.get(`${url}get-applicant-details`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const resData = childDetails.data[0];
       const data = await response.json();
+      const sex = resData.gender;
       let gender = "";
-      if (localStorage.getItem("gender") === "male") {
+      if (localStorage.getItem("gender") === "male" || sex) {
         gender = "BOY";
       } else {
         gender = "GIRL";

@@ -12,6 +12,7 @@ const registerUser = async (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: newPassword,
+      hash: req.body.hash,
     });
     res.status(200).json(user);
   } catch (err) {

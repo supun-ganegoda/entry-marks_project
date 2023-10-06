@@ -442,14 +442,6 @@ const PDFResult = () => {
 
       <br />
       <h3 className="justify-center">Maximum marks obtained: {maxMarks}</h3>
-      <footer>
-        <p className="justify-center">
-          Report was created on{" "}
-          {/* {`${today.getDate()}. ${
-            today.getMonth() + 1
-          }. ${today.getFullYear()}.`} */}
-        </p>
-      </footer>
     </div>
   );
 };
