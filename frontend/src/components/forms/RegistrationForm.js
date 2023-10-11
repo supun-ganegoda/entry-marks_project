@@ -42,12 +42,18 @@ const RegistrationForm = () => {
         if (response.ok) {
           navigate("/login-form");
         } else {
-          setErrorMsg(res.error);
-          setIsError(true);
-          //console.log(res.error);
+          if (res.error.includes("E11000")) {
+            setIsError(true);
+            setErrorMsg("Email already exists, please choose another email.");
+          } else {
+            setErrorMsg(res.error);
+            setIsError(true);
+            //console.log(res.error);
+          }
         }
       } catch (error) {
         //console.log(error.message);
+
         setIsError(true);
         setErrorMsg(error.message + ". Check your connection");
       }

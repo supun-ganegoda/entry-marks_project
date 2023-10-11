@@ -71,6 +71,7 @@ const Navbar = () => {
           localStorage.removeItem("lat");
           localStorage.removeItem("lng");
           localStorage.removeItem("selectedSchool");
+          localStorage.removeItem("gender");
           setUserName("REGISTER");
           // alert("Log out Success! ");
           setLoggedOut(true);

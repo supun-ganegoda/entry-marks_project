@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { MarksContext } from "./context/MarksContext";
 import "./Spinner.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CryptoJS from "crypto-js"; // crypto module
 
 const style = {
@@ -25,6 +25,7 @@ const style = {
 
 export default function FloatingSummary() {
   const url = process.env.REACT_APP_SERVER_URL;
+  const navigate = useNavigate();
   const { areMarksCalculated } = useContext(MarksContext);
   const [userName] = useState(localStorage.getItem("userName"));
   const [saved, setSaved] = useState(false);
@@ -34,7 +35,6 @@ export default function FloatingSummary() {
   const [clicked, setClicked] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [isSendingEmail] = useState(false);
 
   // generate hashcode
   const generateHashCode = (obj) => {
@@ -79,17 +79,17 @@ export default function FloatingSummary() {
     return marks;
   };
 
-  const setDefaultZero = () => {
-    const data = makeObject();
-    data.userName = userName;
-    data.email = email;
-    for (const key in data) {
-      if (data.hasOwnProperty(key) && data[key] === undefined) {
-        data[key] = 0;
-      }
-    }
-    return data;
-  };
+  // const setDefaultZero = () => {
+  //   const data = makeObject();
+  //   data.userName = userName;
+  //   data.email = email;
+  //   for (const key in data) {
+  //     if (data.hasOwnProperty(key) && data[key] === undefined) {
+  //       data[key] = 0;
+  //     }
+  //   }
+  //   return data;
+  // };
 
   /*
   const sendMail = async (e) => {
@@ -173,9 +173,13 @@ export default function FloatingSummary() {
     handleOpen();
   };
 
+  const navigateToReport = () => {
+    navigate("/pdf-report");
+  };
+
   return (
     <>
-      {isSendingEmail && (
+      {/* {isSendingEmail && (
         <div className="spinner-overlay">
           <div className="spinner-container">
             <div className="spinner"></div>
@@ -184,7 +188,7 @@ export default function FloatingSummary() {
             </span>
           </div>
         </div>
-      )}
+      )} */}
       <div
         style={{
           position: "fixed",
@@ -195,22 +199,38 @@ export default function FloatingSummary() {
           justifyContent: "flex - end",
         }}
       >
-        {areMarksCalculated && (
-          <Fab
-            onClick={(e) => displayModal()}
-            variant="extended"
-            style={{
-              //   transform: "rotate(-90deg)",
-              whiteSpace: "nowrap",
-              width: "100px",
-              backgroundColor: "rgb(39, 106, 251)",
-              color: "#fff",
-              fontWeight: "bold",
-            }}
-          >
-            Summary
-          </Fab>
-        )}
+        {areMarksCalculated &&
+          (saved ? (
+            <Fab
+              onClick={(e) => navigateToReport()}
+              variant="extended"
+              style={{
+                //   transform: "rotate(-90deg)",
+                whiteSpace: "nowrap",
+                width: "115px",
+                backgroundColor: "rgb(39, 106, 251)",
+                color: "#fff",
+                fontWeight: "bold",
+              }}
+            >
+              View Report
+            </Fab>
+          ) : (
+            <Fab
+              onClick={(e) => displayModal()}
+              variant="extended"
+              style={{
+                //   transform: "rotate(-90deg)",
+                whiteSpace: "nowrap",
+                width: "100px",
+                backgroundColor: "rgb(39, 106, 251)",
+                color: "#fff",
+                fontWeight: "bold",
+              }}
+            >
+              Summary
+            </Fab>
+          ))}
         {clicked && (
           <Modal
             open={open}
@@ -241,9 +261,9 @@ export default function FloatingSummary() {
                   onClick={(e) => saveMarks()}
                   disabled={saved}
                 >
-                  Save
+                  save
                 </Button>
-                <Link to="/pdf-report">
+                {/* <Link to="/pdf-report">
                   <Button
                     variant="contained"
                     style={{ width: "100%" }}
@@ -251,7 +271,7 @@ export default function FloatingSummary() {
                   >
                     View Report
                   </Button>
-                </Link>
+                </Link> */}
               </div>
             </Box>
           </Modal>

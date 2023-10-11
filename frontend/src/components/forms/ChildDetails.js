@@ -141,7 +141,12 @@ const ChildDetails = (props) => {
             </div>
 
             <div className="form-sex">
-              <label className="label-form">Sex: </label>
+              <label
+                className="label-form"
+                title="* mark propertise are required"
+              >
+                Sex:*{" "}
+              </label>
               <div className="form-sex-label">
                 <input
                   className="form-sex-checkbox"
@@ -228,7 +233,11 @@ const ChildDetails = (props) => {
             </div>
           </fieldset>
           <div className="save-btn">
-            <Button type="submit" variant="outlined">
+            <Button
+              type="submit"
+              variant="outlined"
+              disabled={!(maleChecked || femaleChecked)}
+            >
               SAVE & CONTINUE
             </Button>
           </div>

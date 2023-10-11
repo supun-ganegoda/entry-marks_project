@@ -113,7 +113,7 @@ const SchoolLocator = () => {
             <td>
               <td>
                 <img
-                  src={`http://maps.google.com/mapfiles/ms/icons/${markerColors[key]}-dot.png`}
+                  src={`https://maps.google.com/mapfiles/ms/icons/${markerColors[key]}-dot.png`}
                   alt="Marker Icon"
                 />
               </td>
