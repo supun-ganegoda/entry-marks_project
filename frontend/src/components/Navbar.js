@@ -68,11 +68,15 @@ const Navbar = () => {
           localStorage.removeItem("token");
           localStorage.removeItem("userName");
           localStorage.removeItem("email");
-          localStorage.removeItem("holders");
+          localStorage.removeItem("lat");
+          localStorage.removeItem("lng");
+          localStorage.removeItem("selectedSchool");
+          localStorage.removeItem("gender");
           setUserName("REGISTER");
           // alert("Log out Success! ");
           setLoggedOut(true);
           navigate("/");
+          window.location.reload();
           // Redirect or perform any other actions after successful logout
         } else {
           console.log("Something went wrong!");
@@ -108,7 +112,7 @@ const Navbar = () => {
             <div className="navbar">
               <div className="navbar-container container">
                 <Link to="/" className="navbar-logo">
-                  ENRTY MARKS PORTAL
+                  ENTRY MARKS PORTAL
                 </Link>
                 <div className="menu-icon" onClick={handleClick}>
                   {click ? <FaTimes /> : <FaBars />}

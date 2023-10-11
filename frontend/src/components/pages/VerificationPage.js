@@ -22,6 +22,7 @@ const VerificationPage = () => {
     try {
       const document = await axios.get(`${url}pdf/verifyPDF/${hashCode}`);
       if (document.data.error === null) {
+        setDocError(false);
         setVerified(true);
         setUserName(document.data.userName);
         setEmail(document.data.email);
@@ -29,6 +30,7 @@ const VerificationPage = () => {
         setDocError(true);
       }
     } catch (error) {
+      setDocError(true);
       console.error(error);
     }
   };

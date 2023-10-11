@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import Button from "@mui/material/Button";
@@ -34,14 +34,48 @@ const ChildDetails = (props) => {
     setMaleChecked(false);
   }
 
+  const formatDate = (date) => {
+    if (!date) return ""; // Return empty string if date is null
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Months are zero-indexed
+    const year = date.getFullYear();
+    return `${year}-${month < 10 ? "0" : ""}${month}-${
+      day < 10 ? "0" : ""
+    }${day}`;
+  };
+
   //backend connections
+  const loadChildDetails = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const childDetails = await axios.get(`${url}get-applicant-details`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const resData = childDetails.data[0];
+      setFullName(resData.fullName);
+      setInitials(resData.initials);
+      setReligion(resData.religion);
+      setMaleChecked(resData.gender === "male" ? true : false);
+      setFemaleChecked(resData.gender === "female" ? true : false);
+      setmedium(resData.medium);
+      setSelectedDate(new Date(resData.birth));
+    } catch (error) {
+      console.error("Error loading child details:", error);
+    }
+  };
+
+  useEffect(() => {
+    loadChildDetails();
+  }, []);
 
   const handleChildDetailsSubmit = async (event) => {
-    console.log("Submit clicked");
+    //console.log("Submit clicked");
     event.preventDefault();
     let gender = "";
     maleChecked ? (gender = "male") : (gender = "female");
-    let birth = selectedDate.toLocaleDateString();
+    let birth = formatDate(selectedDate);
 
     const childDetailsData = {
       fullName,
@@ -63,8 +97,8 @@ const ChildDetails = (props) => {
           },
         }
       );
-
       console.log(response.data); // Handle success response
+      localStorage.setItem("gender", gender);
       handleClick();
     } catch (error) {
       console.error(error); // Handle error
@@ -107,7 +141,12 @@ const ChildDetails = (props) => {
             </div>
 
             <div className="form-sex">
-              <label className="label-form">Sex: </label>
+              <label
+                className="label-form"
+                title="* mark propertise are required"
+              >
+                Sex:*{" "}
+              </label>
               <div className="form-sex-label">
                 <input
                   className="form-sex-checkbox"
@@ -187,14 +226,18 @@ const ChildDetails = (props) => {
                   dateFormat="dd/MM/yyyy"
                   showYearDropdown
                   scrollableYearDropdown
-                  yearDropdownItemNumber={10}
+                  yearDropdownItemNumber={30}
                   showMonthDropdown
                 />
               </div>
             </div>
           </fieldset>
           <div className="save-btn">
-            <Button type="submit" variant="outlined">
+            <Button
+              type="submit"
+              variant="outlined"
+              disabled={!(maleChecked || femaleChecked)}
+            >
               SAVE & CONTINUE
             </Button>
           </div>

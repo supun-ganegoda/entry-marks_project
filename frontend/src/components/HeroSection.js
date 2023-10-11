@@ -2,8 +2,21 @@ import { Link } from "react-router-dom";
 import Button from "./Button";
 import "./HeroSection.css";
 import VideoPlayer from "./VideoPlayer";
+import { useEffect, useState } from "react";
 
 const HeroSection = () => {
+  const [tempToken] = useState(localStorage.getItem("token"));
+  const [link, setLink] = useState("");
+
+  useEffect(() => {
+    //console.log(tempToken);
+    if (tempToken === null) {
+      setLink("/register");
+    } else {
+      setLink("/applications");
+    }
+  }, [tempToken]);
+
   return (
     <>
       <div className="home__hero--section dark">
@@ -23,7 +36,7 @@ const HeroSection = () => {
                   We offer document verification as well
                 </p>
                 <div className="home__hero-button-wrapper">
-                  <Link to="/applications">
+                  <Link to={link}>
                     <Button buttonStyle="btn--wide" buttonColor="blue">
                       Get Started
                     </Button>

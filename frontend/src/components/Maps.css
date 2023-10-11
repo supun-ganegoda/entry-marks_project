@@ -1,20 +1,18 @@
 .map-container {
   height: 400px;
-  width: 600px;
-  position: absolute;
-  top: 60%;
+  width: 100%;
+  /* top: 60%;
   left: 70%;
   transform: translate(-50%, -50%);
-  z-index: 9999;
+  z-index: 9999;  */
 }
 
 .map-close-btn {
-    position: absolute;
-    top: 18px;
-    right: 50px;
-    cursor: pointer;
-    z-index: 9999;
-    width: 25px;
-    height: 25px;
-  }
-  
+  position: absolute;
+  top: 18px;
+  right: 50px;
+  cursor: pointer;
+  z-index: 9999;
+  width: 25px;
+  height: 25px;
+}

@@ -12,6 +12,7 @@ const registerUser = async (req, res) => {
       username: req.body.username,
       email: req.body.email,
       password: newPassword,
+      hash: req.body.hash,
     });
     res.status(200).json(user);
   } catch (err) {
@@ -79,6 +80,7 @@ const getUserDetails = async (req, res) => {
       ID: user._id,
       userName: user.username,
       email: user.email,
+      hashCode: user.hash,
     };
 
     res.status(200).json(userObj);
@@ -88,6 +90,7 @@ const getUserDetails = async (req, res) => {
   }
 };
 
+//load applicant details for the verification process
 const getApplicantDetails = async (req, res) => {
   try {
     const { email } = req.user;
@@ -106,6 +109,26 @@ const getApplicantDetails = async (req, res) => {
   }
 };
 
+//load applicantdetails in applicant details form
+const loadApplicantDetails = async (req, res) => {
+  try {
+    const { email } = req.user;
+
+    const user = await userDetailsModel.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    //console.log(user.marks);
+    const applicantObj = user.data.applicantDetails;
+
+    res.status(200).json(applicantObj);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error retrieving applicant details" });
+  }
+};
+
+//load selected schools
 const getPrefferedSchools = async (req, res) => {
   try {
     const { email } = req.user;
@@ -157,7 +180,7 @@ const updateUser = async (req, res) => {
 
 /*---------------------------------------------------------------------------------------------- 
 ------------------------------------------------------------------------------------------------*/
-//child details form
+//save child details form
 const submitChildDetails = async (req, res) => {
   //console.log("request received");
   try {
@@ -184,6 +207,77 @@ const submitChildDetails = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error updating child details" });
+  }
+};
+
+//save applicant-details form
+const submitApplicantDetails = async (req, res) => {
+  //console.log("request received");
+  try {
+    const {
+      apFullName,
+      apInitials,
+      apNIC,
+      apSriLankan,
+      apReligion,
+      apAddressLine1,
+      apAddressLine2,
+      apAddressLine3,
+      apLatLng,
+      apTeleNumber,
+      apDistrict,
+      apDivisionalSecretariat,
+      apGramanildariDivision,
+      spFullName,
+      spInitials,
+      spNIC,
+      spSriLankan,
+      spReligion,
+      spAddress,
+      spTeleNumber,
+      spDistrict,
+      spDivisionalSecretariat,
+      spGramanildariDivision,
+    } = req.body;
+    const { email } = req.user;
+
+    // Update child details in the user document
+    await userDetailsModel.findOneAndUpdate(
+      { email: email }, // Find the document by email
+      {
+        $set: {
+          "data.applicantDetails": {
+            apFullName,
+            apInitials,
+            apNIC,
+            apSriLankan,
+            apReligion,
+            apAddressLine1,
+            apAddressLine2,
+            apAddressLine3,
+            apLatLng,
+            apTeleNumber,
+            apDistrict,
+            apDivisionalSecretariat,
+            apGramanildariDivision,
+            spFullName,
+            spInitials,
+            spNIC,
+            spSriLankan,
+            spReligion,
+            spAddress,
+            spTeleNumber,
+            spDistrict,
+            spDivisionalSecretariat,
+            spGramanildariDivision,
+          },
+        },
+      }
+    );
+    res.status(200).json({ message: "Applicant details updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error updating applicant details" });
   }
 };
 
@@ -218,6 +312,69 @@ const saveSelectedSchools = async (req, res) => {
   }
 };
 
+//save electorial details into the database
+const submitElectorialDetails = async (req, res) => {
+  try {
+    const {
+      year,
+      district,
+      division,
+      divisionNo,
+      pollingDivision,
+      street,
+      houseHold,
+      serial,
+      electors,
+    } = req.body;
+    const { email } = req.user;
+
+    // Update child details in the user document
+    await userDetailsModel.findOneAndUpdate(
+      { email: email }, // Find the document by email
+      {
+        $set: {
+          "data.electorialDetails": {
+            year,
+            district,
+            division,
+            divisionNo,
+            pollingDivision,
+            street,
+            houseHold,
+            serial,
+            electors,
+          },
+        },
+      }
+    );
+    res
+      .status(200)
+      .json({ message: "Electorial details updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error updating electorial details" });
+  }
+};
+
+//load electorial details from the database
+const loadElectorialDetails = async (req, res) => {
+  try {
+    const { email } = req.user;
+
+    const user = await userDetailsModel.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    //console.log(user.marks);
+    const electorialDetailsObj = user.data.electorialDetails;
+
+    res.status(200).json(electorialDetailsObj);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error retrieving electorial details" });
+  }
+};
+
 //save marks to the database
 const saveMarks = async (req, res) => {
   let marksObj = {
@@ -228,7 +385,7 @@ const saveMarks = async (req, res) => {
     officers: null,
     forign: null,
   };
-  console.log(req.body);
+  //console.log(req.body);
   try {
     marksObj.proximity = req.body.proximity;
     marksObj.pastPupils = req.body.pastPupils;
@@ -249,6 +406,26 @@ const saveMarks = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error saving marks" });
+  }
+};
+
+//save hash code
+const saveHash = async (req, res) => {
+  console.log(req.body);
+  try {
+    const { email } = req.user;
+    await userDetailsModel.findOneAndUpdate(
+      { email: email }, // Find the document by email
+      {
+        $set: {
+          hash: req.body.hash,
+        },
+      }
+    );
+    res.status(200).json({ message: "Saved successfully !" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error saving hash" });
   }
 };
 
@@ -288,9 +465,14 @@ module.exports = {
   deleteUser,
   updateUser,
   submitChildDetails,
+  submitApplicantDetails,
   saveSelectedSchools,
+  submitElectorialDetails,
   saveMarks,
+  saveHash,
   getMarks,
+  loadApplicantDetails,
   getApplicantDetails,
+  loadElectorialDetails,
   getPrefferedSchools,
 };

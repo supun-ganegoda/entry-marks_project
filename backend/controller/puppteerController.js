@@ -19,9 +19,12 @@ const puppeteer = require("puppeteer");
 exports.generatePDF = async (req, res) => {
   try {
     //console.log("req to generate pdf");
-    const browser = await puppeteer.launch({ headless: { value: true } });
+    const browser = await puppeteer.launch({
+      headless: { value: true },
+      userDataDir: "/opt/render/.cache/puppeteer",
+    });
     const page = await browser.newPage();
-    await page.goto("http://localhost:3000/pdf-report");
+    await page.goto("https://entry-marks-portal.netlify.app/applications");
 
     await page.evaluate(() => {
       const navContainer = document.querySelector(".nav-container");

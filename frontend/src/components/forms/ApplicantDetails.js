@@ -1,50 +1,51 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "./ApplicationDetails.css";
 import GMap from "../GMap";
-import { useLatLng } from "../context/LocationContext";
+import Button from "@mui/material/Button";
+import { useUpdateLatLng } from "../context/LocationContext";
 
-const ApplicantDetails = () => {
-  const latLng = useLatLng();
+const ApplicantDetails = (props) => {
+  const { handleClick } = props;
+  const url = process.env.REACT_APP_SERVER_URL;
+  const updateLatLng = useUpdateLatLng();
 
-  const [fullname1, setFullName1] = useState("");
-  const [initials1, setInitials1] = useState("");
-  const [nic1, setNic1] = useState("");
+  const [apFullName, setapFullName] = useState("");
+  const [apInitials, setapInitials] = useState("");
+  const [apNIC, setapNIC] = useState("");
   const [yesChecked1, setYesChecked1] = useState(false);
   const [noChecked1, setNoChecked1] = useState(false);
-  const [religion1, setReligion1] = useState("");
-  const [address1, setAddress1] = useState("");
-  const [newlatlong, setNewLatlong] = useState(latLng.lat + ", " + latLng.lng);
-  const [tel1, setTel1] = useState("");
-  const [district1, setDistrict1] = useState("");
-  const [divisional1, setDivisional1] = useState("");
-  const [grama1, setGrama1] = useState("");
+  const [apReligion, setapReligion] = useState("");
+  const [apAddressLine1, setapAddressLine1] = useState("");
+  const [apAddressLine2, setapAddressLine2] = useState("");
+  const [apAddressLine3, setapAddressLine3] = useState("");
+  const [apLatLng, setapLatLng] = useState("");
+  const [apTeleNumber, setapTeleNumber] = useState("");
+  const [apDistrict, setapDistrict] = useState("");
+  const [apDivisionalSecretariat, setapDivisionalSecretariat] = useState("");
+  const [apGramanildariDivision, setapGramanildariDivision] = useState("");
   const [showIframe, setShowIframe] = useState(false);
-  const [mapDisplay, setMapDisplay] = useState(false);
 
-  const [fullname2, setFullName2] = useState("");
-  const [initials2, setInitials2] = useState("");
-  const [nic2, setNic2] = useState("");
+  const [spFullName, setspFullName] = useState("");
+  const [spInitials, setspInitials] = useState("");
+  const [spNIC, setspNIC] = useState("");
   const [yesChecked2, setYesChecked2] = useState(false);
   const [noChecked2, setNoChecked2] = useState(false);
-  const [religion2, setReligion2] = useState("");
-  const [address2, setAddress2] = useState("");
-  const [tel2, setTel2] = useState("");
-  const [district2, setDistrict2] = useState("");
-  const [divisional2, setDivisional2] = useState("");
-  const [grama2, setGrama2] = useState("");
+  const [spReligion, setspReligion] = useState("");
+  const [spAddress, setspAddress] = useState("");
+  const [spTeleNumber, setspTeleNumber] = useState("");
+  const [spDivisionalSecretariat, setspDivisionalSecretariat] = useState("");
+  const [spDistrict, setspDistrict] = useState("");
+  const [spGramanildariDivision, setspGramanildariDivision] = useState("");
 
   useEffect(() => {
-    setNewLatlong(latLng.lat + ", " + latLng.lng);
-  }, [latLng]);
+    updateLatLng(apLatLng);
+  }, [apLatLng]);
 
-  const handleMapDisplay = () => {
-    setMapDisplay(true);
-  };
-
-  const handleMapClose = () => {
-    setMapDisplay(false);
-  };
+  useEffect(() => {
+    loadApplicantDetails();
+  }, []);
 
   const handleHelpClick = () => {
     setShowIframe(true);
@@ -70,19 +71,113 @@ const ApplicantDetails = () => {
     setYesChecked2(false);
   }
 
+  const loadApplicantDetails = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const applicantDetails = await axios.get(`${url}load-applicant-details`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const dataResponse = applicantDetails.data[0];
+      setapFullName(dataResponse.apFullName);
+      setapInitials(dataResponse.apInitials);
+      setapNIC(dataResponse.apNIC);
+      setYesChecked1(dataResponse.apSriLankan === "yes" ? true : false);
+      setapReligion(dataResponse.apReligion);
+      setapAddressLine1(dataResponse.apAddressLine1);
+      setapAddressLine2(dataResponse.apAddressLine2);
+      setapAddressLine3(dataResponse.apAddressLine3);
+      setapLatLng(dataResponse.apLatLng);
+      let coo = dataResponse.apLatLng.split(",");
+      //console.log(coo);
+      localStorage.setItem("lat", coo[0]);
+      localStorage.setItem("lng", coo[1]);
+      setapTeleNumber(dataResponse.apTeleNumber);
+      setapDistrict(dataResponse.apDistrict);
+      setapDivisionalSecretariat(dataResponse.apDivisionalSecretariat);
+      setapGramanildariDivision(dataResponse.apGramanildariDivision);
+
+      setspFullName(dataResponse.spFullName);
+      setspInitials(dataResponse.spInitials);
+      setspNIC(dataResponse.spNIC);
+      setYesChecked2(dataResponse.spSriLankan === "yes" ? true : false);
+      setspReligion(dataResponse.spReligion);
+      setspAddress(dataResponse.spAddress);
+      setspTeleNumber(dataResponse.spTeleNumber);
+      setspDistrict(dataResponse.spDistrict);
+      setspDivisionalSecretariat(dataResponse.spDivisionalSecretariat);
+      setspGramanildariDivision(dataResponse.spGramanildariDivision);
+    } catch (error) {
+      console.error("Error loading applicant details:", error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    //e.preventDefault();
+    let apSriLankan = "";
+    yesChecked1 ? (apSriLankan = "yes") : (apSriLankan = "no");
+    let spSriLankan = "";
+    yesChecked2 ? (spSriLankan = "yes") : (spSriLankan = "no");
+
+    const applicantDetailsData = {
+      apFullName,
+      apInitials,
+      apNIC,
+      apSriLankan,
+      apReligion,
+      apAddressLine1,
+      apAddressLine2,
+      apAddressLine3,
+      apLatLng,
+      apTeleNumber,
+      apDistrict,
+      apDivisionalSecretariat,
+      apGramanildariDivision,
+      spFullName,
+      spInitials,
+      spNIC,
+      spSriLankan,
+      spReligion,
+      spAddress,
+      spTeleNumber,
+      spDistrict,
+      spDivisionalSecretariat,
+      spGramanildariDivision,
+    };
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${url}applicant-details`,
+        applicantDetailsData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(response.data); // Handle success response
+      handleClick();
+    } catch (error) {
+      console.error(error); // Handle error
+    }
+  };
+
   return (
     <>
       <div className="form-container">
-        <form>
+        <form onSubmit={handleSubmit}>
           <fieldset>
             <legend>Applicant Details</legend>
             <div className="label-wrapper">
               <label className="label-form">Name in full: </label>
               <input
                 type="text"
-                id="fullname1"
-                value={fullname1}
-                onChange={(e) => setFullName1(e.target.value)}
+                id="apFullName"
+                value={apFullName}
+                onChange={(e) => setapFullName(e.target.value)}
                 required
               />
             </div>
@@ -91,9 +186,9 @@ const ApplicantDetails = () => {
               <label className="label-form">Name with initials: </label>
               <input
                 type="text"
-                id="initials1"
-                value={initials1}
-                onChange={(e) => setInitials1(e.target.value)}
+                id="apInitials"
+                value={apInitials}
+                onChange={(e) => setapInitials(e.target.value)}
                 required
               />
             </div>
@@ -102,9 +197,9 @@ const ApplicantDetails = () => {
               <label className="label-form">NIC no: </label>
               <input
                 type="text"
-                id="nic1"
-                value={nic1}
-                onChange={(e) => setNic1(e.target.value)}
+                id="apNIC"
+                value={apNIC}
+                onChange={(e) => setapNIC(e.target.value)}
                 required
               />
             </div>
@@ -135,22 +230,51 @@ const ApplicantDetails = () => {
               <label className="label-form">Religion: </label>
               <input
                 type="text"
-                id="religion1"
-                value={religion1}
-                onChange={(e) => setReligion1(e.target.value)}
+                id="apReligion"
+                value={apReligion}
+                onChange={(e) => setapReligion(e.target.value)}
                 required
               />
             </div>
 
             <div className="label-wrapper">
               <label className="label-form">Permanant Address: </label>
-              <input
-                type="text"
-                id="address1"
-                value={address1}
-                onChange={(e) => setAddress1(e.target.value)}
-                required
-              />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4px",
+                  flexGrow: "1",
+                }}
+              >
+                <input
+                  type="text"
+                  id="apAddressLine1"
+                  placeholder="Address line 1"
+                  value={apAddressLine1}
+                  style={{ width: "100%" }}
+                  onChange={(e) => setapAddressLine1(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  id="apAddressLine2"
+                  placeholder="Address line 2"
+                  value={apAddressLine2}
+                  style={{ width: "100%" }}
+                  onChange={(e) => setapAddressLine2(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  id="apAddressLine3"
+                  placeholder="Address line 3"
+                  value={apAddressLine3}
+                  style={{ width: "100%" }}
+                  onChange={(e) => setapAddressLine3(e.target.value)}
+                  required
+                />
+              </div>
             </div>
 
             <div className="label-wrapper">
@@ -158,28 +282,24 @@ const ApplicantDetails = () => {
               <input
                 type="text"
                 id="latlong"
-                value={newlatlong}
+                value={apLatLng}
                 readOnly={true}
-                //onChange={(e) => setNewLatlong(e.target.value)}
+                onChange={(e) => setapLatLng(e.target.value)}
                 required
               />
-              <button
-                className="form-map-button"
-                onClick={handleMapDisplay}
-                title="Click your location to set coordinates"
-              >
-                Find
-              </button>
-              {/* {mapDisplay&&<Map handleMapClose={handleMapClose} setLatLong={setLatlong}/>} */}
+            </div>
+
+            <div className="label-wrapper">
+              <GMap setapLatLng={setapLatLng} city={apAddressLine3} />
             </div>
 
             <div className="label-wrapper">
               <label className="label-form">Telephone number: </label>
               <input
                 type="text"
-                id="tel1"
-                value={tel1}
-                onChange={(e) => setTel1(e.target.value)}
+                id="apTeleNumber"
+                value={apTeleNumber}
+                onChange={(e) => setapTeleNumber(e.target.value)}
                 required
               />
             </div>
@@ -188,9 +308,9 @@ const ApplicantDetails = () => {
               <label className="label-form">Residential district: </label>
               <input
                 type="text"
-                id="district1"
-                value={district1}
-                onChange={(e) => setDistrict1(e.target.value)}
+                id="apDistrict"
+                value={apDistrict}
+                onChange={(e) => setapDistrict(e.target.value)}
                 required
               />
             </div>
@@ -199,9 +319,9 @@ const ApplicantDetails = () => {
               <label className="label-form">Divisional secratariat: </label>
               <input
                 type="text"
-                id="divisional1"
-                value={divisional1}
-                onChange={(e) => setDivisional1(e.target.value)}
+                id="apDivisionalSecretariat"
+                value={apDivisionalSecretariat}
+                onChange={(e) => setapDivisionalSecretariat(e.target.value)}
                 required
               />
               <div className="form-help">
@@ -217,9 +337,9 @@ const ApplicantDetails = () => {
               </label>
               <input
                 type="text"
-                id="grama1"
-                value={grama1}
-                onChange={(e) => setGrama1(e.target.value)}
+                id="apGramanildariDivision"
+                value={apGramanildariDivision}
+                onChange={(e) => setapGramanildariDivision(e.target.value)}
                 required
               />
               <div className="form-help" onClick={handleHelpClick}>
@@ -241,16 +361,16 @@ const ApplicantDetails = () => {
       </div>
 
       <div className="form-container">
-        <form>
+        <form onSubmit={handleSubmit}>
           <fieldset>
             <legend>Details of Spouse</legend>
             <div className="label-wrapper">
               <label className="label-form">Name in full: </label>
               <input
                 type="text"
-                id="fullname2"
-                value={fullname2}
-                onChange={(e) => setFullName2(e.target.value)}
+                id="spFullName"
+                value={spFullName}
+                onChange={(e) => setspFullName(e.target.value)}
                 required
               />
             </div>
@@ -259,9 +379,9 @@ const ApplicantDetails = () => {
               <label className="label-form">Name with initials: </label>
               <input
                 type="text"
-                id="initials2"
-                value={initials2}
-                onChange={(e) => setInitials2(e.target.value)}
+                id="spInitials"
+                value={spInitials}
+                onChange={(e) => setspInitials(e.target.value)}
                 required
               />
             </div>
@@ -270,9 +390,9 @@ const ApplicantDetails = () => {
               <label className="label-form">NIC no: </label>
               <input
                 type="text"
-                id="nic2"
-                value={nic2}
-                onChange={(e) => setNic2(e.target.value)}
+                id="spNIC"
+                value={spNIC}
+                onChange={(e) => setspNIC(e.target.value)}
                 required
               />
             </div>
@@ -303,9 +423,9 @@ const ApplicantDetails = () => {
               <label className="label-form">Religion: </label>
               <input
                 type="text"
-                id="religion2"
-                value={religion2}
-                onChange={(e) => setReligion2(e.target.value)}
+                id="spReligion"
+                value={spReligion}
+                onChange={(e) => setspReligion(e.target.value)}
                 required
               />
             </div>
@@ -314,9 +434,9 @@ const ApplicantDetails = () => {
               <label className="label-form">Permanant Address: </label>
               <input
                 type="text"
-                id="address2"
-                value={address2}
-                onChange={(e) => setAddress2(e.target.value)}
+                id="spAddress"
+                value={spAddress}
+                onChange={(e) => setspAddress(e.target.value)}
                 required
               />
             </div>
@@ -325,9 +445,9 @@ const ApplicantDetails = () => {
               <label className="label-form">Telephone number: </label>
               <input
                 type="text"
-                id="tel2"
-                value={tel2}
-                onChange={(e) => setTel2(e.target.value)}
+                id="spTeleNumber"
+                value={spTeleNumber}
+                onChange={(e) => setspTeleNumber(e.target.value)}
                 required
               />
             </div>
@@ -336,9 +456,9 @@ const ApplicantDetails = () => {
               <label className="label-form">Residential district: </label>
               <input
                 type="text"
-                id="district2"
-                value={district2}
-                onChange={(e) => setDistrict2(e.target.value)}
+                id="spDivisionalSecretariat"
+                value={spDistrict}
+                onChange={(e) => setspDistrict(e.target.value)}
                 required
               />
             </div>
@@ -347,9 +467,9 @@ const ApplicantDetails = () => {
               <label className="label-form">Divisional secratariat: </label>
               <input
                 type="text"
-                id="divisional2"
-                value={divisional2}
-                onChange={(e) => setDivisional2(e.target.value)}
+                id="spDistrict"
+                value={spDivisionalSecretariat}
+                onChange={(e) => setspDivisionalSecretariat(e.target.value)}
                 required
               />
               <div className="form-help">
@@ -365,9 +485,9 @@ const ApplicantDetails = () => {
               </label>
               <input
                 type="text"
-                id="grama2"
-                value={grama2}
-                onChange={(e) => setGrama2(e.target.value)}
+                id="spGramanildariDivision"
+                value={spGramanildariDivision}
+                onChange={(e) => setspGramanildariDivision(e.target.value)}
                 required
               />
               <div className="form-help" onClick={handleHelpClick}>
@@ -385,10 +505,11 @@ const ApplicantDetails = () => {
               )}
             </div>
           </fieldset>
+          <div className="save-btn" onClick={(e) => handleSubmit()}>
+            <Button variant="outlined">SAVE & CONTINUE</Button>
+          </div>
         </form>
       </div>
-
-      {mapDisplay && <GMap handleMapClose={handleMapClose} />}
     </>
   );
 };

@@ -1,35 +1,28 @@
 import axios from "axios";
 import "./PDFResult.css"; // Import the CSS file
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useReactToPrint } from "react-to-print";
 import { useNavbar } from "../context/NavbarContext";
 
 const PDFResult = () => {
   const url = process.env.REACT_APP_SERVER_URL;
+  const pdfRef = useRef();
   const { setShowNavbar } = useNavbar();
   const [userObj, setUserObj] = useState({});
+  const [parentObj, setParentObj] = useState({});
+  const [maxMarks, setMaxMarks] = useState("");
   const [marksObj, setMarksObj] = useState({});
-  const [schoolObj, setSchoolObj] = useState({});
+  const [electorialObj, setElectorialObj] = useState({});
   const [applicantDetailObj, setApplicantDetailObj] = useState({});
   const [formattedDate, setFormattedDate] = useState("");
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
 
-  const generatePDF = async () => {
-    try {
-      const response = await axios.get(`${url}pdf/generatePDF`, {
-        responseType: "blob",
-      });
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const uri = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = uri;
-      a.download = "Summary-Report.pdf";
-      a.click();
-      URL.revokeObjectURL(uri);
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    }
-  };
+  const generatePDF = useReactToPrint({
+    content: () => pdfRef.current,
+    documentTitle: "Summary Report",
+    onAfterPrint: () => alert("Print success"),
+  });
 
   const getDate = () => {
     const today = new Date();
@@ -41,29 +34,35 @@ const PDFResult = () => {
     setEmail(localStorage.getItem("email"));
   };
 
-  const retrieveMarks = async (e) => {
+  const loadData = async (e) => {
     try {
       const token = localStorage.getItem("token");
-
+      //get user's credentials
       const userDetails = await axios.get(`${url}get-user-details`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
+      //getting the child information
       const applicantDetails = await axios.get(`${url}get-applicant-details`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
+      //get marks
       const marks = await axios.get(`${url}get-marks`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      const schools = await axios.get(`${url}get-preffered-schools`, {
+      //get parent information
+      const parentInfo = await axios.get(`${url}load-applicant-details`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      //get electorial information
+      const electorialInfo = await axios.get(`${url}get-electorial-details`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -72,9 +71,9 @@ const PDFResult = () => {
       // The marks object should be available in the response.data
       setApplicantDetailObj(applicantDetails.data[0]);
       setUserObj(userDetails.data);
+      setParentObj(parentInfo.data[0]);
       setMarksObj(marks.data);
-      setSchoolObj(schools.data[0]);
-      console.log(schools.data[0]);
+      setElectorialObj(electorialInfo.data[0]);
 
       // Now you can use the 'marks' object as needed
     } catch (error) {
@@ -83,16 +82,27 @@ const PDFResult = () => {
     }
   };
 
+  const findMax = () => {
+    const marksArr = Object.values(marksObj);
+    marksArr.sort((a, b) => b - a);
+    setMaxMarks(marksArr[0]);
+  };
+
+  useEffect(() => {
+    findMax();
+  }, [marksObj, maxMarks]);
+
   useEffect(() => {
     setShowNavbar(false); // Hide the Navbar when PDFResult is rendered
     getDate();
-    retrieveMarks();
+    loadData(); //load data from the database
+
     return () => {
       setShowNavbar(true); // Show the Navbar when leaving PDFResult
     };
   }, []);
 
-  const ID = userObj.ID;
+  const ID = userObj.hashCode;
   const pastPupils = marksObj.pastPupils ? marksObj.pastPupils : "-";
   const proximity = marksObj.proximity ? marksObj.proximity : "-";
   const cousins = marksObj.cousins ? marksObj.cousins : "-";
@@ -109,47 +119,47 @@ const PDFResult = () => {
   const birth = applicantDetailObj.birth;
 
   // Details of applicant
-  const fullName1 = "test";
-  const initials1 = "test";
-  const nic1 = "test";
-  const citizen1 = "test";
-  const religion1 = "test";
-  const address1 = "test";
-  const newlatlong = "test";
-  const tel1 = "test";
-  const district1 = "test";
-  const divisional1 = "test";
-  const grama1 = "test";
+  const fullName1 = parentObj.apFullName;
+  const initials1 = parentObj.apInitials;
+  const nic1 = parentObj.apNIC;
+  const citizen1 = parentObj.apSriLankan;
+  const religion1 = parentObj.apReligion;
+  const address1 = parentObj.apAddressLine1;
+  const address12 = parentObj.apAddressLine2;
+  const address13 = parentObj.apAddressLine3;
+  const newlatlong = parentObj.apLatLng;
+  const tel1 = parentObj.apTeleNumber;
+  const district1 = parentObj.apDistrict;
+  const divisional1 = parentObj.apDivisionalSecretariat;
+  const grama1 = parentObj.apGramanildariDivision;
 
   // Details of spouse
-  const fullname2 = "test";
-  const initials2 = "test";
-  const nic2 = "test";
-  const citizen2 = "test";
-  const religion2 = "test";
-  const address2 = "test";
-  const tel2 = "test";
-  const district2 = "test";
-  const divisional2 = "test";
-  const grama2 = "test";
+  const fullname2 = parentObj.spFullName;
+  const initials2 = parentObj.spInitials;
+  const nic2 = parentObj.spNIC;
+  const citizen2 = parentObj.spSriLankan;
+  const religion2 = parentObj.spReligion;
+  const address2 = parentObj.spAddress;
+  const tel2 = parentObj.spTeleNumber;
+  const district2 = parentObj.spDistrict;
+  const divisional2 = parentObj.spDivisionalSecretariat;
+  const grama2 = parentObj.spGramanildariDivision;
 
-  // Details of schools
-  const selectedSchool1 = schoolObj.preference1 ? schoolObj.preference1 : "-";
-  const selectedSchool2 = schoolObj.preference2 ? schoolObj.preference2 : "-";
-  const selectedSchool3 = schoolObj.preference3 ? schoolObj.preference3 : "-";
-  const selectedSchool4 = schoolObj.preference4 ? schoolObj.preference4 : "-";
   //const distances = "test";
 
   // Details on electorial list
-  const year = "test";
-  const district = "test";
-  const division = "test";
-  const divisionNo = "test";
-  const pollingDivision = "test";
-  const street = "test";
+  const year = electorialObj.year;
+  const district = electorialObj.district;
+  const division = electorialObj.division;
+  const divisionNo = electorialObj.divisionNo;
+  const pollingDivision = electorialObj.pollingDivision;
+  const street = electorialObj.street;
+  const houseHold = electorialObj.houseHold;
+  const serial = electorialObj.serial;
+  const electors = electorialObj.electors;
 
   return (
-    <div className="invoice-box">
+    <div className="invoice-box" ref={pdfRef}>
       <div className="nav-container">
         <button className="download-btn" onClick={(e) => generatePDF()}>
           Download
@@ -166,7 +176,11 @@ const PDFResult = () => {
                       <img
                         src="./images/SDDK.png"
                         alt="SDDK company"
-                        style={{ width: "100%", maxWidth: "156px" }}
+                        style={{
+                          width: "70%",
+                          maxWidth: "156px",
+                          height: "100px",
+                        }}
                       />
                     </td>
                     <td>
@@ -186,7 +200,9 @@ const PDFResult = () => {
                 <tbody>
                   <tr>
                     <td>User name: {`${userName}`}</td>
-                    <td>Hash: {`${ID}`}</td>
+                    <td>
+                      Hash: <b>{`${ID}`}</b>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -281,8 +297,16 @@ const PDFResult = () => {
             <td>{religion1}</td>
           </tr>
           <tr className="test-row">
-            <td>Permanant Address:</td>
+            <td>Address line 1:</td>
             <td>{address1}</td>
+          </tr>
+          <tr className="test-row">
+            <td>Address line 2:</td>
+            <td>{address12}</td>
+          </tr>
+          <tr className="test-row">
+            <td>Address line 3:</td>
+            <td>{address13}</td>
           </tr>
           <tr className="test-row">
             <td>Latitude and longitude of home:</td>
@@ -355,20 +379,10 @@ const PDFResult = () => {
             <td></td>
           </tr>
           <tr className="test-row">
-            <td>Preference 1:</td>
-            <td>{selectedSchool1}</td>
-          </tr>
-          <tr className="test-row">
-            <td>Preference 2:</td>
-            <td>{selectedSchool2}</td>
-          </tr>
-          <tr className="test-row">
-            <td>Preference 3:</td>
-            <td>{selectedSchool3}</td>
-          </tr>
-          <tr className="test-row">
-            <td>Preference 4:</td>
-            <td>{selectedSchool4}</td>
+            <td>Name: </td>
+            <td>
+              <b>{localStorage.getItem("selectedSchool")}</b>
+            </td>
           </tr>
           {/* <tr className="test-row">
             <td>
@@ -419,41 +433,15 @@ const PDFResult = () => {
             <td>Name of electors</td>
           </tr>
           <tr>
-            <td>data</td>
-            <td>data</td>
-            <td>data</td>
-          </tr>
-          <tr>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
+            <td>{houseHold}</td>
+            <td>{serial}</td>
+            <td>{electors}</td>
           </tr>
         </tbody>
       </table>
 
       <br />
-      <h3 className="justify-center">
-        Total marks:{" "}
-        {parseInt(proximity) +
-          parseInt(pastPupils) +
-          parseInt(cousins) +
-          parseInt(staff) +
-          parseInt(officers) +
-          parseInt(officers)}
-      </h3>
-      <footer>
-        <p className="justify-center">
-          Report was created on{" "}
-          {/* {`${today.getDate()}. ${
-            today.getMonth() + 1
-          }. ${today.getFullYear()}.`} */}
-        </p>
-      </footer>
+      <h3 className="justify-center">Maximum marks obtained: {maxMarks}</h3>
     </div>
   );
 };
