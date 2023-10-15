@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { loginData } from "../data/LoginFormData";
 import { useState } from "react";
 import Dialog from "../Dialog";
+import Spinner from "../Spinner";
 
 const LoginForm = () => {
   const url = process.env.REACT_APP_SERVER_URL;
@@ -9,10 +10,12 @@ const LoginForm = () => {
   const [formValues, setFormValues] = useState({});
   const [loginFail, setLoginFail] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      setLoading(true);
       const response = await fetch(`${url}login`, {
         method: "POST",
         headers: {
@@ -25,7 +28,7 @@ const LoginForm = () => {
       });
 
       const data = await response.json();
-
+      setLoading(false);
       //console.log(data);
       if (data.user) {
         localStorage.setItem("token", data.user);
@@ -59,6 +62,7 @@ const LoginForm = () => {
 
   return (
     <>
+      {loading && <Spinner body={"WAIT FOR LOGIN"} />}
       <div className="register-container">
         <form onSubmit={handleSubmit}>
           <h1>Login</h1>

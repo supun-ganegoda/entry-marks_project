@@ -224,12 +224,49 @@ export default function FormCat3() {
             <tr key={rowIndex}>
               {rowData.map((cellData, colIndex) => (
                 <td key={colIndex}>
-                  <input
-                    className="elec-form-table-input"
-                    type="text"
-                    value={cellData}
-                    onChange={(e) => handleCellChange(rowIndex, colIndex, e)}
-                  />
+                  {colIndex === 1 ? ( // Grade column
+                    <input
+                      className="elec-form-table-input"
+                      type="number"
+                      min="1"
+                      max="13"
+                      value={cellData}
+                      onChange={(e) => handleCellChange(rowIndex, colIndex, e)}
+                    />
+                  ) : colIndex === 2 ? ( // Admission No column
+                    <input
+                      className="elec-form-table-input"
+                      type="text"
+                      pattern="[A-Z]{2}[0-9]{3}"
+                      value={cellData}
+                      onChange={(e) => handleCellChange(rowIndex, colIndex, e)}
+                    />
+                  ) : colIndex === 3 ? ( // Admission Grade column
+                    <input
+                      className="elec-form-table-input"
+                      type="number"
+                      min="1"
+                      max="13"
+                      value={cellData}
+                      onChange={(e) => handleCellChange(rowIndex, colIndex, e)}
+                    />
+                  ) : colIndex === 4 ? (
+                    <input
+                      className="elec-form-table-input"
+                      type="number"
+                      min="1"
+                      max="13"
+                      value={cellData}
+                      onChange={(e) => handleCellChange(rowIndex, colIndex, e)}
+                    />
+                  ) : (
+                    <input
+                      className="elec-form-table-input"
+                      type="text"
+                      value={cellData}
+                      onChange={(e) => handleCellChange(rowIndex, colIndex, e)}
+                    />
+                  )}
                 </td>
               ))}
             </tr>
@@ -253,21 +290,31 @@ export default function FormCat3() {
                 Number of brothers / sisters study in the applied school :{" "}
               </label>
               <input
-                type="number"
+                type="text"
                 id="noOfBrothers"
                 value={noOfBrothers}
-                onChange={(e) => setNoOfbrothers(e.target.value)}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value.replace(/\D/g, "");
+                  setNoOfbrothers(sanitizedValue);
+                }}
                 required
                 style={{
                   padding: "0.5em",
                   border: "1px solid #ccc",
                   borderRadius: "4px",
                   fontSize: "16px",
+                  maxWidth: "200px",
                 }}
               />
             </div>
 
-            <div className="elec-form-table">{renderTable()}</div>
+            <div className="elec-form-table">
+              {renderTable()}
+              <Alert severity="info" style={{ marginBottom: "8px" }}>
+                If number of children are more than 4 the maximum marks are
+                obtained
+              </Alert>
+            </div>
 
             <div className="form-religion">
               <label className="form-label">
@@ -347,7 +394,7 @@ export default function FormCat3() {
                             onChange={handleSelectOptionChange}
                           />
                           <label htmlFor="option1">
-                            Ownwership of the place of residence is in the name
+                            Ownership of the place of residence is in the name
                             of the applicant/ spouse
                           </label>
                         </div>
@@ -361,7 +408,7 @@ export default function FormCat3() {
                             onChange={handleSelectOptionChange}
                           />
                           <label htmlFor="option2">
-                            Ownwership is in the name of mother/ father of
+                            Ownership is in the name of mother/ father of
                             applicant/ spouse
                           </label>
                         </div>
@@ -483,16 +530,20 @@ export default function FormCat3() {
                 register:{" "}
               </label>
               <input
-                type="number"
+                type="text"
                 id="applicantNumber"
                 value={yearsApplicant}
-                onChange={(e) => setYearApplicant(e.target.value)}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value.replace(/\D/g, "");
+                  setYearApplicant(sanitizedValue);
+                }}
                 required
                 style={{
                   padding: "0.5em",
                   border: "1px solid #ccc",
                   borderRadius: "4px",
                   fontSize: "16px",
+                  maxWidth: "200px",
                 }}
               />
             </div>
@@ -503,16 +554,20 @@ export default function FormCat3() {
                 electoral register:{" "}
               </label>
               <input
-                type="number"
+                type="text"
                 id="spouseNumber"
                 value={yearsSpouse}
-                onChange={(e) => setYearSpouse(e.target.value)}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value.replace(/\D/g, "");
+                  setYearSpouse(sanitizedValue);
+                }}
                 required
                 style={{
                   padding: "0.5em",
                   border: "1px solid #ccc",
                   borderRadius: "4px",
                   fontSize: "16px",
+                  maxWidth: "200px",
                 }}
               />
             </div>
@@ -523,16 +578,20 @@ export default function FormCat3() {
                 electoral register:{" "}
               </label>
               <input
-                type="number"
+                type="text"
                 id="guardianNumber"
                 value={yearsRegister}
-                onChange={(e) => setYearsRegister(e.target.value)}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value.replace(/\D/g, "");
+                  setYearsRegister(sanitizedValue);
+                }}
                 required
                 style={{
                   padding: "0.5em",
                   border: "1px solid #ccc",
                   borderRadius: "4px",
                   fontSize: "16px",
+                  maxWidth: "200px",
                 }}
               />
             </div>
@@ -551,9 +610,16 @@ export default function FormCat3() {
               <input
                 type="text"
                 id="schoolNumber"
-                value={schoolNumber[0]}
+                value={schoolNumber[localStorage.getItem("selectedIndex")]}
                 readOnly
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                  maxWidth: "200px",
+                }}
               />
             </div>
           </fieldset>

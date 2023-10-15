@@ -17,6 +17,8 @@ const SchoolDetails = ({ handleClick }) => {
   const selectedSchools = useUpdateSelectedSchools(); //school context
   const [suggestions, setSuggestions] = useState([]);
   const [isSchoolsSet, setIsSchoolsSet] = useState(false);
+  const [genderError, setGenderError] = useState(false);
+  const [gender, setGenderVal] = useState("mix");
 
   const loadSchools = async () => {
     try {
@@ -59,15 +61,24 @@ const SchoolDetails = ({ handleClick }) => {
     setselectedSchool4(values);
   };
 
+  const settingGender = () => {
+    if (localStorage.getItem("gender") === "male") {
+      setGenderVal("BOY");
+    }
+    if (localStorage.getItem("gender") === "female") {
+      setGenderVal("GIRL");
+    }
+  };
+
   const handleInputChange = async (event) => {
     const userInput = event.target.value;
 
     try {
       const response = await fetch(
-        `${url}schools/suggestions?input=${userInput}`
+        `${url}schools/suggestions?input=${userInput}&gender=${gender}`
       );
       const data = await response.json();
-      //console.log(data);
+      console.log(data);
       setSuggestions(data.suggestions);
     } catch (error) {
       console.log("Error fetching suggestions:", error);
@@ -106,7 +117,24 @@ const SchoolDetails = ({ handleClick }) => {
     }
   };
 
+  const setGender = async () => {
+    try {
+      const childDetails = await axios.get(`${url}get-applicant-details`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const resData = childDetails.data[0];
+      localStorage.setItem("gender", resData.gender);
+    } catch (e) {
+      console.log(e);
+      setGenderError(true);
+    }
+  };
+
   useEffect(() => {
+    setGender();
+    settingGender();
     loadSchools();
     //selectedSchools([]);
   }, []);
@@ -192,9 +220,18 @@ const SchoolDetails = ({ handleClick }) => {
           <Button variant="outlined">SAVE & CONTINUE</Button>
         </div>
         <Alert severity="info" style={{ marginTop: "8px", marginRight: "4px" }}>
-          Marks are calculated for the first preffered school
+          Only {gender} schools and mix schools are showing here
         </Alert>
       </div>
+      {genderError ? (
+        <Dialog
+          toOpen={true}
+          title={"Info"}
+          body={
+            "Error loading Boys and Girls schools, only mix schools are loaded. Try setting sex in child details form"
+          }
+        ></Dialog>
+      ) : null}
     </>
   );
 };

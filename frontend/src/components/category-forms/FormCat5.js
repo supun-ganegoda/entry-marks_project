@@ -261,7 +261,17 @@ export default function FormCat5() {
                 id="transferDistance"
                 placeholder="km"
                 value={transferDistance}
-                onChange={(e) => settransferDistance(e.target.value)}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value.replace(/[^0-9.]/g, "");
+                  const decimalCount = (sanitizedValue.match(/\./g) || [])
+                    .length;
+                  if (decimalCount > 1) {
+                    return;
+                  }
+                  if (/^(\d*\.?\d+|\d+\.\d*)$/.test(sanitizedValue)) {
+                    settransferDistance(sanitizedValue);
+                  }
+                }}
                 required
               />
             </div>
@@ -276,7 +286,7 @@ export default function FormCat5() {
                 style={{ maxWidth: "8rem" }}
                 type="text"
                 id="otherSchools"
-                value={schoolCount[0]}
+                value={schoolCount[localStorage.getItem("selectedIndex")]}
                 readOnly
                 required
               />
@@ -292,8 +302,18 @@ export default function FormCat5() {
                 id="employeePeriod"
                 placeholder="Years"
                 value={employeePeriod}
-                onChange={(e) => setemployeePeriod(e.target.value)}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value.replace(/\D/g, "");
+                  setemployeePeriod(sanitizedValue);
+                }}
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                  maxWidth: "200px",
+                }}
               />
             </div>
 
@@ -325,7 +345,10 @@ export default function FormCat5() {
                   id="leave2020"
                   placeholder="2020"
                   value={leave2020}
-                  onChange={(e) => setLeave2020(e.target.value)}
+                  onChange={(e) => {
+                    const sanitizedValue = e.target.value.replace(/\D/g, "");
+                    setLeave2020(sanitizedValue);
+                  }}
                   required
                 />
                 <input
@@ -333,7 +356,10 @@ export default function FormCat5() {
                   id="leave2019"
                   placeholder="2019"
                   value={leave2019}
-                  onChange={(e) => setLeave2019(e.target.value)}
+                  onChange={(e) => {
+                    const sanitizedValue = e.target.value.replace(/\D/g, "");
+                    setLeave2019(sanitizedValue);
+                  }}
                   required
                 />
                 <input
@@ -341,7 +367,10 @@ export default function FormCat5() {
                   id="leave2018"
                   placeholder="2018"
                   value={leave2018}
-                  onChange={(e) => setLeave2018(e.target.value)}
+                  onChange={(e) => {
+                    const sanitizedValue = e.target.value.replace(/\D/g, "");
+                    setLeave2018(sanitizedValue);
+                  }}
                   required
                 />
                 <input
@@ -349,7 +378,10 @@ export default function FormCat5() {
                   id="leave2017"
                   placeholder="2017"
                   value={leave2017}
-                  onChange={(e) => setLeave2017(e.target.value)}
+                  onChange={(e) => {
+                    const sanitizedValue = e.target.value.replace(/\D/g, "");
+                    setLeave2017(sanitizedValue);
+                  }}
                   required
                 />
                 <input
@@ -357,7 +389,10 @@ export default function FormCat5() {
                   id="leave2016"
                   placeholder="2016"
                   value={leave2016}
-                  onChange={(e) => setLeave2016(e.target.value)}
+                  onChange={(e) => {
+                    const sanitizedValue = e.target.value.replace(/\D/g, "");
+                    setLeave2016(sanitizedValue);
+                  }}
                   required
                 />
               </div>

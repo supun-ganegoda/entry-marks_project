@@ -21,10 +21,16 @@ export default function BasicModal({
   buttonText: buttonText,
   bodyHeader: bodyHeader,
   bodyText: bodyText,
+  onClose: onClose,
 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    if (onClose) {
+      onClose();
+    }
+  };
 
   return (
     <div>

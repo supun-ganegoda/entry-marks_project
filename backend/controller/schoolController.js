@@ -2,12 +2,20 @@ const schoolDetailsModel = require("../models/schoolModel");
 
 const getSuggestions = async (req, res) => {
   const userInput = req.query.input;
-
+  const gender = req.query.gender;
   try {
+    let query = {
+      Name: { $regex: userInput, $options: "i" },
+      $or: [
+        { Category: gender },
+        { Category: "mix" }, // Include "mix" schools in the query
+      ],
+    };
+
     const suggestions = await schoolDetailsModel
-      .find({ Name: { $regex: userInput, $options: "i" } }, { Name: 1, _id: 0 })
+      .find(query, { Name: 1, _id: 0 })
       .limit(10);
-    //console.log(suggestions);
+
     const suggestionNames = suggestions.map((suggestion) => suggestion.Name);
     res.json({ suggestions: suggestionNames });
   } catch (error) {

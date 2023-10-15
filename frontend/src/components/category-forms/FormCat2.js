@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import "./FormCat.css";
 import Modal from "../Modal";
 import { MarksContext } from "../context/MarksContext";
+import Dialog from "../../components/Dialog";
 
 export default function FormCat2() {
   const { updateMarks } = useContext(MarksContext);
@@ -17,7 +18,7 @@ export default function FormCat2() {
   const [withoutMembership, setwithoutMembership] = useState(false);
   const [marks, setMarks] = useState(0);
   const [moreCheckboxes, setMoreCheckboxes] = useState([]);
-  const [gceOLText, setGceOLText] = useState("");
+  const [gceOLText, setGceOLText] = useState(false);
   const [input1Value, setInput1Value] = useState("");
   const [input2Value, setInput2Value] = useState("");
   const [input3Value, setInput3Value] = useState("");
@@ -37,6 +38,8 @@ export default function FormCat2() {
   const [membershipCheckboxes, setmembershipCheckboxes] = useState([]);
   const [postMembershipInput, setpostMembershipInput] = useState("");
   const [winningMembershipInput, setwinningMembershipInput] = useState("");
+  const [error, setError] = useState(false);
+  const [validated, setValidated] = useState(true);
 
   const handleMarksChange = (newValue) => {
     updateMarks("cat2", newValue);
@@ -76,27 +79,15 @@ export default function FormCat2() {
   };
 
   const handleGceOLTextChange = (event) => {
-    setGceOLText(event.target.value);
-    setShowGceOLSection(true); // Show the G.C.E O/L section when the textbox is clicked
+    setError(false);
+    setValidated(false);
+    setGceOLText(!gceOLText);
+    setShowGceOLSection(!showGceOLSection); // Show the G.C.E O/L section when the textbox is clicked
   };
-
-  const handleInput1Change = (event) => {
-    setInput1Value(event.target.value);
-  };
-
-  const handleInput2Change = (event) => {
-    setInput2Value(event.target.value);
-  };
-
-  const handleInput3Change = (event) => {
-    setInput3Value(event.target.value);
-  };
-
 
   const handleGceALInputChange = (event) => {
     setGceALInput(event.target.value);
   };
-
 
   const handleWithActivity = (event) => {
     setwithactivity(event.target.checked);
@@ -149,7 +140,19 @@ export default function FormCat2() {
     setwinningMembershipInput(event.target.value);
   };
 
+  const handleCloseModal = () => {
+    setError(false);
+  };
+
   const calculateMarks = () => {
+    if (gceOLText) {
+      if (input1Value + input2Value + input3Value > 9) {
+        setError(true);
+        setValidated(false);
+        return;
+      }
+    }
+    setValidated(true);
     let totalMarks2 = 0;
     let sMarks = 0;
     let bMarks = 0;
@@ -160,7 +163,6 @@ export default function FormCat2() {
 
     if (classNumber <= 13) {
       totalMarks2 += classNumber * 2;
-
     }
     if (classNumber > 13) {
       totalMarks2 += 26;
@@ -184,7 +186,6 @@ export default function FormCat2() {
         if (input2Value) {
           bMarks = input2Value * 0.5;
           if (bMarks > 4) {
-
             bMarks = 4;
           }
           totalMarks2 += bMarks;
@@ -360,12 +361,18 @@ export default function FormCat2() {
                 No of classes studied in school:{" "}
               </label>
               <input
-                type="number"
+                type="text"
                 id="classNumber"
                 value={classNumber}
-                onChange={(e) => setclassNumber(e.target.value)}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value.replace(/\D+/g, "");
+                  const parsedValue = parseInt(sanitizedValue, 10);
+                  const clampedValue = Math.min(Math.max(parsedValue, 1), 13);
+                  setclassNumber(clampedValue);
+                }}
                 required
                 style={{
+                  maxWidth: "150px",
                   padding: "0.5em",
                   border: "1px solid #ccc",
                   borderRadius: "4px",
@@ -379,13 +386,19 @@ export default function FormCat2() {
                 Period spent in the school as a pupil:{" "}
               </label>
               <input
-                type="number"
+                type="text"
                 id="fromGrade"
                 placeholder="From Grade"
                 value={fromGrade}
-                onChange={(e) => setfromGrade(e.target.value)}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value.replace(/\D+/g, "");
+                  const parsedValue = parseInt(sanitizedValue, 10);
+                  const clampedValue = Math.min(Math.max(parsedValue, 1), 13);
+                  setfromGrade(clampedValue);
+                }}
                 required
                 style={{
+                  maxWidth: "150px",
                   padding: "0.5em",
                   border: "1px solid #ccc",
                   borderRadius: "4px",
@@ -394,13 +407,19 @@ export default function FormCat2() {
                 }}
               />
               <input
-                type="number"
+                type="text"
                 id="toGrade"
                 placeholder="To Grade"
                 value={toGrade}
-                onChange={(e) => settoGrade(e.target.value)}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value.replace(/\D+/g, "");
+                  const parsedValue = parseInt(sanitizedValue, 10);
+                  const clampedValue = Math.min(Math.max(parsedValue, 1), 13);
+                  settoGrade(clampedValue);
+                }}
                 required
                 style={{
+                  maxWidth: "150px",
                   padding: "0.5em",
                   border: "1px solid #ccc",
                   borderRadius: "4px",
@@ -436,7 +455,7 @@ export default function FormCat2() {
             {withachievement && (
               <div
                 className="form-medium-selector"
-                style={{ marginTop: "-23px" }}
+                style={{ marginTop: "-10px" }}
               >
                 <div>
                   <input
@@ -474,7 +493,9 @@ export default function FormCat2() {
                     }}
                   >
                     <div style={{ display: "flex", alignItems: "center" }}>
-                      <label style={{ marginRight: "10px" }}>Passed 6 subjects</label>
+                      <label style={{ marginRight: "10px" }}>
+                        Passed 6 subjects
+                      </label>
                       <input
                         type="checkbox"
                         // style={{ marginLeft: "10px" }}
@@ -483,40 +504,81 @@ export default function FormCat2() {
                       />
                     </div>
 
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <label style={{ marginRight: "10px" }}>Number of S passes:</label>
-                      <input
-                        type="number"
-                        value={input1Value}
-                        onChange={handleInput1Change}
-                      />
-                    </div>
+                    {showGceOLSection && (
+                      <>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <label style={{ marginRight: "10px" }}>
+                            Number of S passes:
+                          </label>
+                          <input
+                            type="text"
+                            value={input1Value}
+                            onChange={(e) => {
+                              const sanitizedValue = e.target.value.replace(
+                                /\D+/g,
+                                ""
+                              );
+                              const parsedValue = parseInt(sanitizedValue, 10);
+                              const clampedValue = Math.min(
+                                Math.max(parsedValue, 0),
+                                9
+                              );
+                              setInput1Value(clampedValue);
+                            }}
+                          />
+                        </div>
 
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <label style={{ marginRight: "10px" }}>Number of C/B passes:</label>
-                      <input
-                        type="number"
-                        value={input2Value}
-                        onChange={handleInput2Change}
-                      />
-                    </div>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <label style={{ marginRight: "10px" }}>
+                            Number of C/B passes:
+                          </label>
+                          <input
+                            type="text"
+                            value={input2Value}
+                            onChange={(e) => {
+                              const sanitizedValue = e.target.value.replace(
+                                /\D+/g,
+                                ""
+                              );
+                              const parsedValue = parseInt(sanitizedValue, 10);
+                              const clampedValue = Math.min(
+                                Math.max(parsedValue, 0),
+                                9
+                              );
+                              setInput2Value(clampedValue);
+                            }}
+                          />
+                        </div>
 
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <label style={{ marginRight: "10px" }}>Number of D/A passes:</label>
-                      <input
-                        type="number"
-                        value={input3Value}
-                        onChange={handleInput3Change}
-                      />
-                    </div>
-
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <label style={{ marginRight: "10px" }}>
+                            Number of D/A passes:
+                          </label>
+                          <input
+                            type="text"
+                            value={input3Value}
+                            onChange={(e) => {
+                              const sanitizedValue = e.target.value.replace(
+                                /\D+/g,
+                                ""
+                              );
+                              const parsedValue = parseInt(sanitizedValue, 10);
+                              const clampedValue = Math.min(
+                                Math.max(parsedValue, 0),
+                                9
+                              );
+                              setInput3Value(clampedValue);
+                            }}
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
             )}
 
             {moreCheckboxes[2] && (
-
               <div
                 className="form-medium-selector"
                 style={{
@@ -524,9 +586,9 @@ export default function FormCat2() {
                   flexDirection: "column",
                   color: "#a8a2a2",
                   alignItems: "end",
+                  marginRight: "7.5rem",
                 }}
               >
-
                 <label>
                   <input
                     type="radio"
@@ -610,12 +672,13 @@ export default function FormCat2() {
             </div>
 
             {withactivity && (
-
-              <div className="form-medium-selector"
+              <div
+                className="form-medium-selector"
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                }}>
+                }}
+              >
                 <div>
                   <input
                     type="checkbox"
@@ -662,11 +725,13 @@ export default function FormCat2() {
                 </div>
 
                 {activityCheckboxes[0] && (
-                  <div style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    color: "#a8a2a2",
-                  }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      color: "#a8a2a2",
+                    }}
+                  >
                     <div>
                       <input
                         type="checkbox"
@@ -721,7 +786,6 @@ export default function FormCat2() {
                       />
                       <label>Team sports captain</label>
                     </div>
-              
                   </div>
                 )}
 
@@ -782,7 +846,6 @@ export default function FormCat2() {
                       />
                       <label>Member</label>
                     </div>
-
                   </div>
                 )}
 
@@ -814,8 +877,6 @@ export default function FormCat2() {
 
                 {activityCheckboxes[3] && (
                   <div style={{ color: "#a8a2a2" }}>
-
-             
                     <label>
                       <input
                         type="radio"
@@ -915,13 +976,14 @@ export default function FormCat2() {
             </div>
 
             {withMembership && (
-              <div className="form-medium-selector"
+              <div
+                className="form-medium-selector"
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                }}>
+                }}
+              >
                 <div>
-
                   <input
                     type="checkbox"
                     checked={membershipCheckboxes[0] || false}
@@ -949,7 +1011,6 @@ export default function FormCat2() {
                   <label>Achievements After School</label>
                 </div>
                 <div>
-
                   <input
                     type="checkbox"
                     checked={membershipCheckboxes[3] || false}
@@ -959,7 +1020,6 @@ export default function FormCat2() {
                   <label>Prefer for Donation</label>
                 </div>
                 <div>
-
                   <input
                     type="checkbox"
                     checked={membershipCheckboxes[4] || false}
@@ -1007,9 +1067,7 @@ export default function FormCat2() {
                 )}
 
                 {membershipCheckboxes[2] && (
-
                   <div style={{ color: "#a8a2a2" }}>
-
                     <label>
                       <input
                         type="radio"
@@ -1018,7 +1076,6 @@ export default function FormCat2() {
                         checked={
                           winningMembershipInput === "winningMembership1"
                         }
-
                         onChange={handlewinningMembershipInputChange}
                       />
                       Ph.D
@@ -1032,7 +1089,6 @@ export default function FormCat2() {
                         checked={
                           winningMembershipInput === "winningMembership2"
                         }
-
                         onChange={handlewinningMembershipInputChange}
                       />
                       Post Graduate/Diploma in Masters
@@ -1043,11 +1099,9 @@ export default function FormCat2() {
                         type="radio"
                         name="winningMembershipInput"
                         value="winningMembership3"
-
                         checked={
                           winningMembershipInput === "winningMembership3"
                         }
-
                         onChange={handlewinningMembershipInputChange}
                       />
                       Degree from Government/Government Registered Institutions
@@ -1058,11 +1112,9 @@ export default function FormCat2() {
                         type="radio"
                         name="winningMembershipInput"
                         value="winningMembership4"
-
                         checked={
                           winningMembershipInput === "winningMembership4"
                         }
-
                         onChange={handlewinningMembershipInputChange}
                       />
                       Diploma Level
@@ -1073,11 +1125,9 @@ export default function FormCat2() {
                         type="radio"
                         name="winningMembershipInput"
                         value="winningMembership5"
-
                         checked={
                           winningMembershipInput === "winningMembership5"
                         }
-
                         onChange={handlewinningMembershipInputChange}
                       />
                       Certicate Level
@@ -1096,7 +1146,6 @@ export default function FormCat2() {
                       Obtained Patents
                     </label>
                     <br />
-
                   </div>
                 )}
               </div>
@@ -1104,13 +1153,23 @@ export default function FormCat2() {
           </fieldset>
         </form>
       </div>
+      {error ? (
+        <Dialog
+          toOpen={true}
+          title={"Error"}
+          body={"Error in OL passed subject count maximum subjects must 9"}
+          onClose={handleCloseModal}
+        ></Dialog>
+      ) : null}
 
       <div className="form-display-marks" onClick={(e) => calculateMarks()}>
-        <Modal
-          buttonText={"View Marks"}
-          bodyHeader={"Marks for category based on past pupils"}
-          bodyText={marks.toString()}
-        />
+        {!error && (
+          <Modal
+            buttonText={"View Marks"}
+            bodyHeader={"Marks for category based on past pupils"}
+            bodyText={marks.toString()}
+          />
+        )}
       </div>
     </>
   );

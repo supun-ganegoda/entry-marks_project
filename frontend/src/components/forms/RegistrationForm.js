@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./RegistrationForm.css";
 import { inputs } from "../data/RegistrationFormData";
 import Dialog from "../Dialog";
+import Spinner from "../Spinner";
 
 const RegistrationForm = () => {
   const url = process.env.REACT_APP_SERVER_URL;
@@ -11,6 +12,7 @@ const RegistrationForm = () => {
   const [errors, setErrors] = useState({});
   const [errorMsg, setErrorMsg] = useState("");
   const [isError, setIsError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event) => {
     setFormValues({
@@ -23,6 +25,7 @@ const RegistrationForm = () => {
     event.preventDefault();
     if (formValues.password === formValues.confirmPassword) {
       try {
+        setLoading(true);
         const response = await fetch(`${url}register`, {
           method: "POST",
           headers: {
@@ -38,7 +41,7 @@ const RegistrationForm = () => {
 
         const res = await response.json();
         console.log(res);
-
+        setLoading(false);
         if (response.ok) {
           navigate("/login-form");
         } else {
@@ -79,6 +82,7 @@ const RegistrationForm = () => {
 
   return (
     <>
+      {loading && <Spinner body={"REGISTERING"} />}
       {isError && (
         <div onClick={(e) => setIsError(false)}>
           <Dialog toOpen={true} title={"Error"} body={errorMsg.toString()} />

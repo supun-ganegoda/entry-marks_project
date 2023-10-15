@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./FormCat.css";
+import Alert from "@mui/material/Alert";
 import Modal from "../Modal";
 import { differenceInYears } from "date-fns";
 import { useSchoolCount } from "../context/SchoolCountContext";
@@ -103,7 +104,7 @@ export default function FormCat6() {
 
             <div className="form-religion">
               <label className="form-label">
-                Period of continuously stayed abroad with the child:{" "}
+                Period of continuously stayed abroad with the child: *in Years
               </label>
               <div className="form-datePicker">
                 <div className="post-holder">
@@ -118,7 +119,7 @@ export default function FormCat6() {
                     showMonthDropdown
                   />
                   <DatePicker
-                    selected={toAbroadDate}
+                    selected={returnedDate ? returnedDate : toAbroadDate}
                     onChange={handleToAbroadDateChange}
                     dateFormat="dd/MM/yyyy"
                     placeholderText="To"
@@ -129,6 +130,11 @@ export default function FormCat6() {
                   />
                 </div>
               </div>
+              {duration < 0 && (
+                <Alert severity="error" style={{ marginBottom: "12px" }}>
+                  Dates are not valid
+                </Alert>
+              )}
             </div>
 
             <div className="form-medium">
@@ -194,9 +200,16 @@ export default function FormCat6() {
               <input
                 type="text"
                 id="otherSchools"
-                value={schoolNumber[0]}
+                value={schoolNumber[localStorage.getItem("selectedIndex")]}
                 readOnly
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                  maxWidth: "200px",
+                }}
               />
             </div>
           </fieldset>

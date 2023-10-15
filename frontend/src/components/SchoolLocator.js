@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import html2canvas from "html2canvas";
 import axios from "axios";
 import "./SchoolFinder.css";
 import { GoogleMap, Marker, Circle } from "@react-google-maps/api";
@@ -48,9 +47,10 @@ const SchoolLocator = () => {
       const data = await response.json();
       const sex = resData.gender;
       let gender = "";
-      if (localStorage.getItem("gender") === "male" || sex) {
+      if (localStorage.getItem("gender") === "male" || sex === "male") {
         gender = "BOY";
-      } else {
+      }
+      if (localStorage.getItem("gender") === "female" || sex === "female") {
         gender = "GIRL";
       }
       // load schools according to the gender
@@ -225,28 +225,6 @@ const SchoolLocator = () => {
       });
     }
     return tempDistances;
-  };
-
-  const captureAndSaveScreenshot = (filename) => {
-    const divElement = mapRef.current;
-
-    if (!divElement) {
-      console.error(`Element with ID "${divElement}" not found.`);
-      return;
-    }
-
-    html2canvas(divElement).then((canvas) => {
-      // Convert the canvas to a data URL
-      const dataURL = canvas.toDataURL("image/png");
-
-      // Create a link element to download the screenshot
-      const link = document.createElement("a");
-      link.href = dataURL;
-      link.download = filename || "screenshot.png";
-
-      // Trigger a click event on the link to initiate the download
-      link.click();
-    });
   };
 
   return (

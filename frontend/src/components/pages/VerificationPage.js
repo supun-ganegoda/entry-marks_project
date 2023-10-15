@@ -67,7 +67,8 @@ const VerificationPage = () => {
           <div className="result-container">
             <h2>Document verified !</h2>
             <p>
-              This document issued to {userName} having email {email}
+              This document issued to {userName} having email{" "}
+              {email.slice(0, 5)} ****@{email.slice(-3)}
             </p>
           </div>
         )}

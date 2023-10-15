@@ -76,6 +76,7 @@ export default function FormCat1() {
     setwithoutThirdDoc(true);
     setwithThirdDoc(false);
   }
+  //console.log(schoolNumber);
 
   const calculateMarks = () => {
     let totalMarks = 0;
@@ -230,7 +231,7 @@ export default function FormCat1() {
                             onChange={handleOptionChange}
                           />
                           <label htmlFor="option1">
-                            Ownwership of the place of residence is in the name
+                            Ownership of the place of residence is in the name
                             of the applicant/ spouse
                           </label>
                         </div>
@@ -244,7 +245,7 @@ export default function FormCat1() {
                             onChange={handleOptionChange}
                           />
                           <label htmlFor="option2">
-                            Ownwership is in the name of mother/ father of
+                            Ownership is in the name of mother/ father of
                             applicant/ spouse
                           </label>
                         </div>
@@ -395,8 +396,18 @@ export default function FormCat1() {
                 type="text"
                 id="applicantNumber"
                 value={applicantNumber}
-                onChange={(e) => setapplicantNumber(e.target.value)}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value.replace(/\D/g, "");
+                  setapplicantNumber(sanitizedValue);
+                }}
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                  maxWidth: "200px",
+                }}
               />
             </div>
 
@@ -409,8 +420,18 @@ export default function FormCat1() {
                 type="text"
                 id="spouseNumber"
                 value={spouseNumber}
-                onChange={(e) => setspouseNumber(e.target.value)}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value.replace(/\D/g, "");
+                  setspouseNumber(sanitizedValue);
+                }}
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                  maxWidth: "200px",
+                }}
               />
             </div>
 
@@ -423,8 +444,18 @@ export default function FormCat1() {
                 type="text"
                 id="guardianNumber"
                 value={guardianNumber}
-                onChange={(e) => setguardianNumber(e.target.value)}
+                onChange={(e) => {
+                  const sanitizedValue = e.target.value.replace(/\D/g, "");
+                  setguardianNumber(sanitizedValue);
+                }}
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                  maxWidth: "200px",
+                }}
               />
             </div>
 
@@ -442,9 +473,16 @@ export default function FormCat1() {
               <input
                 type="text"
                 id="schoolNumber"
-                value={schoolNumber[0]}
+                value={schoolNumber[localStorage.getItem("selectedIndex")]}
                 readOnly
                 required
+                style={{
+                  padding: "0.5em",
+                  border: "1px solid #ccc",
+                  borderRadius: "4px",
+                  fontSize: "16px",
+                  maxWidth: "200px",
+                }}
               />
             </div>
           </fieldset>

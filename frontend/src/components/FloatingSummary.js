@@ -10,6 +10,7 @@ import { MarksContext } from "./context/MarksContext";
 import "./Spinner.css";
 import { useNavigate } from "react-router-dom";
 import CryptoJS from "crypto-js"; // crypto module
+import Spinner from "./Spinner";
 
 const style = {
   position: "absolute",
@@ -33,6 +34,7 @@ export default function FloatingSummary() {
   const { finalMarks } = useContext(MarksContext);
   const [open, setOpen] = useState(false);
   const [clicked, setClicked] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -140,6 +142,7 @@ export default function FloatingSummary() {
   const saveMarks = async (e) => {
     const marks = makeObject();
     try {
+      setLoading(true);
       const token = localStorage.getItem("token");
       let response = await axios.post(`${url}save-marks`, marks, {
         headers: {
@@ -160,7 +163,7 @@ export default function FloatingSummary() {
           },
         }
       );
-
+      setLoading(false);
       setSaved(true);
       setOpen(false);
     } catch (error) {
@@ -179,6 +182,7 @@ export default function FloatingSummary() {
 
   return (
     <>
+      {loading && <Spinner body={"SAVING"} />}
       {/* {isSendingEmail && (
         <div className="spinner-overlay">
           <div className="spinner-container">

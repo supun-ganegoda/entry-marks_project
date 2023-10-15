@@ -139,6 +139,8 @@ export default function FormCat4() {
                 />
                 <input
                   type="number"
+                  min="1"
+                  max="60"
                   id="periodofservice"
                   placeholder="Period of Service in Complete Years"
                   value={periodofservice}
@@ -150,6 +152,7 @@ export default function FormCat4() {
                     borderRadius: "4px",
                     fontSize: "16px",
                     marginBottom: "12px",
+                    maxWidth: "200px",
                   }}
                 />
               </div>
@@ -189,6 +192,8 @@ export default function FormCat4() {
                     <input
                       type="number"
                       id="difficultSchool"
+                      min="0"
+                      max="60"
                       value={difficultSchool}
                       onChange={(e) => setdifficultSchool(e.target.value)}
                       required
@@ -215,7 +220,9 @@ export default function FormCat4() {
                     </label>
                     <div className="years-container">
                       <input
-                        type="text"
+                        type="number"
+                        min="0"
+                        max="60"
                         id="earlydifficultSchool"
                         value={earlydifficultSchool}
                         onChange={(e) =>
@@ -243,6 +250,8 @@ export default function FormCat4() {
               <div className="years-container">
                 <input
                   type="number"
+                  min="0"
+                  max="60"
                   id="leave2020"
                   placeholder="2020"
                   value={leave2020}
@@ -259,6 +268,8 @@ export default function FormCat4() {
                 />
                 <input
                   type="number"
+                  min="0"
+                  max="60"
                   id="leave2019"
                   placeholder="2019"
                   value={leave2019}
@@ -275,6 +286,8 @@ export default function FormCat4() {
                 />
                 <input
                   type="number"
+                  min="0"
+                  max="60"
                   id="leave2018"
                   placeholder="2018"
                   value={leave2018}
@@ -291,6 +304,8 @@ export default function FormCat4() {
                 />
                 <input
                   type="number"
+                  min="0"
+                  max="60"
                   id="leave2017"
                   placeholder="2017"
                   value={leave2017}
@@ -307,6 +322,8 @@ export default function FormCat4() {
                 />
                 <input
                   type="number"
+                  min="0"
+                  max="60"
                   id="leave2016"
                   placeholder="2016"
                   value={leave2016}
@@ -332,6 +349,8 @@ export default function FormCat4() {
               <div className="service-details">
                 <input
                   type="number"
+                  min="0"
+                  max="60"
                   id="servicePeriod"
                   value={servicePeriod}
                   onChange={(e) => setservicePeriod(e.target.value)}
@@ -385,7 +404,20 @@ export default function FormCat4() {
                   id="distance"
                   placeholder="km"
                   value={distance}
-                  onChange={(e) => setdistance(e.target.value)}
+                  onChange={(e) => {
+                    const sanitizedValue = e.target.value.replace(
+                      /[^0-9.]/g,
+                      ""
+                    );
+                    const decimalCount = (sanitizedValue.match(/\./g) || [])
+                      .length;
+                    if (decimalCount > 1) {
+                      return;
+                    }
+                    if (/^(\d*\.?\d+|\d+\.\d*)$/.test(sanitizedValue)) {
+                      setdistance(sanitizedValue);
+                    }
+                  }}
                   required
                 />
               </div>
@@ -401,7 +433,20 @@ export default function FormCat4() {
                   id="currentDistance"
                   placeholder="km"
                   value={currentDistance}
-                  onChange={(e) => setcurrentDistance(e.target.value)}
+                  onChange={(e) => {
+                    const sanitizedValue = e.target.value.replace(
+                      /[^0-9.]/g,
+                      ""
+                    );
+                    const decimalCount = (sanitizedValue.match(/\./g) || [])
+                      .length;
+                    if (decimalCount > 1) {
+                      return;
+                    }
+                    if (/^(\d*\.?\d+|\d+\.\d*)$/.test(sanitizedValue)) {
+                      setcurrentDistance(sanitizedValue);
+                    }
+                  }}
                   required
                 />
               </div>

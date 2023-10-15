@@ -44,7 +44,7 @@ const CategorySelector = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        //console.log(Object.values(response.data[0]));
+        console.log(Object.values(response.data[0]));
         const temp = Object.values(response.data[0]);
         temp.pop();
         setSelectedSchools(temp);
@@ -74,8 +74,20 @@ const CategorySelector = () => {
     setIsChecked(checked);
   };
 
+  const getIndex = () => {
+    let index = 0;
+    for (const school of selectedSchools) {
+      if (school === selectedSchool) {
+        return index.toString(); // Return the index as a string if a match is found
+      }
+      index++;
+    }
+    return null;
+  };
+
   const handleProceed = () => {
     localStorage.setItem("selectedSchool", selectedSchool);
+    localStorage.setItem("selectedIndex", getIndex());
     navigate("/catHolder", { state: { checkboxes } });
   };
 
